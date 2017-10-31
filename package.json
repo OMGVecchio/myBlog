@@ -1,0 +1,14 @@
+{
+  "name": "myBlog",
+  "version": "1.0.0",
+  "description": "simple blog with react and koa2",
+  "main": "app.js",
+  "repository": "git@github.com:OMGVecchio/myBlog.git",
+  "author": "vecchio <weichao@zbj.com>",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.3.0",
+    "koa-logger": "^3.1.0",
+    "koa-router": "^7.2.1"
+  }
+}
