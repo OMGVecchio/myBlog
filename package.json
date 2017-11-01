@@ -6,12 +6,36 @@
   "repository": "git@github.com:OMGVecchio/myBlog.git",
   "author": "vecchio <weichao@zbj.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack-dev-server"
+  },
   "dependencies": {
     "ioredis": "^3.2.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-logger": "^3.1.0",
     "koa-router": "^7.2.1",
-    "koa-static": "^4.0.1"
+    "koa-static": "^4.0.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-router": "^4.2.0"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.3.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "cross-env": "^5.1.1",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.5",
+    "html-webpack-plugin": "^2.30.1",
+    "style-loader": "^0.19.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "typescript": "^2.6.1",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.3"
   }
 }
