@@ -9,7 +9,7 @@ const isDev = process.env.NODE_ENV === 'development' ? true : false
 
 module.exports = {
     devtool: 'cheap-module-source-map',
-    entry: path.resolve(__dirname, 'src/index.js'),
+    entry: path.resolve(__dirname, 'src/index.ts'),
     output: {
         path: path.resolve(__dirname, 'static/dist'),
         filename: '[name].js',
@@ -35,13 +35,12 @@ module.exports = {
                 }]
             })
         }, {
-            test: /\.jsx?$/,
-            exclude: /node_modules/,
-            use: 'babel-loader'
-        }, {
             test: /\.tsx?$/,
+            use: ['awesome-typescript-loader']
+        }, {
+            test: /\.js$/,
             enforce: 'pre',
-            use: ['ts-loader']
+            use: ['source-map-loader']
         }, {
             test: /\.(png|jpg)$/,
             use: [{
@@ -53,9 +52,9 @@ module.exports = {
         }]
     },
     externals: {
-        'react': 'React',
-        'react-dom': 'ReactDOM',
-        'react-router': 'ReactRouter'
+        // 'react': 'React',
+        // 'react-dom': 'ReactDOM',
+        // 'react-router': 'ReactRouter'
     },
     plugins: [
         new ExtractTextPlugin('[name].[hash].css'),
@@ -70,11 +69,11 @@ module.exports = {
             'process.env.NODE_ENV': JSON.stringify('development')
         }),
         new webpack.ProvidePlugin({
-            React: 'react',
-            Component: ['react', 'Component'],
-            axios: 'axios',
-            ReactDOM: 'react-dom',
-            ReactRouter: 'react-router'
+            // React: 'react',
+            // Component: ['react', 'Component'],
+            // axios: 'axios',
+            // ReactDOM: 'react-dom',
+            // ReactRouter: 'react-router'
         }),
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'src/index.ejs'),
@@ -95,7 +94,7 @@ module.exports = {
         }
     ],
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.tsx', '.js', '.json'],
         alias: {
 
         }

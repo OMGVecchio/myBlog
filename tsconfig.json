@@ -1,27 +1,33 @@
 {
     "compilerOptions": {
-        "outDir": "src",
+        "outDir": "static/dist",
         "module": "commonjs",
         "target": "es5",
         "lib": ["es6", "dom"],
         "sourceMap": true,
         "allowJs": true,
         "jsx": "react",
-        "moduleResolution": "node",
-        "rootDir": "src",
+        "moduleResolution": "classic",
+        // "rootDir": "src",
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noImplicitAny": true,
         "strictNullChecks": true
     },
     "exclude": [
-        "node_modules",
-        "static",
-        "scripts",
-        "acceptance-tests",
-        "webpack",
-        "jest",
-        "src/setupTests.ts"
+        // "config",
+        // "filters",
+        // "lib",
+        // "node_modules",
+        // "static",
+        // "routes",
+        // "webpack",
+        // "utils",
+        // "app.js",
+        // "webpack.config.js"
+    ],
+    "include": [
+        "src/**/*"
     ],
     "types": [
         "typePatches"
