@@ -1,5 +1,5 @@
 {
-  "name": "myBlog",
+  "name": "vecchio-blog",
   "version": "1.0.0",
   "description": "simple blog with react and koa2",
   "main": "app.js",
@@ -7,7 +7,9 @@
   "author": "vecchio <weichao@zbj.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server",
+    "start": "pm2 start app.js --watch && pm2 logs 0",
+    "build": "webpack && cross-env NODE_ENV=product pm2 start app.js"
   },
   "dependencies": {
     "@types/react": "^16.0.19",
@@ -26,6 +28,11 @@
   "devDependencies": {
     "awesome-typescript-loader": "^3.3.0",
     "cross-env": "^5.1.1",
+    "eslint": "^4.12.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.5.1",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",

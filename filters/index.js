@@ -1,6 +1,7 @@
 'use strict'
 
 const resolve = require('path').resolve
+const template = require('./lib/template')
 const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const statics = require('koa-static')
@@ -13,7 +14,9 @@ const redis = new Redis({
 })
 
 module.exports = (app) => {
-    app.use(logger())
+    app
+       .use(template)
+       .use(logger())
        .use(bodyParser())
        .use(statics(
            resolve(__dirname, '../static')

@@ -8,23 +8,15 @@ const conf = require('./config')
 const isDev = process.env.NODE_ENV === 'development' ? true : false
 
 module.exports = {
-    devtool: 'cheap-module-source-map',
-    entry: path.resolve(__dirname, 'src/index.ts'),
+    entry: path.resolve(__dirname, 'src/index.tsx'),
     output: {
-        path: path.resolve(__dirname, 'static/dist'),
         filename: '[name].js',
-        publicPath: '/',
+        publicPath: `http://${conf.devHost}:${conf.devPort}/`,
         sourceMapFilename: '[name].map'
     },
     module: {
         rules: [{
             test: /\.styl(us)?$/,
-            use: ExtractTextPlugin.extract({
-                fallback: 'style-loader',
-                use: ['css-loader', 'stylus-loader']
-            })
-        }, {
-            test: /\.css$/,
             use: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
                 use: [{
@@ -36,11 +28,8 @@ module.exports = {
             })
         }, {
             test: /\.tsx?$/,
+            exclude: /node_modules/,
             use: ['awesome-typescript-loader']
-        }, {
-            test: /\.js$/,
-            enforce: 'pre',
-            use: ['source-map-loader']
         }, {
             test: /\.(png|jpg)$/,
             use: [{
@@ -52,9 +41,9 @@ module.exports = {
         }]
     },
     externals: {
-        // 'react': 'React',
-        // 'react-dom': 'ReactDOM',
-        // 'react-router': 'ReactRouter'
+        'react': 'React',
+        'react-dom': 'ReactDOM',
+        'react-router': 'ReactRouter'
     },
     plugins: [
         new ExtractTextPlugin('[name].[hash].css'),
@@ -65,9 +54,6 @@ module.exports = {
             minimize: true,
             debug: false
         }),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development')
-        }),
         new webpack.ProvidePlugin({
             // React: 'react',
             // Component: ['react', 'Component'],
@@ -75,8 +61,11 @@ module.exports = {
             // ReactDOM: 'react-dom',
             // ReactRouter: 'react-router'
         }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify(isDev ? 'development' : 'product')
+        }),
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, 'src/index.ejs'),
+            template: path.join(__dirname, 'public/index.ejs'),
             filename: 'index.html',
             hash: false,
             favicon: false,
@@ -88,7 +77,7 @@ module.exports = {
             xhtml: false
         }),
         function() {
-            this.plugin('done', (stat) => {
+            this.plugin('done', stat => {
                 console.log('已经打包完了')
             })
         }
@@ -102,39 +91,27 @@ module.exports = {
 }
 
 if(isDev) {
+    module.exports.devtool = 'cheap-module-source-map'
     module.exports.devServer = {
-        staticOptions: {
-            redirect: true
-        },
-        contentBase: path.join(__dirname, 'src'),
-        filename: 'index.html',
-        proxy: {
-            '/proxy': {
-                target: '',
-                pathRewrite: {},
-                secure: false
-            }
-        },
+        host: conf.devHost,
+        port: conf.devPort,
         publicPath: '/',
-        headers: {},
-        port: conf.port,
-        host: '127.0.0.1',
+        filename: 'index.html',
         historyApiFallback: true,
         compress: true,
         stats: 'normal',
         noInfo: false,
         quiet: false,
-        https: false,
-        inline: true,
-        setup(app) {
-            app.get('/test', (req, res, next) => {
-                res.json({
-                    test: '自定义路由'
-                })
-            })
-        }
+        inline: true
     }
 } else {
+    module.exports.output = {
+        path: path.resolve(__dirname, 'static'),
+        filename: '[name].js',
+        publicPath: '/',
+        sourceMapFilename: '[name].map'
+    }
+    module.exports.devtool = 'nosources-source-map'
     module.exports.plugins.concat([
         new webpack.optimize.UglifyJsPlugin({
             beautify: false,
