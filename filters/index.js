@@ -1,18 +1,11 @@
 'use strict'
 
 const { resolve } = require('path')
-const template = require('./lib/template')
 const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const statics = require('koa-static')
-const Redis = require('ioredis')
-
-const redis = new Redis({
-    host: '127.0.0.1',
-    port: 6379,
-    prefix: 'blog:',
-    ttl: 60 * 60 * 24
-})
+const template = require('./lib/template')
+const redis = require('./lib/redis')
 
 module.exports = (app) => {
     app
@@ -20,8 +13,5 @@ module.exports = (app) => {
         .use(logger())
         .use(bodyParser())
         .use(statics(resolve(__dirname, '../static')))
-        .use(async (ctx, next) => {
-            ctx.redis = redis
-            await next()
-        })
+        .use(redis)
 }

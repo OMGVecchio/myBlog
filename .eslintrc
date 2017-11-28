@@ -8,11 +8,12 @@
     "rules": {
         "strict": 0,
         "semi": 0,
-        "indent": ["error", 4],
-        "comma-dangle": ["error", "never"]
+        "indent": [2, 4],
+        "comma-dangle": [2, "never"]
     },
     "globals": {
         "isDev": false,
         "Router": false
-    }
+    },
+    "parser": "typescript-eslint-parser"
 }

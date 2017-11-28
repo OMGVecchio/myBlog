@@ -15,16 +15,6 @@
         "strictNullChecks": true
     },
     "exclude": [
-        // "config",
-        // "filters",
-        // "lib",
-        // "node_modules",
-        // "static",
-        // "routes",
-        // "webpack",
-        // "utils",
-        // "app.js",
-        // "webpack.config.js"
     ],
     "include": [
         "src/**/*"

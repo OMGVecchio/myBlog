@@ -1,2 +1,2 @@
 # myBlog
-new blog maybe built with react and koa2
+new blog maybe built with webpack && react && koa2 && eslint && typescript
