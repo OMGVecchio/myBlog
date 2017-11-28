@@ -3,10 +3,12 @@
 const mapKey = [
     'traverse'
 ]
-let utils = {}
+const utils = {}
+const load = require
 
-mapKey.map(key => {
-    utils[key] = require(`./lib/${key}`)
+mapKey.forEach((key) => {
+    const method = load(`./lib/${key}`)
+    utils[key] = method
 })
 
 module.exports = utils

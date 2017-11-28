@@ -5,7 +5,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const conf = require('./config')
-const isDev = process.env.NODE_ENV === 'development' ? true : false
+
+const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
     entry: path.resolve(__dirname, 'src/index.tsx'),
@@ -41,7 +42,7 @@ module.exports = {
         }]
     },
     externals: {
-        'react': 'React',
+        react: 'React',
         'react-dom': 'ReactDOM',
         'react-router': 'ReactRouter'
     },
@@ -75,12 +76,12 @@ module.exports = {
             chunks: 'all',
             title: 'Blog',
             xhtml: false
-        }),
-        function() {
-            this.plugin('done', stat => {
-                console.log('已经打包完了')
-            })
-        }
+        })
+        // () => {
+        //     this.plugin('done', (state) => {
+        //         console.info(state)
+        //     })
+        // }
     ],
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json'],
@@ -90,7 +91,7 @@ module.exports = {
     }
 }
 
-if(isDev) {
+if (isDev) {
     module.exports.devtool = 'cheap-module-source-map'
     module.exports.devServer = {
         host: conf.devHost,

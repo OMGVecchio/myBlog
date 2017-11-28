@@ -6,6 +6,10 @@
   "repository": "git@github.com:OMGVecchio/myBlog.git",
   "author": "vecchio <weichao@zbj.com>",
   "license": "MIT",
+  "eslintConfig": ".eslintrc",
+  "eslintIgnore": [
+    "static"
+  ],
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server",
     "start": "pm2 start app.js --watch && pm2 logs 0",
@@ -23,7 +27,8 @@
     "koa-static": "^4.0.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-router": "^4.2.0"
+    "react-router": "^4.2.0",
+    "request": "^2.83.0"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^3.3.0",
