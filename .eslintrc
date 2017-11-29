@@ -14,6 +14,5 @@
     "globals": {
         "isDev": false,
         "Router": false
-    },
-    "parser": "typescript-eslint-parser"
+    }
 }

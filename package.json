@@ -19,16 +19,21 @@
   "dependencies": {
     "@types/react": "^16.0.19",
     "@types/react-dom": "^16.0.2",
+    "@types/react-redux": "^5.0.14",
     "@types/react-router": "^4.0.16",
+    "axios": "^0.17.1",
     "ioredis": "^3.2.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-logger": "^3.1.0",
     "koa-router": "^7.2.1",
     "koa-static": "^4.0.1",
+    "lodash": "^4.17.4",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
+    "redux": "^3.7.2",
     "request": "^2.83.0"
   },
   "devDependencies": {

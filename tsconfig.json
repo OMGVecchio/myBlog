@@ -8,13 +8,17 @@
         "allowJs": true,
         "jsx": "react",
         "moduleResolution": "classic",
-        // "rootDir": "src",
+        "rootDir": "src",
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noImplicitAny": true,
         "strictNullChecks": true
     },
+    "paths": {
+        "STORE": ["src/redux/store"]
+    },
     "exclude": [
+        "node_modules/**/*"
     ],
     "include": [
         "src/**/*"

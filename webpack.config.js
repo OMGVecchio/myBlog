@@ -48,9 +48,6 @@ module.exports = {
     },
     plugins: [
         new ExtractTextPlugin('[name].[hash].css'),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor'
-        }),
         new webpack.LoaderOptionsPlugin({
             minimize: true,
             debug: false
@@ -86,7 +83,7 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json'],
         alias: {
-
+            STORE: path.resolve(__dirname, './src/redux/store')
         }
     }
 }
