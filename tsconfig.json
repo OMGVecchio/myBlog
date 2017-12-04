@@ -15,7 +15,6 @@
         "strictNullChecks": true
     },
     "paths": {
-        "STORE": ["src/redux/store"]
     },
     "exclude": [
         "node_modules/**/*"

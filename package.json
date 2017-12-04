@@ -17,10 +17,6 @@
     "build": "webpack && cross-env NODE_ENV=product pm2 start app.js"
   },
   "dependencies": {
-    "@types/react": "^16.0.19",
-    "@types/react-dom": "^16.0.2",
-    "@types/react-redux": "^5.0.14",
-    "@types/react-router": "^4.0.16",
     "axios": "^0.17.1",
     "ioredis": "^3.2.1",
     "koa": "^2.3.0",
@@ -37,6 +33,11 @@
     "request": "^2.83.0"
   },
   "devDependencies": {
+    "@types/react": "^16.0.19",
+    "@types/react-dom": "^16.0.2",
+    "@types/react-redux": "^5.0.14",
+    "@types/react-router": "^4.0.16",
+    "@types/redux": "^3.6.0",
     "awesome-typescript-loader": "^3.3.0",
     "cross-env": "^5.1.1",
     "eslint": "^4.12.0",

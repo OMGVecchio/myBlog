@@ -42,9 +42,9 @@ module.exports = {
         }]
     },
     externals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
-        'react-router': 'ReactRouter'
+        // react: 'React',
+        // 'react-dom': 'ReactDOM',
+        // 'react-router': 'ReactRouter'
     },
     plugins: [
         new ExtractTextPlugin('[name].[hash].css'),
@@ -83,7 +83,6 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json'],
         alias: {
-            STORE: path.resolve(__dirname, './src/redux/store')
         }
     }
 }
