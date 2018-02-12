@@ -5,13 +5,18 @@ import { render } from "react-dom"
 import { Router, Route, MemoryRouter } from 'react-router'
 // history 从 react-router 库中脱离
 import { createBrowserHistory } from 'history'
+import { Provider } from 'react-redux'
+
+import store from './redux/store/index'
 
 import { Hello } from "./components/Hello"
 
 render(
-    <Router history={ createBrowserHistory() } >
-        <Route path="/" component={ Hello } />
-    </Router>
+    <Provider store={ store }>
+        <Router history={ createBrowserHistory() } >
+            <Route path="/" component={ Hello } />
+        </Router>
+    </Provider>
     ,
     document.getElementById("app")
 )

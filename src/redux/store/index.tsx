@@ -1,7 +1,6 @@
-// 'use strict'
+'use strict'
 
-// import { createStore } from 'redux'
+import { createStore, combineReducers } from 'redux'
+import reducer from '../reducer/index'
 
-// const store = createStore()
-
-// export default {}
+export default createStore(reducer)
