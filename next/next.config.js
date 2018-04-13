@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    webpack(config, { dev }) {
+    webpack(config) {
         return config;
     }
 }

@@ -12,7 +12,7 @@
     "static"
   ],
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server",
+    "dev": "cross-env NODE_ENV=development node app.js",
     "start": "pm2 start app.js --watch && pm2 logs 0",
     "build": "webpack && cross-env NODE_ENV=product pm2 start app.js"
   },
@@ -30,8 +30,7 @@
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
-    "redux": "^3.7.2",
-    "request": "^2.83.0"
+    "redux": "^3.7.2"
   },
   "devDependencies": {
     "cross-env": "^5.1.1",

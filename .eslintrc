@@ -13,6 +13,7 @@
     },
     "globals": {
         "isDev": false,
-        "Router": false
+        "Router": false,
+        "nextHandle": false
     }
 }
