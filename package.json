@@ -17,6 +17,7 @@
     "build": "webpack && cross-env NODE_ENV=product pm2 start app.js"
   },
   "dependencies": {
+    "antd": "^3.4.1",
     "axios": "^0.17.1",
     "ioredis": "^3.2.1",
     "koa": "^2.3.0",
