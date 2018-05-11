@@ -7,34 +7,30 @@ export default({
     title = 'This is the default title'
 }) => (
     <div className="main">
-    <Banner />
-    <Head>
-          <title>{title}</title>
-          <meta charSet="utf-8" />
+        <Head>
+            <title>{title}</title>
+            <meta charSet="utf-8" />
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            <link rel="stylesheet" href="/static/style/common/global.css" />
+            <link rel="stylesheet" href="/static/style/common/antd.min.css" />
         </Head>
-        <header>
-        <nav>
-            <Link href="/">
-                <a>Home</a>
-              </Link>
-                |
-                <Link href="/about">
-                    <a>About</a>
-              </Link>
-                |
-                <Link href="/contact">
-                    <a>Contact</a>
-              </Link>
-          </nav>
-      </header>
-        <div>
-            <div>
+        <Banner />
+        <div className="main-content">
+            <div className="content-wrap">
                 {children}
-          </div>
-      </div>
-        <footer>
-            {'I`m here to stay'}
-      </footer>
-  </div>
+            </div>
+        </div>
+        <style>{`
+            .main-content {
+                background-color: gray;
+                .content-wrap {
+                    width: 970px;
+                    background-color: purple;
+                }
+            }
+        `}</style>
+        <style jsx global>{`
+
+        `}</style>
+    </div>
 )

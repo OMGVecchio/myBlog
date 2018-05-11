@@ -2,5 +2,15 @@
     "presets": [
         "next/babel"
     ],
-    "plugins": []
+    "plugins": [
+        [
+            "styled-jsx/babel",
+            {
+                "plugins": [
+                    /* "styled-jsx-plugin-postcss", */
+                    "styled-jsx-plugin-less"
+                ]
+            }
+        ]
+    ]
 }
