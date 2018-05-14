@@ -7,9 +7,18 @@
             "styled-jsx/babel",
             {
                 "plugins": [
-                    /* "styled-jsx-plugin-postcss", */
                     "styled-jsx-plugin-less"
                 ]
+            }
+        ], [
+            "module-resolver",
+            {
+                "cwd": "babelrc",
+                "root": ["."],
+                "alias": {
+                    "components": "./components",
+                    "static": "./static"
+                }
             }
         ]
     ]

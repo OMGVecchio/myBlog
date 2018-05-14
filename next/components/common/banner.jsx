@@ -9,8 +9,8 @@ export default class Banner extends PureComponent {
     }]
     static getMenuHtml = () => {
         const { menuData } = Banner
-        const chunks = menuData.map(item => (
-            <li>
+        const chunks = menuData.map((item, index) => (
+            <li key={ index }>
                 <Link href={ item.href }>
                     <span>
                         <i className={ item.icon } />
@@ -22,12 +22,7 @@ export default class Banner extends PureComponent {
         return (<ul>{ chunks }</ul>)
     }
     componentDidMount() {
-        // const { canvas } = this.refs
-        // const ctx = canvas.getContext('2d')
-        // for(let i in canvas) {
-        //     console.log(i)
-        // }
-        // console.log(canvas.clientWidth, canvas.clientHeight)
+
     }
     render() {
         return (
