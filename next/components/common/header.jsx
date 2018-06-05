@@ -26,21 +26,24 @@ export default class Banner extends PureComponent {
     }
     render() {
         return (
-            <div className="main-banner">
-                <div className="banner-wrap" ref="canvas">
+            <header className="main-header">
+                <div className="header-wrap">
                     { Banner.getMenuHtml() }
                 </div>
                 <style jsx>{`
-                    .main-banner {
-                        height: 50px;
+                    .main-header {
+                        height: 65px;
+                        width: 100%;
+                        position: fixed;
+                        z-index: 100;
                     }
-                    .banner-wrap {
-                        background-color: skyblue;
+                    .header-wrap {
+                        background-color: #4054B2;
                         width: 100%;
                         height: 100%;
                     }
                 `}</style>
-            </div>
+            </header>
         )
     }
 }

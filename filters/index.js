@@ -9,14 +9,14 @@ const nextRender = require('./lib/next-render')
 const { traverse } = require('../utils')
 
 module.exports = (app) => {
-    const { router } = app
-    traverse(resolve(__dirname, '../routes'))
-    app
-        .use(logger())
-        .use(bodyParser())
-        .use(statics(resolve(__dirname, '../static')))
-        // .use(redis)
-        .use(nextRender)
-        .use(router.routes())
-        .use(router.allowedMethods())
+  const { router } = app
+  traverse(resolve(__dirname, '../routes'))
+  app
+    .use(logger())
+    .use(bodyParser())
+    .use(statics(resolve(__dirname, '../static')))
+  // .use(redis)
+    .use(nextRender)
+    .use(router.routes())
+    .use(router.allowedMethods())
 }

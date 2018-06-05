@@ -1,14 +1,14 @@
 'use strict'
 
 const mapKey = [
-    'traverse'
+  'traverse'
 ]
 const utils = {}
 const load = require
 
 mapKey.forEach((key) => {
-    const method = load(`./lib/${key}`)
-    utils[key] = method
+  const method = load(`./lib/${key}`)
+  utils[key] = method
 })
 
 module.exports = utils

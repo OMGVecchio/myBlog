@@ -1,19 +1,25 @@
 {
-    "extends": "airbnb",
-    "plugins": [
-        "react",
-        "jsx-a11y",
-        "import"
-    ],
-    "rules": {
-        "strict": 0,
-        "semi": 0,
-        "indent": [2, 4],
-        "comma-dangle": [2, "never"]
-    },
-    "globals": {
-        "isDev": false,
-        "Router": false,
-        "nextHandle": false
-    }
+  "extends": "airbnb",
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import"
+  ],
+  "rules": {
+    "strict": 0,
+    "semi": 0,
+    "comma-dangle": [2, "never"],
+
+    "import/no-unresolved": 0,
+    "import/extensions": 0,
+    "react-in-jsx-scope": 0,
+    "import/no-extraneous-dependencies": 0,
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": 0
+  },
+  "globals": {
+    "isDev": false,
+    "Router": false,
+    "nextHandle": false
+  }
 }
