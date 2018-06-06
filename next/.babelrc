@@ -16,6 +16,7 @@
         "cwd": "babelrc",
         "root": ["."],
         "alias": {
+          "store": "./store",
           "components": "./components",
           "static": "./static"
         }

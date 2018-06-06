@@ -1,10 +1,13 @@
-import Layout from '../components/layout'
-import {Button} from 'antd'
+import { Button } from 'antd'
+import Layout from 'components/layout'
+import { connect } from 'react-redux'
 
-export default() => (
-    <Layout>
-        <div>
-            <Button>sads</Button>
-        </div>
-    </Layout>
+const Index = () => (
+  <Layout>
+    <div>
+      <Button>sads</Button>
+    </div>
+  </Layout>
 )
+
+export default connect()(Index)

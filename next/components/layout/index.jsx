@@ -1,11 +1,12 @@
 import Head from 'next/head'
 import Header from 'components/common/header'
+import Menu from 'components/common/aside'
 
 import styles from 'static/styles/global.less'
 
-export default({
+export default ({
   children,
-  title = 'This is the default title'
+  title = 'Vecchio\'s Blog'
 }) => (
   <div className="global-wrap">
     <Head>
@@ -15,21 +16,32 @@ export default({
       <style dangerouslySetInnerHTML={{ __html: styles }} />
     </Head>
     <Header />
+    <Menu />
+    <div className="content-header">
+      哈哈
+    </div>
     <div className="main-content">
       <div className="content-wrap">
         {children}
       </div>
     </div>
     <style jsx>{`
-      .main-content {
-        background-color: gray;
-        .content-wrap {
-          width: 970px;
-          background-color: purple;
-        }
+      .content-header {
+        height: 230px;
+        padding-top: 65px;
+        background-color: #4054B2;
+      }
+      .content-wrap {
+        width: 970px;
+        background-color: purple;
       }
     `}
     </style>
-    {/* <style jsx global /> */}
+    <style jsx global>{`
+      * {
+        box-sizing: border-box;
+      }
+    `}
+    </style>
   </div>
 )
