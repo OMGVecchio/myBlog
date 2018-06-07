@@ -1,0 +1,28 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import"
+  ],
+  "rules": {
+    "strict": 0,
+    "semi": 0,
+    "comma-dangle": [2, "never"],
+    "import/no-unresolved": [2, {"ignore": ["components", "static", "store"]}],
+    "import/extensions": 0,
+    "react-in-jsx-scope": 0,
+    "import/no-extraneous-dependencies": 0,
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": 0,
+    "react/jsx-filename-extension": 0,
+    "jsx-a11y/click-events-have-key-events": 0
+  },
+  "env": {
+    "browser": true
+  },
+  "globals": {
+
+  }
+}

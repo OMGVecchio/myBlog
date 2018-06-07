@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import common from './modules'
+import common from './modules/common'
 
 const reducer = combineReducers({
   common

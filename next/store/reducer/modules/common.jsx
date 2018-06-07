@@ -1,6 +1,6 @@
 export default (initState, action) => {
   switch (action.type) {
     default:
-      break
+      return 123
   }
 }

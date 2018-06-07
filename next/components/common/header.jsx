@@ -3,17 +3,18 @@ import Link from 'next/link'
 
 export default class Banner extends PureComponent {
   static menuData = [{
+    id: 0,
     label: 'haha',
     icon: 'hehe',
     href: 'xixi'
   }]
   static getMenuHtml = () => {
     const { menuData } = Banner
-    const chunks = menuData.map((item, index) => (
-      <li key={ index }>
-        <Link href={ item.href }>
+    const chunks = menuData.map(item => (
+      <li key={item.id}>
+        <Link href={item.href}>
           <span>
-            <i className={ item.icon } />
+            <i className={item.icon} />
             { item.label }
           </span>
         </Link>
@@ -42,7 +43,8 @@ export default class Banner extends PureComponent {
             width: 100%;
             height: 100%;
           }
-        `}</style>
+        `}
+        </style>
       </header>
     )
   }
