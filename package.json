@@ -21,6 +21,7 @@
     "axios": "^0.17.1",
     "cross-env": "^5.1.6",
     "glob": "^7.1.2",
+    "immutable": "^3.8.2",
     "ioredis": "^3.2.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
@@ -37,6 +38,7 @@
     "react-router": "^4.2.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
+    "redux-immutable": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0"
   },

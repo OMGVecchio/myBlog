@@ -18,7 +18,8 @@
         "alias": {
           "store": "./store",
           "components": "./components",
-          "static": "./static"
+          "static": "./static",
+          "utils": "./utils"
         }
       }
     ]

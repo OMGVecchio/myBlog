@@ -1,15 +1,27 @@
-const hehe = (e) => {
-  console.log(e);
+import { connect } from 'react-redux'
+import types from 'store/action/common'
+
+const close = (dispatch) => {
+  dispatch({ type: types.CLOSE_ASIDE })
 }
 
-export default () => (
+const Aside = ({
+  dispatch,
+  asideIsOpen
+}) => (
   <div className="aside-menu">
     <div>
       我就是菜单
     </div>
-    <div className="close" role="button" tabIndex={0} onClick={hehe}>
-      X
-    </div>
+    {
+      asideIsOpen
+        ? (
+          <div className="close" role="button" tabIndex={0} onClick={() => close(dispatch)}>
+            X
+          </div>
+        )
+        : ''
+    }
     <style jsx>{`
       .aside-menu {
         position: fixed;
@@ -34,3 +46,12 @@ export default () => (
     </style>
   </div>
 )
+
+const mapStateToProps = ({ common = {} }) => {
+  const { asideIsOpen = {} } = common
+  return {
+    asideIsOpen
+  }
+}
+
+export default connect(mapStateToProps)(Aside)

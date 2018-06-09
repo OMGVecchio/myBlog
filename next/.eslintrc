@@ -10,7 +10,7 @@
     "strict": 0,
     "semi": 0,
     "comma-dangle": [2, "never"],
-    "import/no-unresolved": [2, {"ignore": ["components", "static", "store"]}],
+    "import/no-unresolved": [2, {"ignore": ["components", "static", "store", "utils"]}],
     "import/extensions": 0,
     "react-in-jsx-scope": 0,
     "import/no-extraneous-dependencies": 0,
