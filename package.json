@@ -19,6 +19,7 @@
   "dependencies": {
     "antd": "^3.4.1",
     "axios": "^0.17.1",
+    "classnames": "^2.2.6",
     "cross-env": "^5.1.6",
     "glob": "^7.1.2",
     "immutable": "^3.8.2",

@@ -1,54 +1,65 @@
+import { Fragment } from 'react'
 import { connect } from 'react-redux'
-import types from 'store/action/common'
+import classNames from 'classnames'
 
-const close = (dispatch) => {
-  dispatch({ type: types.CLOSE_ASIDE })
-}
+import types from 'store/action/common'
 
 const Aside = ({
   dispatch,
   asideIsOpen
-}) => (
-  <div className="aside-menu">
-    <div>
-      我就是菜单
-    </div>
-    {
-      asideIsOpen
-        ? (
-          <div className="close" role="button" tabIndex={0} onClick={() => close(dispatch)}>
-            X
-          </div>
-        )
-        : ''
-    }
-    <style jsx>{`
-      .aside-menu {
-        position: fixed;
-        z-index: 100;
-        box-sizing: border-box;
-        width: 240px;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        background-color: #fff;
-        .close {
-          width: 20px;
-          height: 20px;
-          border-raidus: 50%;
-          color: #fff;
-          background-color: green;
-          position: absolute;
-          right: -60px;
+}) => {
+  const close = () => {
+    dispatch({ type: types.CLOSE_ASIDE })
+  }
+  return (
+    <Fragment>
+      <div className={classNames('aside-menu', { close: !asideIsOpen })}>
+        <div>
+          我就是菜单
+        </div>
+        <div className="close-btn" role="button" tabIndex={0} onClick={() => close(dispatch)}>
+          X
+        </div>
+      </div>
+      <style jsx>{`
+        @width: 240px;
+        @duration: 0.5s;
+        .aside-menu {
+          position: fixed;
+          z-index: 100;
+          box-sizing: border-box;
+          width: @width;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          background-color: #fff;
+          transition: left @duration;
+          .close-btn {
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-raidus: 50%;
+            color: #fff;
+            background-color: green;
+            position: absolute;
+            right: -60px;
+          }
+          &.close {
+            left: -@width;
+            .close-btn {
+              display: none;
+            }
+          }
         }
-      }
-    `}
-    </style>
-  </div>
-)
+      `}
+      </style>
+    </Fragment>
+  )
+}
 
-const mapStateToProps = ({ common = {} }) => {
-  const { asideIsOpen = {} } = common
+const mapStateToProps = (state) => {
+  const common = state.get('common')
+  const asideIsOpen = common.get('asideIsOpen')
   return {
     asideIsOpen
   }

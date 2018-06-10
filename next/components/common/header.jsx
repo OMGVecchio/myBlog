@@ -1,15 +1,19 @@
-import React, { PureComponent } from 'react'
+import { Fragment } from 'react'
+import { connect } from 'react-redux'
 import Link from 'next/link'
 
-export default class Banner extends PureComponent {
-  static menuData = [{
+import types from 'store/action/common'
+
+const Header = ({
+  dispatch
+}) => {
+  const menuData = [{
     id: 0,
     label: 'haha',
     icon: 'hehe',
     href: 'xixi'
   }]
-  static getMenuHtml = () => {
-    const { menuData } = Banner
+  const getMenuHtml = () => {
     const chunks = menuData.map(item => (
       <li key={item.id}>
         <Link href={item.href}>
@@ -22,30 +26,37 @@ export default class Banner extends PureComponent {
     ))
     return (<ul>{ chunks }</ul>)
   }
-  componentDidMount() {
-
+  const openMenu = () => {
+    dispatch({
+      type: types.OPEN_ASIDE
+    })
   }
-  render() {
-    return (
+  return (
+    <Fragment>
       <header className="main-header">
+        <button onClick={openMenu}>
+          打开菜单吧
+        </button>
         <div className="header-wrap">
-          { Banner.getMenuHtml() }
+          { getMenuHtml() }
         </div>
-        <style jsx>{`
-          .main-header {
-            position: fixed;
-            z-index: 99;
-            height: 65px;
-            width: 100%;
-          }
-          .header-wrap {
-            background-color: #4054B2;
-            width: 100%;
-            height: 100%;
-          }
-        `}
-        </style>
       </header>
-    )
-  }
+      <style jsx>{`
+        .main-header {
+          position: fixed;
+          z-index: 99;
+          height: 65px;
+          width: 100%;
+        }
+        .header-wrap {
+          background-color: #4054B2;
+          width: 100%;
+          height: 100%;
+        }
+      `}
+      </style>
+    </Fragment>
+  )
 }
+
+export default connect()(Header)

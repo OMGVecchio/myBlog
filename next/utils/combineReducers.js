@@ -2,7 +2,7 @@
  * Concise combineReducer supported for immutableJS
  */
 
-import { fromJS } from 'immutable'
+import { fromJS, is } from 'immutable'
 
 const combineReducers = (reducers) => {
   const reducerKeys = Object.keys(reducers)
@@ -14,15 +14,15 @@ const combineReducers = (reducers) => {
   })
   const finalReducerKeys = Object.keys(finalReducers)
 
-  return (state = fromJS({}), action) => {
+  return (state = {}, action) => {
     let hasChanged = false
-    const nextState = fromJS({})
+    let nextState = fromJS({})
     finalReducerKeys.forEach((key) => {
       const reducer = finalReducers[key]
       const previousStateForKey = state[key]
-      const nextStateForKey = reducer(previousStateForKey, action)
-      nextState.set(key, nextStateForKey)
-      hasChanged = hasChanged || nextStateForKey !== previousStateForKey
+      const nextStateForKey = reducer(fromJS(previousStateForKey), action)
+      nextState = nextState.set(key, nextStateForKey)
+      hasChanged = hasChanged || !is(nextStateForKey, previousStateForKey)
     })
     return hasChanged ? nextState : state
   }
