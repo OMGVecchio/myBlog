@@ -1,25 +1,13 @@
-// import { delay } from 'redux-saga'
-// import { all, call, put, take, takeLatest } from 'redux-saga/effects'
+import { all, call, take, put, takeEvery } from 'redux-saga/effects'
 
-// import { all, call, take, put } from 'redux-saga/effects'
+import types from 'store/action/common'
 
-// function* test() {
-//   yield take('test')
-//   yield put({ type: 'd' })
-// }
+function* test() {
+  console.log('异步请求?')
+}
 
 function* rootSaga() {
-  // yield all([
-  //   delay(),
-  //   call(),
-  //   put(),
-  //   take(),
-  //   takeLatest()
-  // ])
-
-  // yield all([
-  //   call(test)
-  // ])
+  yield takeEvery(types.INCREASE, test)
 }
 
 export default rootSaga
