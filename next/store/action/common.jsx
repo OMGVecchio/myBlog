@@ -1,6 +1,7 @@
 const actionTypes = {
-  OPEN_ASIDE: 'common/OPEN_ASIDE',
-  CLOSE_ASIDE: 'common/CLOSE_ASIDE'
+  OPEN_ASIDE: 'common/open_aside',
+  CLOSE_ASIDE: 'common/close_aside',
+  INCREASE: 'common/increase'
 }
 
 export default actionTypes
@@ -11,4 +12,8 @@ export const openAside = () => ({
 
 export const closeAside = () => ({
   type: actionTypes.CLOSE_ASIDE
+})
+
+export const increase = () => ({
+  type: actionTypes.INCREASE
 })
