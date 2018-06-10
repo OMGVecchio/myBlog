@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 
 import types from 'store/action/common'
 
+import Button from '@material-ui/core/Button'
+
 const Index = ({
   dispatch,
   counter
@@ -22,6 +24,9 @@ const Index = ({
         <div>
           number: {counter}
         </div>
+        <Button>
+          asdas
+        </Button>
       </Layout>
     </Fragment>
   )

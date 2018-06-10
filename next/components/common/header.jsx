@@ -1,5 +1,6 @@
 import { Fragment } from 'react'
 import { connect } from 'react-redux'
+import Menu from '@material-ui/icons/Menu'
 
 import types from 'store/action/common'
 
@@ -15,7 +16,7 @@ const Header = ({
     <Fragment>
       <header className="main-header">
         <button onClick={openMenu}>
-          打开菜单吧
+          <Menu />
         </button>
         <div className="header-wrap">
           我就是菜单啊
