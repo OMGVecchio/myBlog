@@ -5,7 +5,34 @@ html {
     min-width: 970px;
 }
 
+#__next {
+  min-height: 100%;
+}
+
 .text-overflow {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+
+.pull-left {
+  float: left;
+}
+.pull-right {
+  float: right;
+}
+.clearfix {
+  &::after {
+    display: block;
+    content: '';
+    clear: both;
+  }
 }

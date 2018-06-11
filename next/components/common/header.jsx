@@ -1,10 +1,13 @@
 import { Fragment } from 'react'
-import { connect } from 'react-redux'
+import classNames from 'classnames'
+
+import { Row, Col, Icon, Input } from 'antd'
 
 import types from 'store/action/common'
 
 const Header = ({
-  dispatch
+  dispatch,
+  showShadow
 }) => {
   const openMenu = () => {
     dispatch({
@@ -13,13 +16,15 @@ const Header = ({
   }
   return (
     <Fragment>
-      <header className="main-header">
-        <button onClick={openMenu}>
-          菜单按钮
-        </button>
-        <div className="header-wrap">
-          我就是菜单啊
-        </div>
+      <header className={classNames('main-header', { 'show-shadow': showShadow })}>
+        <Row type="flex" justify="space-between" align="middle" style={{ height: '100%' }}>
+          <Col>
+            <Icon type="menu-unfold" onClick={openMenu} />
+          </Col>
+          <Col>
+            <Input.Search />
+          </Col>
+        </Row>
       </header>
       <style jsx>{`
         .main-header {
@@ -28,11 +33,11 @@ const Header = ({
           z-index: 99;
           height: 65px;
           width: 100%;
-        }
-        .header-wrap {
           background-color: #4054B2;
-          width: 100%;
-          height: 100%;
+          color: #fff;
+          &.show-shadow {
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+          }
         }
       `}
       </style>
@@ -40,4 +45,4 @@ const Header = ({
   )
 }
 
-export default connect()(Header)
+export default Header

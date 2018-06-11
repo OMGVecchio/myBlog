@@ -46,26 +46,35 @@ const Aside = ({
   }
   const renderLink = () => {
     const linkData = [{
+      id: 0,
       label: 'Gayhub',
       url: 'https://github.com/OMGVecchio',
       icon: 'github'
     }, {
+      id: 1,
       label: 'weibo',
       url: 'https://weibo.com/u/3300075617',
       icon: 'weibo'
     }, {
+      id: 2,
       label: 'facebook',
       url: 'https://www.facebook.com/lulu.vecchio',
       icon: 'facebook'
     }, {
+      id: 3,
       label: 'twitter',
       url: 'https://twitter.com/vecchio1993',
       icon: 'twitter'
     }]
     const linkItems = linkData.map((item) => {
-      const { label, url, icon } = item
+      const {
+        id,
+        label,
+        url,
+        icon
+      } = item
       return (
-        <Col span={4} push={4}>
+        <Col span={4} push={4} key={id}>
           <Link href={url}>
             <Icon title={label} type={icon} />
           </Link>

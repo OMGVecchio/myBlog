@@ -13,15 +13,24 @@ const Index = ({
       type: types.INCREASE
     })
   }
+  const styleTest = () => {
+    const arr = []
+    for (let i = 0; i < 100; i += 1) {
+      arr.push((
+        <div key={i}>
+          number: {counter}
+        </div>
+      ))
+    }
+    return arr
+  }
   return (
     <Fragment>
       <Layout>
         <div role="button" tabIndex={0} onClick={increase}>
           increase
         </div>
-        <div>
-          number: {counter}
-        </div>
+        {styleTest()}
       </Layout>
     </Fragment>
   )
