@@ -26,6 +26,10 @@ const Aside = ({
     label: '标签',
     url: '/tag',
     icon: 'tag-o'
+  }, {
+    label: '撰文',
+    url: '/compose',
+    icon: 'edit'
   }]
   const renderMenu = (item) => {
     const { label, url, icon } = item
@@ -96,8 +100,8 @@ const Aside = ({
             呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的
             一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人
           </div>
-          <span className="close-btn" role="button" tabIndex={0} onClick={() => close(dispatch)}>
-            X
+          <span className="close-btn">
+            <Icon type="close" onClick={() => close(dispatch)} />
           </span>
         </div>
         <div>

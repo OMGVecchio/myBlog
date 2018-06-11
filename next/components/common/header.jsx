@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+import { connect } from 'react-redux'
 import classNames from 'classnames'
 
 import { Row, Col, Icon, Input } from 'antd'
@@ -45,4 +46,4 @@ const Header = ({
   )
 }
 
-export default Header
+export default connect()(Header)

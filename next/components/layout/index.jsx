@@ -50,7 +50,7 @@ const Layout = ({
               </h4>
             </div>
             <Row type="flex" justify="center" style={{ minHeight: 'calc(100vh - 300px)' }}>
-              <Col span={24} style={{ width: '70%', paddingTop: '20px', paddingBottom: '20px' }}>
+              <Col span={24} style={{ width: '70%', marginTop: '20px', marginBottom: '20px' }}>
                 {children}
               </Col>
             </Row>
