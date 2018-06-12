@@ -1,16 +1,17 @@
 import React, { Fragment, PureComponent } from 'react'
+import Markdown from 'react-markdown'
 import dynamic from 'next/dynamic'
 import classNames from 'classnames'
 
 import { Radio, Select, Switch, Row, Col } from 'antd'
 
 import Layout from 'components/layout'
-import Markdown from 'react-markdown'
+import fullScreen from 'utils/full-screen'
 
 const AceEditor = dynamic(import('components/editor/ace'), {
   ssr: false
 })
-const CodeMirrorEditor = dynamic(import('components/editor/codeMirror'), {
+const CodeMirrorEditor = dynamic(import('components/editor/codemirror'), {
   ssr: false
 })
 
@@ -42,6 +43,11 @@ class Compose extends PureComponent {
     })
   }
   changeFullScreen = (isFullScreen) => {
+    if (isFullScreen) {
+      fullScreen.openFull()
+    } else {
+      fullScreen.closeFull()
+    }
     this.setState({
       isFullScreen
     })

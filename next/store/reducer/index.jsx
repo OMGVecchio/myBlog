@@ -1,4 +1,4 @@
-import combineReducers from 'utils/combineReducers'
+import combineReducers from 'utils/combine-reducers'
 import common from './modules/common'
 
 const reducer = combineReducers({
