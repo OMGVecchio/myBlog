@@ -1,55 +1,121 @@
-import React, { PureComponent } from 'react'
+import React, { Fragment, PureComponent } from 'react'
 import dynamic from 'next/dynamic'
+import classNames from 'classnames'
 
-import { Row, Col } from 'antd'
+import { Radio, Select, Switch, Row, Col } from 'antd'
 
 import Layout from 'components/layout'
 import Markdown from 'react-markdown'
 
-const AceEditor = dynamic(import('components/common/aceEditor'), {
+const AceEditor = dynamic(import('components/editor/ace'), {
   ssr: false
 })
-const CodeMirrorEditor = dynamic(import('components/common/codeMirrorEditor'), {
+const CodeMirrorEditor = dynamic(import('components/editor/codeMirror'), {
   ssr: false
 })
+
+const { Option } = Select
 
 class Compose extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      editorState1: '',
-      editorState2: ''
+      editorType: 1,
+      language: 'markdown',
+      editorState: '',
+      isFullScreen: false
     }
   }
-  onChange1 = (editorState) => {
+  changeValue = (editorState) => {
     this.setState({
-      editorState1: editorState
+      editorState
     })
   }
-  onChange2 = (editorState) => {
+  changeEditorType = (e) => {
     this.setState({
-      editorState2: editorState
+      editorType: e.target.value
+    })
+  }
+  changeLanguage = (language) => {
+    this.setState({
+      language
+    })
+  }
+  changeFullScreen = (isFullScreen) => {
+    this.setState({
+      isFullScreen
     })
   }
   render() {
+    const {
+      editorType,
+      editorState,
+      language,
+      isFullScreen
+    } = this.state;
     return (
       <Layout>
-        <Row gutter={8}>
-          <Col span={10}>
-            <AceEditor lan="markdown" theme="twilight" onChange={this.onChange1} />
-          </Col>
-          <Col span={10} style={{ backgroundColor: '#fff', height: '400px' }}>
-            <Markdown source={this.state.editorState1} />
-          </Col>
-        </Row>
-        <Row gutter={8}>
-          <Col span={10}>
-            <CodeMirrorEditor lan="markdown" onChange={this.onChange2} />
-          </Col>
-          <Col span={10} style={{ backgroundColor: '#fff', height: '400px' }}>
-            <Markdown source={this.state.editorState2} />
-          </Col>
-        </Row>
+        <Fragment>
+          <div className={classNames({ 'full-screen': isFullScreen })}>
+            <Radio.Group value={editorType} onChange={this.changeEditorType}>
+              <Radio.Button value={1}>
+                CodeMirror
+              </Radio.Button>
+              <Radio.Button value={2}>
+                Ace
+              </Radio.Button>
+            </Radio.Group>
+            <Select defaultValue={language} onChange={this.changeLanguage}>
+              <Option value="markdown">Markdown</Option>
+              <Option value="javascript">JavaScript</Option>
+            </Select>
+            <Switch defaultChecked={isFullScreen} onChange={this.changeFullScreen} />
+            {
+              editorType === 1
+                ? (
+                  <Row gutter={8}>
+                    <Col span={10}>
+                      <CodeMirrorEditor
+                        value={editorState}
+                        lan={language}
+                        onChange={this.changeValue}
+                      />
+                    </Col>
+                    <Col span={10} style={{ backgroundColor: '#fff', height: '400px' }}>
+                      <Markdown source={editorState} />
+                    </Col>
+                  </Row>
+                )
+                : ''
+            }
+            {
+              editorType === 2
+                ? (
+                  <Row gutter={8}>
+                    <Col span={10}>
+                      <AceEditor value={editorState} lan={language} theme="twilight" onChange={this.changeValue} />
+                    </Col>
+                    <Col span={10} style={{ backgroundColor: '#fff', height: '400px' }}>
+                      <Markdown source={editorState} />
+                    </Col>
+                  </Row>
+                )
+                : ''
+            }
+          </div>
+          <style jsx>{`
+            .full-screen {
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-color: gray;
+              z-index: 1000;
+            }
+          `}
+          </style>
+        </Fragment>
       </Layout>
     )
   }
