@@ -6,10 +6,15 @@ class MarkdownWrap extends PureComponent {
     const { source = '' } = this.props
     return (
       <Fragment>
-        <Markdown source={source} />
+        <Markdown source={source} className="markdown-wrap" />
+        <div className="markdown-wrap">
+          <h1>asdsad</h1>
+        </div>
         <style jsx>{`
-          h1 {
-            color: red;
+          :global(.markdown-wrap) {
+            :global(h1) {
+              color: red;
+            }
           }
           .code {
             color: #ff4081;
