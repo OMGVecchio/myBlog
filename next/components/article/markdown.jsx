@@ -7,9 +7,6 @@ class MarkdownWrap extends PureComponent {
     return (
       <Fragment>
         <Markdown source={source} className="markdown-wrap" />
-        <div className="markdown-wrap">
-          <h1>asdsad</h1>
-        </div>
         <style jsx>{`
           :global(.markdown-wrap) {
             :global(h1) {

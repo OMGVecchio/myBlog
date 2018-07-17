@@ -6,7 +6,7 @@ import Layout from 'components/layout'
 import TagCard from 'components/card/tag'
 
 const Tag = () => (
-  <Layout>
+  <Layout title="老司机带你熟练翻车的标签页">
     <Fragment>
       <Row gutter={16}>
         <Col span={12}>

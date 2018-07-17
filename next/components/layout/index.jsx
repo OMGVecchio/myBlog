@@ -17,7 +17,7 @@ const Layout = ({
   dispatch,
   children,
   pageTitle = 'Vecchio\'s Blog',
-  title = '老司机带你熟练翻车',
+  title = '',
   asideIsOpen,
   showHeaderShadow
 }) => {

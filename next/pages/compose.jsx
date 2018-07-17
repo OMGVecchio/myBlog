@@ -60,7 +60,7 @@ class Compose extends PureComponent {
       isFullScreen
     } = this.state;
     return (
-      <Layout>
+      <Layout title="老司机带你熟练翻车的编辑页">
         <Fragment>
           <div className={classNames({ 'full-screen': isFullScreen })}>
             <Radio.Group value={editorType} onChange={this.changeEditorType}>

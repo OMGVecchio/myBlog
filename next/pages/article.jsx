@@ -9,7 +9,6 @@ class Article extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-
     }
   }
   render() {
@@ -23,6 +22,10 @@ class Article extends PureComponent {
           <style jsx>{`
             .article-content {
               background-color: #fff;
+              border-radius: 4px;
+              box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+              padding: 35px;
+              margin-top: -165px;
             }
           `}
           </style>
