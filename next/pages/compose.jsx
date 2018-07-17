@@ -11,9 +11,9 @@ import fullScreen from 'utils/full-screen'
 const AceEditor = dynamic(import('components/editor/ace'), {
   ssr: false
 })
-const CodeMirrorEditor = dynamic(import('components/editor/codemirror'), {
-  ssr: false
-})
+// const CodeMirrorEditor = dynamic(import('components/editor/codemirror'), {
+//   ssr: false
+// })
 
 const { Option } = Select
 
@@ -81,11 +81,11 @@ class Compose extends PureComponent {
                 ? (
                   <Row gutter={8}>
                     <Col span={10}>
-                      <CodeMirrorEditor
+                      {/* <CodeMirrorEditor
                         value={editorState}
                         lan={language}
                         onChange={this.changeValue}
-                      />
+                      /> */}
                     </Col>
                     <Col span={10} style={{ backgroundColor: '#fff', height: '400px' }}>
                       <Markdown source={editorState} />
