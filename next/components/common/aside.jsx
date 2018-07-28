@@ -7,6 +7,8 @@ import { Avatar, Icon, List, Row, Col } from 'antd'
 
 import types from 'store/action/common'
 
+import style from 'static/styles/components/common/aside.less'
+
 const Aside = ({
   dispatch,
   asideIsOpen
@@ -36,9 +38,9 @@ const Aside = ({
     return (
       <List.Item>
         <Link href={url}>
-          <Row style={{ width: '100%' }}>
+          <Row className="menu-item" style={{ width: '100%' }}>
             <Col span={3} offset={2}>
-              <Icon type={icon} />
+              <Icon className="menu-item-icon" type={icon} />
             </Col>
             <Col span={19}>
               {label}
@@ -80,7 +82,7 @@ const Aside = ({
       return (
         <Col span={4} push={4} key={id}>
           <Link href={url}>
-            <Icon title={label} type={icon} />
+            <Icon className="menu-link-icon" title={label} type={icon} />
           </Link>
         </Col>
       )
@@ -93,15 +95,16 @@ const Aside = ({
   }
   return (
     <Fragment>
+      <style dangerouslySetInnerHTML={{ __html: style }} />
       <div className={classNames('aside-menu', { close: !asideIsOpen })}>
         <div className="menu-header">
-          <Avatar size="large" src="http://rms.zhubajie.com/resource/redirect?key=mobile%2Fdefault%2F%E5%A4%B4%E5%83%8F17.jpg%2Forigine%2F1990662d-d67a-4f85-92bf-73be1dd6d334&s.w=240&s.h=240" />
+          <Avatar className="avatar-cover" size="large" src="http://rms.zhubajie.com/resource/redirect?key=mobile%2Fdefault%2F%E5%A4%B4%E5%83%8F17.jpg%2Forigine%2F1990662d-d67a-4f85-92bf-73be1dd6d334&s.w=240&s.h=240" />
           <div className="description text-overflow">
             呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的
             一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人
           </div>
           <span className="close-btn">
-            <Icon type="close" onClick={() => close(dispatch)} />
+            <Icon className="aside-close-btn" type="close" onClick={() => close(dispatch)} />
           </span>
         </div>
         <div>

@@ -18,6 +18,7 @@ const Layout = ({
   children,
   pageTitle = 'Vecchio\'s Blog',
   title = '',
+  className,
   asideIsOpen,
   showHeaderShadow
 }) => {
@@ -51,7 +52,9 @@ const Layout = ({
             </div>
             <Row type="flex" justify="center" style={{ minHeight: 'calc(100vh - 300px)' }}>
               <Col span={24} style={{ width: '70%', marginTop: '20px', marginBottom: '20px' }}>
-                {children}
+                <div className={className}>
+                  {children}
+                </div>
               </Col>
             </Row>
             <Footer />

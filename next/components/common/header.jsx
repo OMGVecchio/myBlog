@@ -6,6 +6,8 @@ import { Row, Col, Icon, Input } from 'antd'
 
 import types from 'store/action/common'
 
+import style from 'static/styles/components/common/header.less'
+
 const Header = ({
   dispatch,
   showShadow
@@ -17,13 +19,14 @@ const Header = ({
   }
   return (
     <Fragment>
+      <style dangerouslySetInnerHTML={{ __html: style }} />
       <header className={classNames('main-header', { 'show-shadow': showShadow })}>
         <Row type="flex" justify="space-between" align="middle" style={{ height: '100%' }}>
           <Col>
-            <Icon type="menu-unfold" onClick={openMenu} />
+            <Icon className="header-close-icon" type="menu-unfold" onClick={openMenu} />
           </Col>
           <Col>
-            <Input.Search />
+            <Input.Search className="header-search-wrap" />
           </Col>
         </Row>
       </header>
