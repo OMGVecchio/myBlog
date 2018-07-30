@@ -53,7 +53,7 @@ const Aside = ({
   const renderLink = () => {
     const linkData = [{
       id: 0,
-      label: 'Gayhub',
+      label: 'gayhub',
       url: 'https://github.com/OMGVecchio',
       icon: 'github'
     }, {
@@ -81,9 +81,9 @@ const Aside = ({
       } = item
       return (
         <Col span={4} push={4} key={id}>
-          <Link href={url}>
+          <a className={classNames('menu-link', label)} href={url} target="blank">
             <Icon className="menu-link-icon" title={label} type={icon} />
-          </Link>
+          </a>
         </Col>
       )
     })

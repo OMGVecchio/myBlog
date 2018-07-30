@@ -14,6 +14,7 @@
 
   .menu-items {
     .menu-item {
+      margin: 5px 0;
       cursor: pointer;
     }
     .menu-item-icon {
@@ -21,7 +22,45 @@
     }
   }
 
-  .menu-link-icon {
-    font-size: 18px;
+  .menu-link {
+    @scale: 1.2;
+    color: rgba(0, 0, 0, .65);
+    .menu-link-icon {
+      transition: color, transform .5s;
+      font-size: 18px;
+    }
+    &:hover {
+      .menu-link-icon {
+        transform: scale(1.2);
+      }
+    }
+    &.gayhub {
+      &:hover {
+        .menu-link-icon {
+          color: #25292E;
+        }
+      }
+    }
+    &.weibo {
+      &:hover {
+        .menu-link-icon {
+          color: #E31C34;
+        }
+      }
+    }
+    &.facebook {
+      &:hover {
+        .menu-link-icon {
+          color: #4469B0;
+        }
+      }
+    }
+    &.twitter {
+      &:hover {
+        .menu-link-icon {
+          color: #2AA3EF;
+        }
+      }
+    }
   }
 }
