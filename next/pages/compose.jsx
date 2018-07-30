@@ -2,8 +2,9 @@ import React, { Fragment, PureComponent } from 'react'
 import Markdown from 'react-markdown'
 import dynamic from 'next/dynamic'
 import classNames from 'classnames'
+import 'isomorphic-fetch'
 
-import { Radio, Select, Switch, Row, Col } from 'antd'
+import { Radio, Select, Switch, Button, Row, Col } from 'antd'
 
 import Layout from 'components/layout'
 import fullScreen from 'utils/full-screen'
@@ -28,6 +29,15 @@ class Compose extends PureComponent {
       editorState: '',
       isFullScreen: false
     }
+  }
+  save = () => {
+    fetch('//127.0.0.1:3000/api/compose/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'name=传一些数据'
+    })
   }
   changeValue = (editorState) => {
     this.setState({
@@ -80,6 +90,9 @@ class Compose extends PureComponent {
                 <Option value="javascript">JavaScript</Option>
               </Select>
               <Switch className="switch-fullscreen" defaultChecked={isFullScreen} onChange={this.changeFullScreen} />
+              <Button className="pull-right" onClick={this.save}>
+                保存
+              </Button>
             </div>
             <Row className="compose-write-group" gutter={4}>
               <Col className="compose-write-panel" span={12}>

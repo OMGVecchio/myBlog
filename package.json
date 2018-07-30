@@ -33,6 +33,7 @@
     "koa-router": "^7.2.1",
     "koa-static": "^4.0.1",
     "lodash": "^4.17.4",
+    "lowdb": "^1.0.0",
     "next": "^6.0.3",
     "next-redux-saga": "^3.0.0-beta.1",
     "next-redux-wrapper": "^2.0.0-beta.6",
