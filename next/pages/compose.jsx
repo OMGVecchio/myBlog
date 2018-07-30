@@ -8,12 +8,14 @@ import { Radio, Select, Switch, Row, Col } from 'antd'
 import Layout from 'components/layout'
 import fullScreen from 'utils/full-screen'
 
+import style from 'static/styles/pages/compose.less'
+
 const AceEditor = dynamic(import('components/editor/ace'), {
   ssr: false
 })
-// const CodeMirrorEditor = dynamic(import('components/editor/codemirror'), {
-//   ssr: false
-// })
+const CodeMirrorEditor = dynamic(import('components/editor/codemirror'), {
+  ssr: false
+})
 
 const { Option } = Select
 
@@ -60,67 +62,50 @@ class Compose extends PureComponent {
       isFullScreen
     } = this.state;
     return (
-      <Layout title="老司机带你熟练翻车的编辑页">
+      <Layout className="compose-page" title="老司机带你熟练翻车的编辑页">
+        <style dangerouslySetInnerHTML={{ __html: style }} />
         <Fragment>
-          <div className={classNames({ 'full-screen': isFullScreen })}>
-            <Radio.Group value={editorType} onChange={this.changeEditorType}>
-              <Radio.Button value={1}>
-                CodeMirror
-              </Radio.Button>
-              <Radio.Button value={2}>
-                Ace
-              </Radio.Button>
-            </Radio.Group>
-            <Select defaultValue={language} onChange={this.changeLanguage}>
-              <Option value="markdown">Markdown</Option>
-              <Option value="javascript">JavaScript</Option>
-            </Select>
-            <Switch defaultChecked={isFullScreen} onChange={this.changeFullScreen} />
-            {
-              editorType === 1
-                ? (
-                  <Row gutter={8}>
-                    <Col span={10}>
-                      {/* <CodeMirrorEditor
+          <div className={classNames('compose-panel-wrap', { 'full-screen': isFullScreen })}>
+            <div className="compose-opt-group">
+              <Radio.Group value={editorType} onChange={this.changeEditorType}>
+                <Radio.Button value={1}>
+                  CodeMirror
+                </Radio.Button>
+                <Radio.Button value={2}>
+                  Ace
+                </Radio.Button>
+              </Radio.Group>
+              <Select defaultValue={language} onChange={this.changeLanguage}>
+                <Option value="markdown">Markdown</Option>
+                <Option value="javascript">JavaScript</Option>
+              </Select>
+              <Switch className="switch-fullscreen" defaultChecked={isFullScreen} onChange={this.changeFullScreen} />
+            </div>
+            <Row className="compose-write-group" gutter={4}>
+              <Col className="compose-write-panel" span={12}>
+                {
+                  editorType === 1
+                    ? (
+                      <CodeMirrorEditor
                         value={editorState}
                         lan={language}
                         onChange={this.changeValue}
-                      /> */}
-                    </Col>
-                    <Col span={10} style={{ backgroundColor: '#fff', height: '400px' }}>
-                      <Markdown source={editorState} />
-                    </Col>
-                  </Row>
-                )
-                : ''
-            }
-            {
-              editorType === 2
-                ? (
-                  <Row gutter={8}>
-                    <Col span={10}>
-                      <AceEditor value={editorState} lan={language} theme="twilight" onChange={this.changeValue} />
-                    </Col>
-                    <Col span={10} style={{ backgroundColor: '#fff', height: '400px' }}>
-                      <Markdown source={editorState} />
-                    </Col>
-                  </Row>
-                )
-                : ''
-            }
+                      />
+                    )
+                    : (
+                      <AceEditor
+                        value={editorState}
+                        lan={language}
+                        onChange={this.changeValue}
+                      />
+                    )
+                }
+              </Col>
+              <Col className="compose-result-panel" span={12}>
+                <Markdown source={editorState} />
+              </Col>
+            </Row>
           </div>
-          <style jsx>{`
-            .full-screen {
-              position: fixed;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              background-color: gray;
-              z-index: 1000;
-            }
-          `}
-          </style>
         </Fragment>
       </Layout>
     )

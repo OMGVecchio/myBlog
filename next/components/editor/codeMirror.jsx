@@ -6,20 +6,20 @@ import 'codemirror/mode/xml/xml'
 import 'codemirror/mode/markdown/markdown'
 
 class CodeMirror extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      value: ''
-    }
-  }
   render() {
-    const { value, lan, onChange } = this.props
+    const {
+      value,
+      onChange,
+      className,
+      lan = 'markdown'
+    } = this.props
     return (
       <CodeMirrorEditor
-        defaultValue={value}
-        value={this.state.value}
+        value={value}
         onChange={onChange}
+        className={className}
         options={{ mode: lan }}
+        height="100%"
       />
     )
   }

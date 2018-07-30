@@ -7,33 +7,30 @@ import 'brace/theme/twilight'
 import 'brace/theme/xcode'
 
 class Ace extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      value: ''
-    }
-  }
   render() {
     const {
-      lan,
-      theme,
+      lan = 'markdown',
+      theme = 'twilight',
+      height = '100%',
+      width = '100%',
       onChange,
+      className,
       value
     } = this.props
     return (
       <AceEditor
-        defaultValue={value}
-        value={this.state.value}
+        value={value}
         mode={lan}
         theme={theme}
         onChange={onChange}
+        className={className}
         name="UNIQUE_ID_OF_DIV"
         editorProps={{
           $blockScrolling: true
         }}
         fontSize={14}
-        height="400px"
-        width="100%"
+        height={height}
+        width={width}
       />
     )
   }

@@ -1,0 +1,60 @@
+.compose-page {
+  height: 100%;
+  .compose-panel-wrap {
+    position: relative;
+    height: 100%;
+    &.full-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #cecece;
+      z-index: 1000;
+      .compose-opt-group {
+        margin: 10px 0 0 20px;
+      }
+      .compose-write-group {
+        position: absolute;
+        top: 55px;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+      }
+    }
+  }
+  .compose-opt-group {
+    .switch-fullscreen {
+      margin-left: 5px;
+    }
+  }
+  .compose-write-group {
+    @borderRadius: 6px;
+    position: absolute;
+    top: 45px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: @borderRadius;
+    .compose-write-panel {
+      height: 100%;
+      overflow: hidden;
+      border-top-left-radius: @borderRadius;
+      border-bottom-left-radius: @borderRadius;
+    }
+    .compose-result-panel {
+      height: 100%;
+      background-color: #ffffff;
+      overflow: scroll;
+      border-top-right-radius: @borderRadius;
+      border-bottom-right-radius: @borderRadius;
+    }
+  }
+}
+
+.ReactCodeMirror {
+  height: 100%;
+  .CodeMirror {
+    height: 100%;
+  }
+}
