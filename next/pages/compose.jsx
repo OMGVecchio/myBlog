@@ -2,11 +2,12 @@ import React, { Fragment, PureComponent } from 'react'
 import Markdown from 'react-markdown'
 import dynamic from 'next/dynamic'
 import classNames from 'classnames'
-import 'isomorphic-fetch'
 
-import { Radio, Select, Switch, Button, Row, Col } from 'antd'
+import { Radio, Select, Switch, AutoComplete, Button, Row, Col } from 'antd'
 
 import Layout from 'components/layout'
+import TagGroup from 'components/compose/tag-group'
+import xhr from 'utils/fetch'
 import fullScreen from 'utils/full-screen'
 
 import style from 'static/styles/pages/compose.less'
@@ -21,38 +22,42 @@ const CodeMirrorEditor = dynamic(import('components/editor/codemirror'), {
 const { Option } = Select
 
 class Compose extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      editorType: 1,
-      language: 'markdown',
-      editorState: '',
-      isFullScreen: false
-    }
+  state = {
+    editorType: 1,
+    language: 'markdown',
+    editorState: '',
+    isFullScreen: false,
+    category: '',
+    tags: []
+  }
+  setCategory = (category) => {
+    this.setState({
+      category
+    })
   }
   save = () => {
-    fetch('//127.0.0.1:3000/api/compose/save', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: 'name=传一些数据'
+    const {
+      editorState,
+      category,
+      tags
+    } = this.state
+    xhr.post('//127.0.0.1:3000/api/compose/save', {
+      article: editorState,
+      category,
+      tags
     })
+  }
+  tagManage = (tags) => {
+    this.setState({ tags })
   }
   changeValue = (editorState) => {
-    this.setState({
-      editorState
-    })
+    this.setState({ editorState })
   }
   changeEditorType = (e) => {
-    this.setState({
-      editorType: e.target.value
-    })
+    this.setState({ editorType: e.target.value })
   }
   changeLanguage = (language) => {
-    this.setState({
-      language
-    })
+    this.setState({ language })
   }
   changeFullScreen = (isFullScreen) => {
     if (isFullScreen) {
@@ -93,6 +98,10 @@ class Compose extends PureComponent {
               <Button className="pull-right" onClick={this.save}>
                 保存
               </Button>
+            </div>
+            <div className="compose-extra-group">
+              <AutoComplete placeholder="分类" onChange={this.setCategory} />
+              <TagGroup onChange={this.tagManage} />
             </div>
             <Row className="compose-write-group" gutter={4}>
               <Col className="compose-write-panel" span={12}>

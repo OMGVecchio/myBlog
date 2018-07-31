@@ -1,3 +1,10 @@
++ Node 框架 koa2，
++ React 框架 next
++ Redux 中加入 sega + immutable (没用过，坑比较多)
++ UI 框架 Antd(可考虑 Material-ui)
++ 鉴权机制 JWT(可考虑传统 Session)
++ 文件数据库 Lowdb(看时间可做兼容适配器，好替换)
+
 ### 考虑了下 material-ui，但 ssr 遇到点问题，正式工作前看转不转吧
 
 ### styled-jsx 在一般的编译器上都没代码提示，其实可以完全手写代码巩固基础的🙄。而且 css-in-js 本来就不需要做 css 的缓存吧，缓存的 js 就是呀。否则就是完全不走 css-in-js 咯

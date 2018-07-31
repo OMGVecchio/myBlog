@@ -3,7 +3,7 @@
 // 根据文件名自动遍历
 const mapKey = [
   'traverse',
-  'lowdb'
+  'dbs'
 ]
 const utils = {}
 const load = require
