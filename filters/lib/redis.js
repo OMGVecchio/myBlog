@@ -28,6 +28,6 @@ class RedisFactory {
 }
 
 module.exports = async (ctx, next) => {
-  ctx.redis = RedisFactory(config)
-  next()
+  ctx.redis = await RedisFactory(config)
+  await next()
 }

@@ -1,4 +1,5 @@
-+ Node 框架 koa2，
++ Node 框架 koa2
++ Restful api
 + React 框架 next
 + Redux 中加入 sega + immutable (没用过，坑比较多)
 + UI 框架 Antd(可考虑 Material-ui)

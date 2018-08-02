@@ -6,6 +6,7 @@ const bodyParser = require('koa-bodyparser')
 const statics = require('koa-static')
 // const redis = require('./lib/redis')
 const nextRender = require('./lib/next-render')
+const apiUtil = require('./lib/api')
 const { traverse } = require('../utils')
 
 module.exports = (app) => {
@@ -15,7 +16,8 @@ module.exports = (app) => {
     .use(logger())
     .use(bodyParser())
     .use(statics(resolve(__dirname, '../static')))
-  // .use(redis)
+    .use(apiUtil)
+    // .use(redis)
     .use(nextRender)
     .use(router.routes())
     .use(router.allowedMethods())

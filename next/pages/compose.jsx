@@ -3,7 +3,7 @@ import Markdown from 'react-markdown'
 import dynamic from 'next/dynamic'
 import classNames from 'classnames'
 
-import { Radio, Select, Switch, AutoComplete, Button, Row, Col } from 'antd'
+import { Radio, Select, Switch, AutoComplete, Input, Button, Row, Col } from 'antd'
 
 import Layout from 'components/layout'
 import TagGroup from 'components/compose/tag-group'
@@ -25,24 +25,28 @@ class Compose extends PureComponent {
   state = {
     editorType: 1,
     language: 'markdown',
-    editorState: '',
     isFullScreen: false,
+    title: '',
+    article: '',
     category: '',
     tags: []
   }
+  setTitle = (e) => {
+    this.setState({ title: e.target.value })
+  }
   setCategory = (category) => {
-    this.setState({
-      category
-    })
+    this.setState({ category })
   }
   save = () => {
     const {
-      editorState,
+      title,
+      article,
       category,
       tags
     } = this.state
-    xhr.post('//127.0.0.1:3000/api/compose/save', {
-      article: editorState,
+    xhr.post('//127.0.0.1:3000/api/article', {
+      article,
+      title,
       category,
       tags
     })
@@ -50,8 +54,8 @@ class Compose extends PureComponent {
   tagManage = (tags) => {
     this.setState({ tags })
   }
-  changeValue = (editorState) => {
-    this.setState({ editorState })
+  changeValue = (article) => {
+    this.setState({ article })
   }
   changeEditorType = (e) => {
     this.setState({ editorType: e.target.value })
@@ -72,7 +76,7 @@ class Compose extends PureComponent {
   render() {
     const {
       editorType,
-      editorState,
+      article,
       language,
       isFullScreen
     } = this.state;
@@ -100,6 +104,7 @@ class Compose extends PureComponent {
               </Button>
             </div>
             <div className="compose-extra-group">
+              <Input placeholder="文章名" onChange={this.setTitle} style={{ width: '170px' }} />
               <AutoComplete placeholder="分类" onChange={this.setCategory} />
               <TagGroup onChange={this.tagManage} />
             </div>
@@ -109,14 +114,14 @@ class Compose extends PureComponent {
                   editorType === 1
                     ? (
                       <CodeMirrorEditor
-                        value={editorState}
+                        value={article}
                         lan={language}
                         onChange={this.changeValue}
                       />
                     )
                     : (
                       <AceEditor
-                        value={editorState}
+                        value={article}
                         lan={language}
                         onChange={this.changeValue}
                       />
@@ -124,7 +129,7 @@ class Compose extends PureComponent {
                 }
               </Col>
               <Col className="compose-result-panel" span={12}>
-                <Markdown source={editorState} />
+                <Markdown source={article} />
               </Col>
             </Row>
           </div>

@@ -6,13 +6,11 @@ import Markdown from 'components/article/markdown'
 import Layout from 'components/layout'
 
 class Article extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-    }
+  state = {
+
   }
   render() {
-    const test = '# asasd'
+    const test = '# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n'
     return (
       <Layout>
         <Fragment>
