@@ -6,8 +6,8 @@ import Markdown from 'components/article/markdown'
 import Layout from 'components/layout'
 
 class Article extends PureComponent {
-  state = {
-
+  static async getInitialProps() {
+    console.log('--article--')
   }
   render() {
     const test = '# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n'

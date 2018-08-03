@@ -3,8 +3,7 @@ import types from 'store/action/common'
 
 const defaultState = Immutable.fromJS({
   asideIsOpen: true,
-  showHeaderShadow: false,
-  counter: 0
+  showHeaderShadow: false
 })
 
 export default (initState = defaultState, action) => {
