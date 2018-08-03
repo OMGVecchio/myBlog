@@ -2,20 +2,26 @@ import React, { Fragment, PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 import Markdown from 'components/article/markdown'
-
 import Layout from 'components/layout'
 
+import { fetchDetail } from 'store/action/article'
+
 class Article extends PureComponent {
-  static async getInitialProps() {
-    console.log('--article--')
+  static defaultProps = {
+    articleDetail: {}
+  }
+  static async getInitialProps({ ctx }) {
+    const { query, store } = ctx
+    const { articleId = '' } = query
+    await store.dispatch(fetchDetail(articleId))
   }
   render() {
-    const test = '# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n# asasd\n'
+    const { article } = this.props.articleDetail
     return (
       <Layout>
         <Fragment>
           <div className="article-content">
-            <Markdown source={test} />
+            <Markdown source={article} />
           </div>
           <style jsx>{`
             .article-content {
@@ -33,4 +39,10 @@ class Article extends PureComponent {
   }
 }
 
-export default connect()(Article)
+const mapStateToProps = (state) => {
+  const article = state.get('article')
+  const articleDetail = article.get('articleDetail')
+  return { articleDetail }
+}
+
+export default connect(mapStateToProps)(Article)

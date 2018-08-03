@@ -1,7 +1,7 @@
 + Node 框架 koa2
 + Restful api
 + React 框架 next
-+ Redux 中加入 sega + immutable (没用过，坑比较多)
++ Redux 中加入 sega + immutable (没用过，坑比较多)[redux 还是太重了，在考虑轻量化的 mobx，我也想早点下班]
 + UI 框架 Antd(可考虑 Material-ui)
 + 鉴权机制 JWT(可考虑传统 Session)
 + 文件数据库 Lowdb(看时间可做兼容适配器，好替换)
@@ -16,3 +16,5 @@
 + 不通过 styled-jsx，直接引入一个 css 文件然后 dangerouslySetInnerHTML 添加进去
 + styled-jsx 设置为 <style jsx global> 后不会带上 scoped id，但是该 style 下全部样式均为全局
 + [styled-jsx 设置为 <style jsx>，具体不需要加上 scoped id 的元素加上 :global 标识](https://github.com/zeit/styled-jsx#one-off-global-selectors)
+
+### server 端配合 next 做路由整合, eg. ?articleId=123 => /articleId
