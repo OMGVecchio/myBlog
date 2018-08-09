@@ -27,15 +27,11 @@ class Index extends PureComponent {
       <Link href={`/article?articleId=${id}`}>
         <h3 className="card-title">
           {title}
-          <span className="card-time">
-            {createTime}
-          </span>
+          <span className="card-time">{createTime}</span>
         </h3>
       </Link>
       <Link href={`/article?articleId=${id}`}>
-        <p className="card-content">
-          {desc}
-        </p>
+        <p className="card-content">{desc}</p>
       </Link>
     </div>
   )
@@ -53,7 +49,10 @@ class Index extends PureComponent {
 
 const mapStateToProps = (state) => {
   const article = state.get('article')
-  const articleList = article.get('articleList')
+  let articleList = article.get('articleList')
+  if (articleList.toJS) {
+    articleList = articleList.toJS()
+  }
   return { articleList }
 }
 

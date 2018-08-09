@@ -1,11 +1,13 @@
 import 'isomorphic-fetch'
 
+const prefix = 'http://127.0.0.1:3000'
+
 const xhr = {
   get(url) {
-    return fetch(url)
+    return fetch(`${prefix}${url}`)
   },
   post(url, data) {
-    return fetch(url, {
+    return fetch(`${prefix}${url}`, {
       method: 'POST',
       headers: {
         // 'Content-Type': 'application/x-www-form-urlencoded'

@@ -1,3 +1,5 @@
+# 整体架构
+
 + Node 框架 koa2
 + Restful api
 + React 框架 next
@@ -18,3 +20,20 @@
 + [styled-jsx 设置为 <style jsx>，具体不需要加上 scoped id 的元素加上 :global 标识](https://github.com/zeit/styled-jsx#one-off-global-selectors)
 
 ### server 端配合 next 做路由整合, eg. ?articleId=123 => /articleId
+
+# 项目中的问题
+
+### Immutable
+
+```javascript
+const mapStateToProps = (state) => {
+  const article = state.get('article')
+  let articleList = article.get('articleList')
+  if (articleList.toJS) {
+    articleList = articleList.toJS()
+  }
+  return { articleList }
+}
+```
+
+服务端渲染时，articleList 被转化成 js 对象，浏览器端时没转化，导致服务端渲染和浏览器端渲染结果不同报错？两端解析不同的原因，估计是自己写转换中间件的问题，但直接转 JS 对象虽然解决报错，但是 immutable 不就没结合起来了么 TODO
