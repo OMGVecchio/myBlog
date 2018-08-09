@@ -1,11 +1,11 @@
 import React, { Fragment, PureComponent } from 'react'
-import Markdown from 'react-markdown'
 import dynamic from 'next/dynamic'
 import classNames from 'classnames'
 
 import { Radio, Select, Switch, AutoComplete, Input, Button, Row, Col } from 'antd'
 
 import Layout from 'components/layout'
+import Markdown from 'components/article/markdown'
 import TagGroup from 'components/compose/tag-group'
 import xhr from 'utils/fetch'
 import fullScreen from 'utils/full-screen'
@@ -44,7 +44,7 @@ class Compose extends PureComponent {
       category,
       tags
     } = this.state
-    xhr.post('//127.0.0.1:3000/api/article', {
+    xhr.post('/api/article', {
       article,
       title,
       category,

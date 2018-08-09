@@ -41,7 +41,10 @@ class Article extends PureComponent {
 
 const mapStateToProps = (state) => {
   const article = state.get('article')
-  const articleDetail = article.get('articleDetail')
+  let articleDetail = article.get('articleDetail')
+  if (articleDetail.toJS) {
+    articleDetail = articleDetail.toJS()
+  }
   return { articleDetail }
 }
 
