@@ -1,14 +1,17 @@
 import React, { Fragment, PureComponent } from 'react'
+import { connect } from 'react-redux'
 import dynamic from 'next/dynamic'
 import classNames from 'classnames'
 
-import { Radio, Select, Switch, AutoComplete, Input, Button, Row, Col } from 'antd'
+import { Radio, Switch, AutoComplete, Input, Button, Row, Col } from 'antd'
 
 import Layout from 'components/layout'
 import Markdown from 'components/article/markdown'
 import TagGroup from 'components/compose/tag-group'
 import xhr from 'utils/fetch'
 import fullScreen from 'utils/full-screen'
+
+import { fetchList } from 'store/action/tag'
 
 import style from 'static/styles/pages/compose.less'
 
@@ -19,16 +22,22 @@ const CodeMirrorEditor = dynamic(import('components/editor/codemirror'), {
   ssr: false
 })
 
-const { Option } = Select
-
 class Compose extends PureComponent {
+  static async getInitialProps({ ctx }) {
+    const { store } = ctx
+    const { dispatch } = store
+    dispatch(fetchList())
+  }
+  static defaultProps = {
+    tagList: []
+  }
   state = {
     editorType: 1,
-    language: 'markdown',
     isFullScreen: false,
     title: '',
     article: '',
     category: '',
+    desc: '',
     tags: []
   }
   setTitle = (e) => {
@@ -37,31 +46,33 @@ class Compose extends PureComponent {
   setCategory = (category) => {
     this.setState({ category })
   }
+  setDesc = (e) => {
+    this.setState({ desc: e.target.value })
+  }
+  setTag = (tags) => {
+    this.setState({ tags })
+  }
   save = () => {
     const {
       title,
       article,
       category,
+      desc,
       tags
     } = this.state
     xhr.post('/api/article', {
       article,
       title,
       category,
-      tags
+      tags,
+      desc
     })
-  }
-  tagManage = (tags) => {
-    this.setState({ tags })
   }
   changeValue = (article) => {
     this.setState({ article })
   }
   changeEditorType = (e) => {
     this.setState({ editorType: e.target.value })
-  }
-  changeLanguage = (language) => {
-    this.setState({ language })
   }
   changeFullScreen = (isFullScreen) => {
     if (isFullScreen) {
@@ -77,9 +88,12 @@ class Compose extends PureComponent {
     const {
       editorType,
       article,
-      language,
       isFullScreen
-    } = this.state;
+    } = this.state
+    const tagFilters = this.props.tagList.map(item => ({
+      value: item.id,
+      text: item.title
+    }))
     return (
       <Layout className="compose-page">
         <style dangerouslySetInnerHTML={{ __html: style }} />
@@ -94,10 +108,6 @@ class Compose extends PureComponent {
                   Ace
                 </Radio.Button>
               </Radio.Group>
-              <Select defaultValue={language} onChange={this.changeLanguage}>
-                <Option value="markdown">Markdown</Option>
-                <Option value="javascript">JavaScript</Option>
-              </Select>
               <Switch className="switch-fullscreen" defaultChecked={isFullScreen} onChange={this.changeFullScreen} />
               <Button className="pull-right" onClick={this.save}>
                 保存
@@ -105,25 +115,40 @@ class Compose extends PureComponent {
             </div>
             <div className="compose-extra-group">
               <Input placeholder="文章名" onChange={this.setTitle} style={{ width: '170px' }} />
-              <AutoComplete placeholder="分类" onChange={this.setCategory} />
-              <TagGroup onChange={this.tagManage} />
+              <AutoComplete
+                dataSource={tagFilters}
+                placeholder="分类"
+                onChange={this.setCategory}
+              />
+              <TagGroup onChange={this.setTag} />
+              <Input.TextArea
+                className="article-desc"
+                placeholder="文章简介"
+                onChange={this.setDesc}
+                autosize={{ minRows: 1, maxRows: 2 }}
+              />
             </div>
-            <Row className="compose-write-group" gutter={4}>
+            <Row className="compose-write-group">
               <Col className="compose-write-panel" span={12}>
                 {
                   editorType === 1
                     ? (
                       <CodeMirrorEditor
                         value={article}
-                        lan={language}
+                        opts={{
+                          options: {
+                            mode: 'markdown',
+                            lineNumbers: true
+                          }
+                        }}
                         onChange={this.changeValue}
                       />
                     )
                     : (
                       <AceEditor
                         value={article}
-                        lan={language}
                         onChange={this.changeValue}
+                        lan="markdown"
                       />
                     )
                 }
@@ -133,21 +158,22 @@ class Compose extends PureComponent {
               </Col>
             </Row>
           </div>
-          <style jsx>{`
-            .compose-panel-wrap {
-              position: relative;
-              background-color: #fff;
-              border-radius: 4px;
-              box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-              padding: 35px;
-              margin-top: -165px;
-            }
-          `}
-          </style>
         </Fragment>
       </Layout>
     )
   }
 }
 
-export default Compose
+const mapStateToProps = (state) => {
+  const tag = state.get('tag')
+  if (tag) {
+    let tagList = tag.get('tagList')
+    if (tagList.toJS) {
+      tagList = tagList.toJS()
+    }
+    return { tagList }
+  }
+  return { tagList: [] }
+}
+
+export default connect(mapStateToProps)(Compose)

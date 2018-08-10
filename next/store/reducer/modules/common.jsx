@@ -16,8 +16,6 @@ export default (initState = defaultState, action) => {
       return initState.set('showHeaderShadow', true)
     case types.HIDE_HEADER_SHADOW:
       return initState.set('showHeaderShadow', false)
-    case types.INCREASE:
-      return initState.set('counter', initState.get('counter') + 1)
     default:
       return initState
   }

@@ -1,10 +1,11 @@
 'use strict'
 
 const { dbs } = require('../utils')
-const db = dbs('article.db')
+const articleList = dbs('article-list.json')
+const articleContent = dbs('article-content.json')
 const uuid = require('uuid')
 
-const TABLE = 'article'
+const LIST = 'list'
 
 Router.post('/api/article', async (ctx) => {
   const articleId = uuid.v1()
@@ -12,13 +13,13 @@ Router.post('/api/article', async (ctx) => {
   const timestamp = Date.now()
   const {
     title,
-    desc = '看怎么实现简介吧',
+    desc,
     article,
     category,
     tags
   } = body
   try {
-    await db.defaults({[TABLE]: []}).get(TABLE).push({
+    await articleList.defaults({[LIST]: []}).get(LIST).push({
       id: articleId,
       title,
       desc,
@@ -27,7 +28,7 @@ Router.post('/api/article', async (ctx) => {
       createTime: timestamp,
       lastModify: timestamp
     }).write()
-    await db.set(articleId, article).write()
+    await articleContent.set(articleId, article).write()
   } catch (err) {
     console.error(err)
   }
@@ -36,7 +37,7 @@ Router.post('/api/article', async (ctx) => {
 
 Router.get('/api/article', async (ctx) => {
   try {
-    const articles = await db.get(TABLE).value()
+    const articles = await articleList.get(LIST).value()
     ctx.apiSuccess(articles)
   } catch (err) {
     console.error(err)
@@ -46,8 +47,8 @@ Router.get('/api/article', async (ctx) => {
 Router.get('/api/article/:articleId', async (ctx) => {
   const { articleId = '' } = ctx.params
   try {
-    const articleObj = await db.get(TABLE).find({id: articleId}).value()
-    const article = await db.get(articleId).value()
+    const articleObj = await articleList.get(LIST).find({id: articleId}).value()
+    const article = await articleContent.get(articleId).value()
     articleObj.article = article
     ctx.apiSuccess(articleObj)
   } catch (err) {

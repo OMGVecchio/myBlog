@@ -9,13 +9,14 @@ import 'brace/theme/xcode'
 class Ace extends PureComponent {
   render() {
     const {
+      value,
       lan = 'markdown',
       theme = 'twilight',
       height = '100%',
       width = '100%',
       onChange,
       className,
-      value
+      opts
     } = this.props
     return (
       <AceEditor
@@ -31,6 +32,7 @@ class Ace extends PureComponent {
         fontSize={14}
         height={height}
         width={width}
+        {...opts}
       />
     )
   }
