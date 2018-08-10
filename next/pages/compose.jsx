@@ -81,7 +81,7 @@ class Compose extends PureComponent {
       isFullScreen
     } = this.state;
     return (
-      <Layout className="compose-page" title="老司机带你熟练翻车的编辑页">
+      <Layout className="compose-page">
         <style dangerouslySetInnerHTML={{ __html: style }} />
         <Fragment>
           <div className={classNames('compose-panel-wrap', { 'full-screen': isFullScreen })}>
@@ -133,6 +133,17 @@ class Compose extends PureComponent {
               </Col>
             </Row>
           </div>
+          <style jsx>{`
+            .compose-panel-wrap {
+              position: relative;
+              background-color: #fff;
+              border-radius: 4px;
+              box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+              padding: 35px;
+              margin-top: -165px;
+            }
+          `}
+          </style>
         </Fragment>
       </Layout>
     )

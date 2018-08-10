@@ -32,6 +32,16 @@ const Layout = ({
       dispatch({ type: types.HIDE_HEADER_SHADOW })
     }
   }
+  // 初始化头部阴影状态
+  let showHeaderShadowResult = showHeaderShadow
+  if (typeof window !== 'undefined') {
+    const elWrap = document.querySelector('.global-wrap')
+    if (elWrap.scrollTop > 220) {
+      showHeaderShadowResult = true
+    } else {
+      showHeaderShadowResult = false
+    }
+  }
   return (
     <Fragment>
       <div className="global-wrap" onScroll={scroll}>
@@ -43,7 +53,7 @@ const Layout = ({
         </Head>
         <Menu />
         <div className={classNames('main', { 'menu-has-close': !asideIsOpen })}>
-          <Header showShadow={showHeaderShadow} />
+          <Header showShadow={showHeaderShadowResult} />
           <div className="main-content">
             <div className="content-header">
               <h4 className="title">
