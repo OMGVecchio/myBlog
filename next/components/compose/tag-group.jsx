@@ -1,15 +1,15 @@
 import { Fragment, PureComponent } from 'react'
 
-import { Tag, Input, Tooltip, Icon } from 'antd'
+import { Tag, AutoComplete, Tooltip } from 'antd'
 
 class TagGroup extends PureComponent {
   static defaultProps = {
-    onChange: () => {}
+    onChange: () => {},
+    tagList: []
   }
 
   state = {
     tags: [],
-    inputVisible: false,
     inputValue: ''
   }
 
@@ -19,12 +19,8 @@ class TagGroup extends PureComponent {
     this.props.onChange(tags)
   }
 
-  showInput = () => {
-    this.setState({ inputVisible: true }, () => this.input.focus())
-  }
-
-  handleInputChange = (e) => {
-    this.setState({ inputValue: e.target.value })
+  handleInputChange = (inputValue) => {
+    this.setState({ inputValue })
   }
 
   handleInputConfirm = () => {
@@ -36,18 +32,17 @@ class TagGroup extends PureComponent {
     }
     this.setState({
       tags,
-      inputVisible: false,
       inputValue: ''
     })
     this.props.onChange(tags)
   }
 
-  saveInputRef = (input) => {
-    this.input = input
-  }
-
   render() {
-    const { tags, inputVisible, inputValue } = this.state
+    const { tags, inputValue } = this.state
+    const tagFilters = this.props.tagList.map(item => ({
+      value: item,
+      text: item
+    }))
     return (
       <Fragment>
         <div className="tag-group">
@@ -60,26 +55,17 @@ class TagGroup extends PureComponent {
             )
             return isLongTag ? <Tooltip title={tag} key={tag}>{tagElem}</Tooltip> : tagElem
           })}
-          {inputVisible && (
-            <Input
-              ref={this.saveInputRef}
+          {tags.length < 4 && (
+            <AutoComplete
+              placeholder="标签"
+              dataSource={tagFilters}
               type="text"
               size="small"
               style={{ width: 78 }}
               value={inputValue}
               onChange={this.handleInputChange}
               onBlur={this.handleInputConfirm}
-              onPressEnter={this.handleInputConfirm}
-            />
-          )}
-          {!inputVisible && (
-            <Tag
-              onClick={this.showInput}
-              style={{ background: '#ffffff', borderStyle: 'dashed' }}
-            >
-              <Icon type="plus" />新标签
-            </Tag>
-          )}
+            />)}
         </div>
         <style jsx>{`
           .tag-group {

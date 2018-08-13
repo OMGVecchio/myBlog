@@ -26,16 +26,18 @@ function* fetchDetail({ articleId }) {
   yield put(fillDetail(data))
 }
 
-function* fetchTagList() {
-  const tagList = yield select((state) => {
-    const tag = state.get('tag')
-    if (tag) {
-      return tag.get('tagList').toJS()
+function* fetchTagList({ clearCache = false }) {
+  if (!clearCache) {
+    const tagList = yield select((state) => {
+      const tag = state.get('tag')
+      if (tag) {
+        return tag.get('tagList').toJS()
+      }
+      return []
+    })
+    if (tagList.length !== 0) {
+      return
     }
-    return []
-  })
-  if (tagList.length !== 0) {
-    return
   }
   const res = yield xhr.get('/api/tags')
   const dataResolve = yield res.json()

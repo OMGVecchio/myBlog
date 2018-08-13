@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import dynamic from 'next/dynamic'
 import classNames from 'classnames'
 
-import { Radio, Switch, AutoComplete, Input, Button, Row, Col } from 'antd'
+import { Radio, Switch, Input, Button, Row, Col } from 'antd'
 
 import Layout from 'components/layout'
 import Markdown from 'components/article/markdown'
@@ -36,15 +36,11 @@ class Compose extends PureComponent {
     isFullScreen: false,
     title: '',
     article: '',
-    category: '',
     desc: '',
     tags: []
   }
   setTitle = (e) => {
     this.setState({ title: e.target.value })
-  }
-  setCategory = (category) => {
-    this.setState({ category })
   }
   setDesc = (e) => {
     this.setState({ desc: e.target.value })
@@ -56,17 +52,17 @@ class Compose extends PureComponent {
     const {
       title,
       article,
-      category,
       desc,
       tags
     } = this.state
+    const { dispatch } = this.props
     xhr.post('/api/article', {
       article,
       title,
-      category,
       tags,
       desc
     })
+    dispatch(fetchList(true))
   }
   changeValue = (article) => {
     this.setState({ article })
@@ -90,10 +86,6 @@ class Compose extends PureComponent {
       article,
       isFullScreen
     } = this.state
-    const tagFilters = this.props.tagList.map(item => ({
-      value: item.id,
-      text: item.title
-    }))
     return (
       <Layout className="compose-page">
         <style dangerouslySetInnerHTML={{ __html: style }} />
@@ -114,13 +106,12 @@ class Compose extends PureComponent {
               </Button>
             </div>
             <div className="compose-extra-group">
-              <Input placeholder="文章名" onChange={this.setTitle} style={{ width: '170px' }} />
-              <AutoComplete
-                dataSource={tagFilters}
-                placeholder="分类"
-                onChange={this.setCategory}
+              <Input
+                style={{ width: '170px' }}
+                placeholder="文章名"
+                onChange={this.setTitle}
               />
-              <TagGroup onChange={this.setTag} />
+              <TagGroup tagList={this.props.tagList} onChange={this.setTag} />
               <Input.TextArea
                 className="article-desc"
                 placeholder="文章简介"

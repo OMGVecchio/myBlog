@@ -3,6 +3,7 @@
 const { dbs } = require('../utils')
 const articleList = dbs('article-list.json')
 const articleContent = dbs('article-content.json')
+const tagList = dbs('tags.json')
 const uuid = require('uuid')
 
 const LIST = 'list'
@@ -32,6 +33,11 @@ Router.post('/api/article', async (ctx) => {
   } catch (err) {
     console.error(err)
   }
+  // try {
+  //   const tagsList = await tagDB.get(LIST).value()
+  // } catch (err) {
+  //   console.error(err)
+  // }
   ctx.apiSuccess('文章创建成功')
 })
 

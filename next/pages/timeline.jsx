@@ -5,8 +5,8 @@ import { Row, Col } from 'antd'
 import Layout from 'components/layout'
 import CategoryCard from 'components/card/category'
 
-const Category = () => (
-  <Layout title="老司机带你熟练翻车的分类页">
+const Timeline = () => (
+  <Layout title="文章时间轴">
     <Fragment>
       <Row gutter={16}>
         <Col span={12}>
@@ -20,4 +20,4 @@ const Category = () => (
   </Layout>
 )
 
-export default Category
+export default Timeline

@@ -5,8 +5,9 @@ const actionTypes = {
 
 export default actionTypes
 
-export const fetchList = () => ({
-  type: actionTypes.FETCH_LIST
+export const fetchList = clearCache => ({
+  type: actionTypes.FETCH_LIST,
+  clearCache
 })
 
 export const fillList = tagList => ({

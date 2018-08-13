@@ -21,9 +21,9 @@ const Aside = ({
     url: '/index',
     icon: 'home'
   }, {
-    label: '分类',
-    url: '/category',
-    icon: 'folder-open'
+    label: '时间轴',
+    url: '/timeline',
+    icon: 'filter'
   }, {
     label: '标签',
     url: '/tag',
@@ -32,6 +32,10 @@ const Aside = ({
     label: '撰文',
     url: '/compose',
     icon: 'edit'
+  }, {
+    label: '相册',
+    url: 'album',
+    icon: 'picture'
   }]
   const renderMenu = (item) => {
     const { label, url, icon } = item
