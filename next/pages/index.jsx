@@ -1,13 +1,12 @@
 import { PureComponent, Fragment } from 'react'
-import Layout from 'components/layout'
 import { connect } from 'react-redux'
-import Link from 'next/link'
 
 import { List } from 'antd'
 
 import { fetchList } from 'store/action/article'
 
-import style from 'static/styles/pages/index.less'
+import Layout from 'components/layout'
+import HomeCard from 'components/card/home'
 
 class Index extends PureComponent {
   static defaultProps = {
@@ -21,24 +20,12 @@ class Index extends PureComponent {
     id,
     title,
     desc,
-    createTime
-  }) => (
-    <div className="card-wrap">
-      <Link href={`/article?articleId=${id}`}>
-        <h3 className="card-title">
-          {title}
-          <span className="card-time">{createTime}</span>
-        </h3>
-      </Link>
-      <Link href={`/article?articleId=${id}`}>
-        <p className="card-content">{desc}</p>
-      </Link>
-    </div>
-  )
+    createTime,
+    cover
+  }) => (<HomeCard id={id} title={title} desc={desc} createTime={createTime} cover={cover} />)
   render() {
     return (
       <Fragment>
-        <style dangerouslySetInnerHTML={{ __html: style }} />
         <Layout title="老司机带你熟练翻车的主页">
           <List dataSource={this.props.articleList} renderItem={Index.renderItem} />
         </Layout>

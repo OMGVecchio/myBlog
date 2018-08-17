@@ -101,7 +101,7 @@ class Compose extends PureComponent {
                 </Radio.Button>
               </Radio.Group>
               <Switch className="switch-fullscreen" defaultChecked={isFullScreen} onChange={this.changeFullScreen} />
-              <Button className="pull-right" onClick={this.save}>
+              <Button className="fr" onClick={this.save}>
                 保存
               </Button>
             </div>
