@@ -5,11 +5,11 @@ import { Card } from 'antd'
 
 import { format } from 'utils/moment'
 
-import style from 'static/styles/components/card/tag.less'
+import style from 'static/styles/components/card/timeline.less'
 
 const { Meta } = Card
 
-const TagCard = ({
+const timelineCard = ({
   id,
   title = '',
   createTime,
@@ -20,7 +20,7 @@ const TagCard = ({
     <style dangerouslySetInnerHTML={{ __html: style }} />
     <Link href={`/article?articleId=${id}`}>
       <Card
-        className="tag-card card-wrap"
+        className="timeline-card card-wrap"
         hoverable
         title={title}
         cover={<img className="card-cover" src={cover} alt={title} />}
@@ -34,4 +34,4 @@ const TagCard = ({
   </Fragment>
 )
 
-export default TagCard
+export default timelineCard

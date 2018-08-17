@@ -15,7 +15,7 @@ const HomeCard = ({
   <Fragment>
     <style dangerouslySetInnerHTML={{ __html: style }} />
     <Link href={`/article?articleId=${id}`}>
-      <div className="card-wrap">
+      <div className="home-card card-wrap">
         <h3 className="card-title">
           {title}
           <span className="card-time fr">{format(createTime)}</span>

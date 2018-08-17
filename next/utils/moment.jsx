@@ -24,6 +24,22 @@ export const format = (timestamp) => {
   return `${year}-${month}-${date} 星期${digitalToChinese(day, true)}`
 }
 
-class Moment {}
+class Moment {
+  constructor(timestamp) {
+    this.date = new Date(timestamp)
+  }
+  getYear() {
+    return this.date.getFullYear()
+  }
+  getMonth() {
+    return this.date.getMonth() + 1
+  }
+  getDay() {
+    return this.date.getDay()
+  }
+  getDate() {
+    return this.date.getDate()
+  }
+}
 
 export default Moment

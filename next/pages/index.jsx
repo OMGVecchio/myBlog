@@ -12,7 +12,7 @@ class Index extends PureComponent {
   static defaultProps = {
     articleList: []
   }
-  static async getInitialProps({ ctx }) {
+  static getInitialProps = async ({ ctx }) => {
     const { store } = ctx
     await store.dispatch(fetchList())
   }
