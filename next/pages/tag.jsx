@@ -9,6 +9,7 @@ import Layout from 'components/layout'
 import TagCard from 'components/card/tag'
 
 import Moment from 'utils/moment'
+import { Object } from 'core-js';
 
 class Tag extends PureComponent {
   static defaultProps = {
@@ -19,74 +20,59 @@ class Tag extends PureComponent {
     await store.dispatch(fetchList())
   }
   showCardList = (cardData = []) => {
-    let cardDataCache = null
-    const signTag = { year: '', month: '' }
     const cardList = []
-    const total = cardData.length
-    cardData.forEach((item, index) => {
-      let hasSameSign = true
-      const { createTime } = item
-      const date = new Moment(createTime)
-      const year = date.getYear()
-      const month = date.getMonth()
-      if (signTag.month !== month) {
-        signTag.month = month
-        hasSameSign = false
+    const cardMap = {
+      default: []
+    }
+    cardData.forEach((item) => {
+      const { tags = [] } = item
+      if (tags.length > 0) {
+        tags.forEach((tag) => {
+          if (!cardMap[tag]) {
+            cardMap[tag] = [item]
+          } else {
+            cardMap[tag].push(item)
+          }
+        })
+      } else {
+        cardMap.default.push(item)
       }
-      if (signTag.year !== year) {
-        signTag.year = year
-        hasSameSign = false
-      }
-      if (!hasSameSign) {
-        if (cardDataCache) {
+    })
+    Object.keys(cardMap).forEach((tag) => {
+      cardList.push((
+        <h3 id={tag} key={`${tag}-title`}>
+          {tag}
+        </h3>
+      ))
+      let cardDataCache = null
+      cardMap[tag].forEach((item, index) => {
+        const total = cardMap[tag].length
+        if (!cardDataCache) {
+          if (total === index + 1) {
+            cardList.push((
+              <Row gutter={20} key={`${tag}-${item.id}`}>
+                <Col span={12}>
+                  <TagCard {...item} />
+                </Col>
+              </Row>
+            ))
+          } else {
+            cardDataCache = item
+          }
+        } else {
           cardList.push((
-            <Row gutter={20} key={cardDataCache.id}>
+            <Row gutter={20} key={`${tag}-${cardDataCache.id}`}>
               <Col span={12}>
                 <TagCard {...cardDataCache} />
               </Col>
-            </Row>
-          ))
-        }
-        cardList.push((
-          <h3 id={`${signTag.year}-${signTag.month}`}>
-            {signTag.year}年{signTag.month}月
-          </h3>
-        ))
-        if (total === index + 1) {
-          cardList.push((
-            <Row gutter={20} key={item.id}>
               <Col span={12}>
                 <TagCard {...item} />
               </Col>
             </Row>
           ))
-        } else {
-          cardDataCache = item
+          cardDataCache = null
         }
-      } else if (!cardDataCache) {
-        if (total === index + 1) {
-          cardList.push((
-            <Row gutter={20} key={item.id}>
-              <Col span={12}>
-                <TagCard {...item} />
-              </Col>
-            </Row>
-          ))
-        }
-        cardDataCache = item
-      } else {
-        cardList.push((
-          <Row gutter={20} key={cardDataCache.id}>
-            <Col span={12}>
-              <TagCard {...cardDataCache} />
-            </Col>
-            <Col span={12}>
-              <TagCard {...item} />
-            </Col>
-          </Row>
-        ))
-        cardDataCache = null
-      }
+      })
     })
     return cardList
   }
