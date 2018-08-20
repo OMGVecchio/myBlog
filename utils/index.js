@@ -3,7 +3,8 @@
 // 根据文件名自动遍历
 const mapKey = [
   'traverse',
-  'dbs'
+  'dbs',
+  'db'
 ]
 const utils = {}
 const load = require

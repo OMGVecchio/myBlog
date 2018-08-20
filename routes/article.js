@@ -1,12 +1,11 @@
 'use strict'
 
-const { dbs } = require('../utils')
-const articleList = dbs('article-list.json')
-const articleContent = dbs('article-content.json')
-const tagList = dbs('tags.json')
+const { db } = require('../utils')
+const { alDB, acDB, tagDB } = db
 const uuid = require('uuid')
 
-const LIST = 'list'
+const ALDBKEY = 'list'
+const TAGDBKEY = 'map'
 
 Router.post('/api/article', async (ctx) => {
   const articleId = uuid.v1()
@@ -20,7 +19,7 @@ Router.post('/api/article', async (ctx) => {
     tags
   } = body
   try {
-    await articleList.defaults({[LIST]: []}).get(LIST).push({
+    await alDB.defaults({[ALDBKEY]: []}).get(ALDBKEY).push({
       id: articleId,
       title,
       desc,
@@ -29,21 +28,27 @@ Router.post('/api/article', async (ctx) => {
       createTime: timestamp,
       lastModify: timestamp
     }).write()
-    await articleContent.set(articleId, article).write()
+    await acDB.set(articleId, article).write()
   } catch (err) {
-    console.error(err)
+    console.error('新建文章失败', err)
   }
-  // try {
-  //   const tagsList = await tagDB.get(LIST).value()
-  // } catch (err) {
-  //   console.error(err)
-  // }
+  try {
+    let tagStore = tagDB.get(TAGDBKEY)
+    tags.forEach(tag => {
+      if (!tagStore[tag]) {
+        tagStore = tagStore.set(tag, true)
+      }
+    })
+    await tagStore.write()
+  } catch (err) {
+    console.error('Tag操作失败', err)
+  }
   ctx.apiSuccess('文章创建成功')
 })
 
 Router.get('/api/article', async (ctx) => {
   try {
-    const articles = await articleList.get(LIST).value()
+    const articles = await alDB.get(ALDBKEY).orderBy('lastModify', 'desc').value()
     ctx.apiSuccess(articles)
   } catch (err) {
     console.error(err)
@@ -53,8 +58,8 @@ Router.get('/api/article', async (ctx) => {
 Router.get('/api/article/:articleId', async (ctx) => {
   const { articleId = '' } = ctx.params
   try {
-    const articleObj = await articleList.get(LIST).find({id: articleId}).value()
-    const article = await articleContent.get(articleId).value()
+    const articleObj = await alDB.get(ALDBKEY).find({id: articleId}).value()
+    const article = await acDB.get(articleId).value()
     articleObj.article = article
     ctx.apiSuccess(articleObj)
   } catch (err) {

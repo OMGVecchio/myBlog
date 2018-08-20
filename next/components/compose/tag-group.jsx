@@ -61,7 +61,7 @@ class TagGroup extends PureComponent {
               dataSource={tagFilters}
               type="text"
               size="small"
-              style={{ width: 78 }}
+              style={{ width: 100 }}
               value={inputValue}
               onChange={this.handleInputChange}
               onBlur={this.handleInputConfirm}

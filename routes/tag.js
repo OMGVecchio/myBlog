@@ -1,11 +1,11 @@
 'use strict'
 
-const { dbs } = require('../utils')
-const tagDB = dbs('tags.json')
+const { db } = require('../utils')
+const { tagDB } = db
 
 Router.get('/api/tags', async (ctx) => {
   try {
-    const tags = await tagDB.value()
+    const tags = await tagDB.get('map').value()
     ctx.apiSuccess(Object.keys(tags))
   } catch (err) {
     console.error(err)

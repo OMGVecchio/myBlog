@@ -1,3 +1,13 @@
 {
-  "vecchio": "hahah"
+  "map": {
+    "vecchio": true,
+    "测试": true,
+    "哈哈哈": true,
+    "asdasd": true,
+    "test": true,
+    "asdasdadasd": true,
+    "测试标签": true,
+    "测试标签2": true,
+    "测试标签3": true
+  }
 }
