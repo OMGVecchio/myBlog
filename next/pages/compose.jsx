@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import dynamic from 'next/dynamic'
 import classNames from 'classnames'
 
-import { Radio, Switch, Input, Button, Row, Col } from 'antd'
+import { Radio, Upload, Switch, Input, Button, Row, Col } from 'antd'
 
 import Layout from 'components/layout'
 import Markdown from 'components/article/markdown'
@@ -48,6 +48,10 @@ class Compose extends PureComponent {
   setTag = (tags) => {
     this.setState({ tags })
   }
+  // 存储编辑器的 ref
+  refHOC = {
+    ref: null
+  }
   save = () => {
     const {
       title,
@@ -80,6 +84,37 @@ class Compose extends PureComponent {
       isFullScreen
     })
   }
+  insertImage = (res) => {
+    const { file = {} } = res
+    const { response = {} } = file
+    const { data = '' } = response
+    const imageUrl = `/images/${data}`
+    if (data) {
+      const { ref } = this.refHOC
+      window.qa = ref
+      let insertValue
+      let focusLine
+      let cursor
+      let cursorRow
+      let cursorColumn
+      if (this.state.editorType === 1) {
+        insertValue = ref.replaceSelection
+        focusLine = ref.setCursor
+        cursor = ref.getCursor()
+        cursorRow = cursor.line + 1
+        cursorColumn = cursor.ch
+      } else {
+        insertValue = ref.insert
+        focusLine = ref.gotoLine
+        cursor = ref.getCursorPosition()
+        cursorRow = cursor.row
+        cursorColumn = cursor.column
+      }
+      const insertDoc = `${cursorColumn !== 0 ? '\n' : ''}![](${imageUrl})\n`
+      insertValue.call(ref, insertDoc)
+      focusLine.call(ref, cursorRow + 1, 0)
+    }
+  }
   render() {
     const {
       editorType,
@@ -100,6 +135,16 @@ class Compose extends PureComponent {
                   Ace
                 </Radio.Button>
               </Radio.Group>
+              <Upload
+                name="file"
+                showUploadList={false}
+                action="/api/images/upload"
+                onChange={this.insertImage}
+              >
+                <Button>
+                  插入图片
+                </Button>
+              </Upload>
               <Switch className="switch-fullscreen" defaultChecked={isFullScreen} onChange={this.changeFullScreen} />
               <Button className="fr" onClick={this.save}>
                 保存
@@ -125,6 +170,7 @@ class Compose extends PureComponent {
                   editorType === 1
                     ? (
                       <CodeMirrorEditor
+                        refHOC={this.refHOC}
                         value={article}
                         opts={{
                           options: {
@@ -137,6 +183,7 @@ class Compose extends PureComponent {
                     )
                     : (
                       <AceEditor
+                        refHOC={this.refHOC}
                         value={article}
                         onChange={this.changeValue}
                         lan="markdown"

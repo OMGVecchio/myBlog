@@ -19,6 +19,7 @@
 + styled-jsx 设置为 <style jsx global> 后不会带上 scoped id，但是该 style 下全部样式均为全局
 + [styled-jsx 设置为 <style jsx>，具体不需要加上 scoped id 的元素加上 :global 标识](https://github.com/zeit/styled-jsx#one-off-global-selectors)
 + 在不同文件用的 dbs 生成数据库文件，数据没同步，不知道是不是缓存策略的问题，先集中管理 db 看看(貌似是这个问题)
++ 图片上传，采用 koa-formidable，后面可以直接存储七牛云
 
 ### server 端配合 next 做路由整合, eg. ?articleId=123 => /articleId
 

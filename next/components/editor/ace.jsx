@@ -16,10 +16,16 @@ class Ace extends PureComponent {
       width = '100%',
       onChange,
       className,
-      opts
+      opts,
+      refHOC
     } = this.props
     return (
       <AceEditor
+        ref={(c) => {
+          if (c) {
+            refHOC.ref = c.editor
+          }
+        }}
         value={value}
         mode={lan}
         theme={theme}
