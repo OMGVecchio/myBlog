@@ -1,10 +1,14 @@
 import React, { Fragment, PureComponent } from 'react'
 import { connect } from 'react-redux'
 
+import { Anchor } from 'antd'
+
 import Markdown from 'components/article/markdown'
 import Layout from 'components/layout'
 
 import { fetchDetail } from 'store/action/article'
+
+const { Link } = Anchor
 
 class Article extends PureComponent {
   static defaultProps = {
@@ -21,6 +25,11 @@ class Article extends PureComponent {
       <Layout>
         <Fragment>
           <div className="article-content">
+            <Anchor>
+              <Link href="#test1" title="adsd" />
+              <Link href="#test2" title="adsd" />
+              <Link href="#test3" title="adsd" />
+            </Anchor>
             <Markdown source={article} />
           </div>
           <style jsx>{`

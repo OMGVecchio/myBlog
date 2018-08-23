@@ -35,6 +35,7 @@ class Compose extends PureComponent {
     editorType: 1,
     isFullScreen: false,
     title: '',
+    cover: '',
     article: '',
     desc: '',
     tags: []
@@ -48,6 +49,15 @@ class Compose extends PureComponent {
   setTag = (tags) => {
     this.setState({ tags })
   }
+  setCover = (res) => {
+    const { file = {} } = res
+    const { response = {} } = file
+    const { data = '' } = response
+    const imageUrl = `/images/cover/${data}`
+    this.setState({
+      cover: imageUrl
+    })
+  }
   // 存储编辑器的 ref
   refHOC = {
     ref: null
@@ -55,14 +65,16 @@ class Compose extends PureComponent {
   save = () => {
     const {
       title,
+      cover,
       article,
       desc,
       tags
     } = this.state
     const { dispatch } = this.props
     xhr.post('/api/article', {
-      article,
       title,
+      cover,
+      article,
       tags,
       desc
     })
@@ -88,7 +100,7 @@ class Compose extends PureComponent {
     const { file = {} } = res
     const { response = {} } = file
     const { data = '' } = response
-    const imageUrl = `/images/${data}`
+    const imageUrl = `/images/illustrati/${data}`
     if (data) {
       const { ref } = this.refHOC
       window.qa = ref
@@ -138,11 +150,21 @@ class Compose extends PureComponent {
               <Upload
                 name="file"
                 showUploadList={false}
-                action="/api/images/upload"
+                action="/api/upload/illustrati"
                 onChange={this.insertImage}
               >
                 <Button>
                   插入图片
+                </Button>
+              </Upload>
+              <Upload
+                name="cover"
+                showUploadList={false}
+                action="/api/upload/cover"
+                onChange={this.setCover}
+              >
+                <Button>
+                  插入封面
                 </Button>
               </Upload>
               <Switch className="switch-fullscreen" defaultChecked={isFullScreen} onChange={this.changeFullScreen} />

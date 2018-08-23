@@ -13,6 +13,7 @@ Router.post('/api/article', async (ctx) => {
   const timestamp = Date.now()
   const {
     title,
+    cover,
     desc,
     article,
     category,
@@ -22,6 +23,7 @@ Router.post('/api/article', async (ctx) => {
     await alDB.defaults({[ALDBKEY]: []}).get(ALDBKEY).push({
       id: articleId,
       title,
+      cover,
       desc,
       category,
       tags,
