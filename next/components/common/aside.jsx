@@ -16,6 +16,7 @@ const Aside = ({
   const close = () => {
     dispatch({ type: types.CLOSE_ASIDE })
   }
+  const briefTip = 'UI丑到爆我是知道的，功能简陋我也是知道的，交互贼差我又没关注有啥办法，优化中'
   const menuData = [{
     label: '主页',
     url: '/index',
@@ -104,8 +105,7 @@ const Aside = ({
         <div className="menu-header">
           <Avatar className="avatar-cover" size="large" src="http://rms.zhubajie.com/resource/redirect?key=mobile%2Fdefault%2F%E5%A4%B4%E5%83%8F17.jpg%2Forigine%2F1990662d-d67a-4f85-92bf-73be1dd6d334&s.w=240&s.h=240" />
           <div className="description text-overflow">
-            呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的
-            一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人呵呵哒的一个男人
+            {briefTip}
           </div>
           <span className="close-btn">
             <Icon className="aside-close-btn" type="close" onClick={() => close(dispatch)} />

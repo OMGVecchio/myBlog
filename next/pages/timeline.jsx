@@ -3,13 +3,14 @@ import { connect } from 'react-redux'
 
 import { fetchList } from 'store/action/article'
 
-import { Row, Col } from 'antd'
+import { Anchor, Row, Col } from 'antd'
 
 import Layout from 'components/layout'
 import TimelineCard from 'components/card/timeline'
 
 import Moment from 'utils/moment'
 
+const { Link } = Anchor
 class Timeline extends PureComponent {
   static defaultProps = {
     articleList: []
@@ -18,12 +19,13 @@ class Timeline extends PureComponent {
     const { store } = ctx
     await store.dispatch(fetchList())
   }
-  showCardList = (cardData = []) => {
+  setCardList = (cardData = []) => {
     let cardDataCache = null
     const signTag = { year: '', month: '' }
     const cardList = []
     const total = cardData.length
     cardData.forEach((item, index) => {
+      // 因为按照日期去取的，所以才这样子去分也行吧
       let hasSameSign = true
       const { createTime } = item
       const date = new Moment(createTime)
@@ -38,6 +40,11 @@ class Timeline extends PureComponent {
         hasSameSign = false
       }
       if (!hasSameSign) {
+        // 获取 anchor 数据
+        const anchorTag = `${signTag.year}-${signTag.month}`
+        if (!this.anchorMap[anchorTag]) {
+          this.anchorMap[anchorTag] = true
+        }
         if (cardDataCache) {
           cardList.push((
             <Row gutter={20} key={cardDataCache.id}>
@@ -48,7 +55,7 @@ class Timeline extends PureComponent {
           ))
         }
         cardList.push((
-          <h3 id={`${signTag.year}-${signTag.month}`}>
+          <h3 id={`${signTag.year}-${signTag.month}`} key={`${signTag.year}-${signTag.month}`}>
             {signTag.year}年{signTag.month}月
           </h3>
         ))
@@ -90,11 +97,30 @@ class Timeline extends PureComponent {
     })
     return cardList
   }
+  setAnchor = (anchorMap) => {
+    const anchorList = Object.keys(anchorMap).map(anchorTag => <Link key={anchorTag} href={`#${anchorTag}`} title={anchorTag} />)
+    return (
+      <Anchor
+        getContainer={() => document.querySelector('.global-wrap')}
+        className="anchor-style-fix"
+        style={{
+          position: 'fixed',
+          top: '300px',
+          right: '10px'
+        }}
+      >
+        {anchorList}
+      </Anchor>
+    )
+  }
+  anchorMap = {}
   render() {
+    const getCardList = this.setCardList(this.props.articleList)
     return (
       <Layout title="文章时间轴">
         <Fragment>
-          {this.showCardList(this.props.articleList)}
+          {this.setAnchor(this.anchorMap)}
+          {getCardList}
         </Fragment>
       </Layout>
     )
