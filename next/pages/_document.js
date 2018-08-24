@@ -6,7 +6,7 @@ export default class MyDocument extends Document {
     return (
       <html lang="en-US">
         <Head>
-          <title>页面加载中...</title>
+          <title>页面加载中~~~</title>
         </Head>
         <body>
           <Main />

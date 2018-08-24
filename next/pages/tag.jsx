@@ -8,9 +8,6 @@ import { Row, Col } from 'antd'
 import Layout from 'components/layout'
 import TagCard from 'components/card/tag'
 
-import Moment from 'utils/moment'
-import { Object } from 'core-js';
-
 class Tag extends PureComponent {
   static defaultProps = {
     articleList: []
@@ -40,9 +37,9 @@ class Tag extends PureComponent {
     })
     Object.keys(cardMap).forEach((tag) => {
       cardList.push((
-        <h3 id={tag} key={`${tag}-title`}>
+        <h2 className="card-list-delimiter" id={tag} key={`${tag}-title`}>
           {tag}
-        </h3>
+        </h2>
       ))
       let cardDataCache = null
       cardMap[tag].forEach((item, index) => {

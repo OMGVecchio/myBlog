@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import classNames from 'classnames'
@@ -11,57 +11,76 @@ import Header from 'components/common/header'
 import Footer from 'components/common/footer'
 import Menu from 'components/common/aside'
 
-import styles from 'static/styles/global.less'
+import isServer from 'utils'
 
-const Layout = ({
-  dispatch,
-  children,
-  pageTitle = 'Vecchio\'s Blog',
-  title = '',
-  className,
-  asideIsOpen,
-  showHeaderShadow
-}) => {
-  const scroll = (e) => {
-    const { scrollTop = 0 } = e.target || {}
+import globalStyle from 'static/styles/global.less'
+import layoutStyle from 'static/styles/components/layout/index.less'
+
+/**
+ * 本来是 stateless 组件的
+ * 但是我想在 body 上绑 scroll 事件，需要在销毁时解除绑定的事件
+ * 所以用到了组件的生命周期，就改成 PureComponent
+ */
+class Layout extends PureComponent {
+  componentDidMount() {
+    window.addEventListener('scroll', this.scrollHandler)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.scrollHandler)
+  }
+  scrollHandler = (e) => {
+    // TODO 滑动需要做优化
+    const { isLongScroll, dispatch } = this.props
+    const { scrollTop } = e.target.scrollingElement
     if (scrollTop > 220) {
-      if (!showHeaderShadow) {
+      if (!isLongScroll) {
         dispatch({ type: types.SHOW_HEADER_SHADOW })
       }
-    } else if (showHeaderShadow) {
+    } else if (isLongScroll) {
       dispatch({ type: types.HIDE_HEADER_SHADOW })
     }
   }
-  // 初始化头部阴影状态
-  let showHeaderShadowResult = showHeaderShadow
-  if (typeof window !== 'undefined') {
-    const elWrap = document.querySelector('.global-wrap')
-    if (elWrap.scrollTop > 220) {
-      showHeaderShadowResult = true
-    } else {
-      showHeaderShadowResult = false
+  render() {
+    const {
+      children,
+      pageTitle = 'Vecchio\'s Blog',
+      title = '',
+      className,
+      asideIsOpen,
+      isLongScroll
+    } = this.props
+    // 初始化头部阴影状态
+    let isLongScrollResult = isLongScroll
+    if (!isServer) {
+      const { scrollTop } = document.documentElement
+      if (scrollTop > 220) {
+        isLongScrollResult = true
+      } else {
+        isLongScrollResult = false
+      }
     }
-  }
-  return (
-    <Fragment>
-      <div className="global-wrap" onScroll={scroll}>
+    // scroll 现在应该绑在 body 上
+    return (
+      <div className="global-wrap">
         <Head>
           <title>{pageTitle}</title>
           <meta charSet="utf-8" />
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-          <style dangerouslySetInnerHTML={{ __html: styles }} />
+          <style dangerouslySetInnerHTML={{ __html: globalStyle }} />
+          <style dangerouslySetInnerHTML={{ __html: layoutStyle }} />
         </Head>
         <Menu />
-        <div className={classNames('main', { 'menu-has-close': !asideIsOpen })}>
-          <Header showShadow={showHeaderShadowResult} />
+        <div className={classNames('main-wrap', { 'menu-has-close': !asideIsOpen })}>
+          <Header title={title} isLongScroll={isLongScrollResult} />
           <div className="main-content">
             <div className="content-header">
               <h4 className="title">
                 { title }
               </h4>
             </div>
-            <Row type="flex" justify="center" style={{ minHeight: 'calc(100vh - 300px)' }}>
-              <Col span={24} style={{ width: '70%', marginTop: '20px', marginBottom: '20px' }}>
+            { /** calc(100vh - 300px) 写在 less 里会编译成 -200vh */ }
+            <Row type="flex" justify="center" className="content-body-wrap" style={{ minHeight: 'calc(100vh - 300px)' }}>
+              <Col span={24} className="content-body-main">
                 <div className={className}>
                   {children}
                 </div>
@@ -71,53 +90,17 @@ const Layout = ({
           </div>
         </div>
       </div>
-      <style jsx>{`
-        @menuWitdh: 240px;
-        @menuDuration: 0.5s;
-        .global-wrap {
-          overflow-y: scroll;
-          height: 100vh;
-        }
-        .main {
-          padding-left: @menuWitdh;
-          transition: padding-left @menuDuration;
-          &.menu-has-close {
-            padding-left: 0;
-          }
-        }
-        .content-header {
-          padding: 80px 100px 20px 100px;
-          height: 230px;
-          background-color: #4054B2;
-          .title {
-            color: #fff;
-            font-size: 40px;
-            font-weight: bold;
-          }
-        }
-        .main-content {
-          height: 100%;
-          background-color: #d7dbf0;
-        }
-      `}
-      </style>
-      <style jsx global>{`
-        * {
-          box-sizing: border-box;
-        }
-      `}
-      </style>
-    </Fragment>
-  )
+    )
+  }
 }
 
 const mapStateToProps = (state) => {
   const common = state.get('common')
   const asideIsOpen = common.get('asideIsOpen')
-  const showHeaderShadow = common.get('showHeaderShadow')
+  const isLongScroll = common.get('isLongScroll')
   return {
     asideIsOpen,
-    showHeaderShadow
+    isLongScroll
   }
 }
 

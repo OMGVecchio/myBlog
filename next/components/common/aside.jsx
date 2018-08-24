@@ -107,9 +107,7 @@ const Aside = ({
           <div className="description text-overflow">
             {briefTip}
           </div>
-          <span className="close-btn">
-            <Icon className="aside-close-btn" type="close" onClick={() => close(dispatch)} />
-          </span>
+          <Icon className="aside-close-btn" type="menu-fold" onClick={() => close(dispatch)} />
         </div>
         <div>
           <div className="menu-items">
@@ -120,62 +118,6 @@ const Aside = ({
           </div>
         </div>
       </div>
-      <style jsx>{`
-        @headerHeight: 230px;
-        @width: 240px;
-        @duration: 0.5s;
-        .aside-menu {
-          position: fixed;
-          z-index: 100;
-          box-sizing: border-box;
-          width: @width;
-          top: 0;
-          left: 0;
-          bottom: 0;
-          background-color: #fff;
-          transition: left @duration;
-          box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0,0.12);
-          .close-btn {
-            padding: 2px 5px;
-            position: absolute;
-            font-weight: bold;
-            color: #fff;
-            top: 20px;
-            right: 20px;
-            cursor: pointer;
-          }
-          &.close {
-            left: -@width;
-            .close-btn {
-              display: none;
-            }
-          }
-          .menu-header {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: @headerHeight;
-            padding: 40px;
-            background-color: rgba(63, 81, 181, 0.8);
-            .description {
-              display: -webkit-box;
-              -webkit-box-orient: vertical;
-              -webkit-line-clamp: 3;
-              color: #fff;
-            }
-          }
-          .menu-items {
-            .menu-item {
-              width: 100%;
-              padding: 5px 10px;
-            }
-          }
-          .link-items {
-            margin-top: 20px;
-          }
-        }
-      `}
-      </style>
     </Fragment>
   )
 }

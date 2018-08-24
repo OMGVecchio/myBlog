@@ -20,6 +20,10 @@
 + [styled-jsx 设置为 <style jsx>，具体不需要加上 scoped id 的元素加上 :global 标识](https://github.com/zeit/styled-jsx#one-off-global-selectors)
 + 在不同文件用的 dbs 生成数据库文件，数据没同步，不知道是不是缓存策略的问题，先集中管理 db 看看(貌似是这个问题)
 + 图片上传，采用 koa-formidable，后面可以直接存储七牛云。现在编辑文章时上传的图片直接存 static 资源文件夹去了，感觉还是存缓存或者在前端保存，当整个文章提交时才最终保存比较好。否则会有太多无效文件，不便于管理，这种问题即使存七牛云也是会存在的
++ `component` 里 dangerouslySetInnerHTML 注入需要修改，否则列表循环引用同一个组件时，瞬间爆炸
++ 项目存在 JavaScript heap out of memory，带排查
++ `calc(100vh - 300px)` 写在 less 里会编译成 -200vh，写在 style 中正常
++ 用 `react` 提供的 `onScroll`，通过回调参数 `event` 获取的 `event.target` 有 `scrollTop`属性。直接原生绑定的 'scroll' 没有直接该属性，但是可以通过 `event.scrollingElement.scrollTop` 获取到。`window.scrollY`(IE不支持)) 或者 `document.documentElement.scrollTop`(声明了DTD,未声明就`d.body.s`) 等属性获取(还有个 `pageYOffset`，兼容IE)
 
 ### server 端配合 next 做路由整合, eg. ?articleId=123 => /articleId
 

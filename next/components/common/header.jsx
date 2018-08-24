@@ -10,7 +10,8 @@ import style from 'static/styles/components/common/header.less'
 
 const Header = ({
   dispatch,
-  showShadow
+  title = '',
+  isLongScroll
 }) => {
   const openMenu = () => {
     dispatch({
@@ -20,31 +21,19 @@ const Header = ({
   return (
     <Fragment>
       <style dangerouslySetInnerHTML={{ __html: style }} />
-      <header className={classNames('main-header', { 'show-shadow': showShadow })}>
+      <header className={classNames('main-header', { 'show-shadow': isLongScroll })}>
         <Row type="flex" justify="space-between" align="middle" style={{ height: '100%' }}>
           <Col>
             <Icon className="header-close-icon" type="menu-unfold" onClick={openMenu} />
+          </Col>
+          <Col>
+            { isLongScroll && <h4 className="header-title">{title}</h4> }
           </Col>
           <Col>
             <Input.Search className="header-search-wrap" />
           </Col>
         </Row>
       </header>
-      <style jsx>{`
-        .main-header {
-          position: fixed;
-          left: 0;
-          z-index: 99;
-          height: 65px;
-          width: 100%;
-          background-color: #4054B2;
-          color: #fff;
-          &.show-shadow {
-            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-          }
-        }
-      `}
-      </style>
     </Fragment>
   )
 }

@@ -3,7 +3,7 @@ import types from 'store/action/common'
 
 const defaultState = Immutable.fromJS({
   asideIsOpen: true,
-  showHeaderShadow: false
+  isLongScroll: false
 })
 
 export default (initState = defaultState, action) => {
@@ -13,9 +13,9 @@ export default (initState = defaultState, action) => {
     case types.CLOSE_ASIDE:
       return initState.set('asideIsOpen', false)
     case types.SHOW_HEADER_SHADOW:
-      return initState.set('showHeaderShadow', true)
+      return initState.set('isLongScroll', true)
     case types.HIDE_HEADER_SHADOW:
-      return initState.set('showHeaderShadow', false)
+      return initState.set('isLongScroll', false)
     default:
       return initState
   }

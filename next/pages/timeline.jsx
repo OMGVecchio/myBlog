@@ -55,9 +55,9 @@ class Timeline extends PureComponent {
           ))
         }
         cardList.push((
-          <h3 id={`${signTag.year}-${signTag.month}`} key={`${signTag.year}-${signTag.month}`}>
+          <h2 className="card-list-delimiter" id={`${signTag.year}-${signTag.month}`} key={`${signTag.year}-${signTag.month}`}>
             {signTag.year}年{signTag.month}月
-          </h3>
+          </h2>
         ))
         if (total === index + 1) {
           cardList.push((
@@ -100,15 +100,7 @@ class Timeline extends PureComponent {
   setAnchor = (anchorMap) => {
     const anchorList = Object.keys(anchorMap).map(anchorTag => <Link key={anchorTag} href={`#${anchorTag}`} title={anchorTag} />)
     return (
-      <Anchor
-        getContainer={() => document.querySelector('.global-wrap')}
-        className="anchor-style-fix"
-        style={{
-          position: 'fixed',
-          top: '300px',
-          right: '10px'
-        }}
-      >
+      <Anchor className="anchor-style-fix">
         {anchorList}
       </Anchor>
     )
