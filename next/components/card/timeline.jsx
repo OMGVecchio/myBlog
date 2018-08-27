@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+import Head from 'next/head'
 import Link from 'next/link'
 
 import { Card } from 'antd'
@@ -11,13 +12,15 @@ const { Meta } = Card
 
 const timelineCard = ({
   id,
-  title = '',
+  title = '暂无标题',
   createTime,
   cover = '//files.vladstudio.com/joy/cats/wall/vladstudio_cats_800x600_signed.jpg',
-  desc = ''
+  desc = '暂无描述'
 }) => (
   <Fragment>
-    <style dangerouslySetInnerHTML={{ __html: style }} />
+    <Head>
+      <style dangerouslySetInnerHTML={{ __html: style }} key="style-timeline" />
+    </Head>
     <Link href={`/article?articleId=${id}`}>
       <Card
         className="timeline-card card-wrap"

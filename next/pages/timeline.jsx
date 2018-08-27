@@ -1,6 +1,8 @@
 import { PureComponent, Fragment } from 'react'
 import { connect } from 'react-redux'
 
+import Head from 'next/head'
+
 import { fetchList } from 'store/action/article'
 
 import { Anchor, Row, Col } from 'antd'
@@ -9,6 +11,8 @@ import Layout from 'components/layout'
 import TimelineCard from 'components/card/timeline'
 
 import Moment from 'utils/moment'
+
+import style from 'static/styles/pages/timeline.less'
 
 const { Link } = Anchor
 class Timeline extends PureComponent {
@@ -41,10 +45,14 @@ class Timeline extends PureComponent {
       }
       if (!hasSameSign) {
         // 获取 anchor 数据
-        const anchorTag = `${signTag.year}-${signTag.month}`
-        if (!this.anchorMap[anchorTag]) {
-          this.anchorMap[anchorTag] = true
+        // const anchorTag = `${signTag.year}-${signTag.month}`
+        if (!this.anchorMap[signTag.year]) {
+          this.anchorMap[signTag.year] = [signTag.month]
+        } else if (this.anchorMap[signTag.year].indexOf(signTag.month) === -1) {
+          this.anchorMap[signTag.year].push(signTag.month)
         }
+        console.log('------------')
+        console.log(JSON.stringify(this.anchorMap))
         if (cardDataCache) {
           cardList.push((
             <Row gutter={20} key={cardDataCache.id}>
@@ -98,7 +106,20 @@ class Timeline extends PureComponent {
     return cardList
   }
   setAnchor = (anchorMap) => {
-    const anchorList = Object.keys(anchorMap).map(anchorTag => <Link key={anchorTag} href={`#${anchorTag}`} title={anchorTag} />)
+    const anchorList = Object.keys(anchorMap).map((anchorYear) => {
+      const anchorMonthes = anchorMap[anchorYear]
+      const anchorSubList = anchorMonthes.map((month) => {
+        const hrefTag = `${anchorYear}-${month}`
+        return (
+          <Link key={hrefTag} href={`#${hrefTag}`} title={hrefTag} />
+        )
+      })
+      return (
+        <Link key={anchorYear} href={`#${anchorYear}`} title={anchorYear}>
+          { anchorSubList }
+        </Link>
+      )
+    })
     return (
       <Anchor className="anchor-style-fix">
         {anchorList}
@@ -111,6 +132,9 @@ class Timeline extends PureComponent {
     return (
       <Layout title="文章时间轴">
         <Fragment>
+          <Head>
+            <style dangerouslySetInnerHTML={{ __html: style }} />
+          </Head>
           {this.setAnchor(this.anchorMap)}
           {getCardList}
         </Fragment>
