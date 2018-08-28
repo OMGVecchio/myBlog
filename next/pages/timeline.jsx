@@ -20,8 +20,10 @@ class Timeline extends PureComponent {
     articleList: []
   }
   static getInitialProps = async ({ ctx }) => {
-    const { store } = ctx
+    const { query, store } = ctx
+    const { kw } = query
     await store.dispatch(fetchList())
+    return { kw }
   }
   setCardList = (cardData = []) => {
     let cardDataCache = null
@@ -51,8 +53,6 @@ class Timeline extends PureComponent {
         } else if (this.anchorMap[signTag.year].indexOf(signTag.month) === -1) {
           this.anchorMap[signTag.year].push(signTag.month)
         }
-        console.log('------------')
-        console.log(JSON.stringify(this.anchorMap))
         if (cardDataCache) {
           cardList.push((
             <Row gutter={20} key={cardDataCache.id}>
@@ -128,7 +128,18 @@ class Timeline extends PureComponent {
   }
   anchorMap = {}
   render() {
-    const getCardList = this.setCardList(this.props.articleList)
+    const { kw } = this.props
+    let { articleList = [] } = this.props
+    if (kw) {
+      articleList = articleList.filter((articel) => {
+        const { title } = articel
+        if (title.indexOf(kw) !== -1) {
+          return true
+        }
+        return false
+      })
+    }
+    const getCardList = this.setCardList(articleList)
     return (
       <Layout title="文章时间轴">
         <Fragment>

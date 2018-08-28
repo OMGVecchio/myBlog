@@ -13,8 +13,10 @@ class Index extends PureComponent {
     articleList: []
   }
   static getInitialProps = async ({ ctx }) => {
-    const { store } = ctx
+    const { query, store } = ctx
+    const { kw } = query
     await store.dispatch(fetchList())
+    return { kw }
   }
   static renderItem = ({
     id,
@@ -24,10 +26,21 @@ class Index extends PureComponent {
     cover
   }) => (<HomeCard id={id} title={title} desc={desc} createTime={createTime} cover={cover} />)
   render() {
+    const { kw } = this.props
+    let { articleList = [] } = this.props
+    if (kw) {
+      articleList = articleList.filter((articel) => {
+        const { title } = articel
+        if (title.indexOf(kw) !== -1) {
+          return true
+        }
+        return false
+      })
+    }
     return (
       <Fragment>
         <Layout title="老司机带你熟练翻车的主页">
-          <List dataSource={this.props.articleList} renderItem={Index.renderItem} />
+          <List dataSource={articleList} renderItem={Index.renderItem} />
         </Layout>
       </Fragment>
     )

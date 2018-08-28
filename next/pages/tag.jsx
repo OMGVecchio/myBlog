@@ -13,8 +13,10 @@ class Tag extends PureComponent {
     articleList: []
   }
   static getInitialProps = async ({ ctx }) => {
-    const { store } = ctx
+    const { query, store } = ctx
+    const { kw } = query
     await store.dispatch(fetchList())
+    return { kw }
   }
   showCardList = (cardData = []) => {
     const cardList = []
@@ -74,10 +76,21 @@ class Tag extends PureComponent {
     return cardList
   }
   render() {
+    const { kw } = this.props
+    let { articleList = [] } = this.props
+    if (kw) {
+      articleList = articleList.filter((articel) => {
+        const { title } = articel
+        if (title.indexOf(kw) !== -1) {
+          return true
+        }
+        return false
+      })
+    }
     return (
       <Layout title="老司机带你熟练翻车的标签页">
         <Fragment>
-          {this.showCardList(this.props.articleList)}
+          {this.showCardList(articleList)}
         </Fragment>
       </Layout>
     )
