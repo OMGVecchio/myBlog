@@ -8,16 +8,18 @@ import { format } from 'utils/moment'
 
 import style from 'static/styles/components/card/tag.less'
 
+import CardLayout from './layout'
+
 const { Meta } = Card
 
 const TagCard = ({
   id,
-  title = '暂无标题',
+  title,
   createTime,
-  cover = '//files.vladstudio.com/joy/cats/wall/vladstudio_cats_800x600_signed.jpg',
-  desc = '暂无描述'
+  cover,
+  desc
 }) => (
-  <Fragment>
+  <Fragment key={`tagcard-${id}`}>
     <Head>
       <style dangerouslySetInnerHTML={{ __html: style }} key="style-tag" />
     </Head>
@@ -37,4 +39,4 @@ const TagCard = ({
   </Fragment>
 )
 
-export default TagCard
+export default CardLayout(TagCard)

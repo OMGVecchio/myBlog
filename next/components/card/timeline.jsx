@@ -8,16 +8,18 @@ import { format } from 'utils/moment'
 
 import style from 'static/styles/components/card/timeline.less'
 
+import CardLayout from './layout'
+
 const { Meta } = Card
 
 const timelineCard = ({
   id,
-  title = '暂无标题',
+  title,
   createTime,
-  cover = '//files.vladstudio.com/joy/cats/wall/vladstudio_cats_800x600_signed.jpg',
-  desc = '暂无描述'
+  cover,
+  desc
 }) => (
-  <Fragment>
+  <Fragment key={`timelinecard-${id}`}>
     <Head>
       <style dangerouslySetInnerHTML={{ __html: style }} key="style-timeline" />
     </Head>
@@ -37,4 +39,4 @@ const timelineCard = ({
   </Fragment>
 )
 
-export default timelineCard
+export default CardLayout(timelineCard)

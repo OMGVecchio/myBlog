@@ -6,14 +6,16 @@ import { format } from 'utils/moment'
 
 import style from 'static/styles/components/card/home.less'
 
+import CardLayout from './layout'
+
 const HomeCard = ({
   id,
-  title = '暂无标题',
+  title,
   createTime,
-  cover = '//files.vladstudio.com/joy/cats/wall/vladstudio_cats_800x600_signed.jpg',
-  desc = '暂无描述'
+  cover,
+  desc
 }) => (
-  <Fragment>
+  <Fragment key={`homecard-${id}`}>
     <Head>
       <style dangerouslySetInnerHTML={{ __html: style }} key="style-home" />
     </Head>
@@ -30,4 +32,4 @@ const HomeCard = ({
   </Fragment>
 )
 
-export default HomeCard
+export default CardLayout(HomeCard)
