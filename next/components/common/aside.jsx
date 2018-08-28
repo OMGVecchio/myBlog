@@ -34,8 +34,12 @@ const Aside = ({
     url: '/compose',
     icon: 'edit'
   }, {
+    label: '试炼场',
+    url: '/trials',
+    icon: 'tool'
+  }, {
     label: '相册',
-    url: 'album',
+    url: '/album',
     icon: 'picture'
   }]
   const renderMenu = (item) => {
