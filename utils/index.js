@@ -5,7 +5,8 @@ const mapKey = [
   'traverse',
   'dbs',
   'db',
-  'crypto'
+  'crypto',
+  'out'
 ]
 const utils = {}
 const load = require

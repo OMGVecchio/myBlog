@@ -10,8 +10,8 @@ module.exports = {
   redisPrefix: 'blog-',
   redisTTL: 60 * 60 * 24,
 
-  auth: [{
-    username: 'vecchio',
-    password: '314159'
-  }]
+  user: {
+    'vecchio': '314159'
+  },
+  jwtSecret: 'vecchio'
 }
