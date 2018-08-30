@@ -1,10 +1,8 @@
 import { Fragment } from 'react'
-// import { Fragment, PureComponent } from 'react'
 import Head from 'next/head'
 import Router from 'next/router'
 
 import { Button, message } from 'antd'
-// import { Form, Icon, Input, Button, message } from 'antd'
 
 import xhr from 'utils/fetch'
 import { setToken } from 'utils/token'
@@ -12,65 +10,6 @@ import { setToken } from 'utils/token'
 import BInput from 'components/base/input'
 
 import style from 'static/styles/pages/login.less'
-
-// const FormItem = Form.Item
-
-// class LoginForm extends PureComponent {
-//   loginSubmit = (e) => {
-//     e.preventDefault()
-//     this.props.form.validateFields((err, values) => {
-//       xhr.post('/api/login', { ...values }).then((res) => {
-//         res.json().then((data) => {
-//           if (data.code === 201) {
-//             setToken(data.data)
-//           } else {
-//             message.error(data.data)
-//           }
-//         })
-//       })
-//     })
-//   }
-//   render() {
-//     const { getFieldDecorator } = this.props.form
-//     const UserInput = (
-//       <Input
-//         prefix={
-//           <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-//           }
-//         placeholder="Username"
-//       />
-//     )
-//     const pwInput = (
-//       <Input
-//         prefix={
-//           <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
-//         }
-//         type="password"
-//         placeholder="Password"
-//       />
-//     )
-//     return (
-//       <Form onSubmit={this.loginSubmit}>
-//         <FormItem>
-//           {getFieldDecorator('username')(UserInput)}
-//         </FormItem>
-//         <FormItem>
-//           {getFieldDecorator('password')(pwInput)}
-//         </FormItem>
-//         <Button
-//           type="primary"
-//           htmlType="submit"
-//           size="large"
-//           className="submit-btn"
-//         >
-//           登录
-//         </Button>
-//       </Form>
-//     )
-//   }
-// }
-
-// const WrappedLoginForm = Form.create()(LoginForm)
 
 const LoginModal = () => {
   const getUsername = (username) => {
@@ -89,6 +28,7 @@ const LoginModal = () => {
       res.json().then((data) => {
         if (data.code === 201) {
           setToken(data.data)
+          message.success('管理员登录成功')
           Router.push('/')
         } else {
           message.error(data.data)
@@ -105,30 +45,39 @@ const LoginModal = () => {
         <style dangerouslySetInnerHTML={{ __html: style }} />
       </Head>
       <div className="login-page">
-        <div className="login-wrap">
-          <BInput
-            type="text"
-            className="input-body"
-            placeholder="用户名"
-            onChange={getUsername}
-            block
-          />
-          <BInput
-            type="password"
-            className="input-body"
-            placeholder="密码"
-            onChange={getPassword}
-            block
-          />
-          <Button
-            onClick={loginSubmit}
-            type="primary"
-            size="large"
-            className="submit-btn"
-          >
-            登录
-          </Button>
-          {/* <WrappedLoginForm /> */}
+        <div className="layout-wrap">
+          <img className="welcome-img xm-img" src="/static/imgs/xm/xm-1.png" alt="小埋-welcome" />
+          <img className="welcome-img kn-img" src="/static/imgs/kn/kn-1.png" alt="康娜-welcome" />
+          <div className="login-wrap">
+            <BInput
+              type="text"
+              className="input-body"
+              placeholder="用户名"
+              onChange={getUsername}
+              block
+            />
+            <BInput
+              type="password"
+              className="input-body"
+              placeholder="密码"
+              onChange={getPassword}
+              block
+            />
+            <BInput
+              type="text"
+              className="input-body"
+              placeholder="后面加个验证码试试"
+              block
+            />
+            <Button
+              onClick={loginSubmit}
+              type="primary"
+              size="large"
+              className="submit-btn"
+            >
+              登录
+            </Button>
+          </div>
         </div>
       </div>
     </Fragment>

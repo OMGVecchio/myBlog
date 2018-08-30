@@ -5,18 +5,38 @@
   min-width: 510px;
   min-height: 450px;
   background-color: #f5f7fe;
-  .login-wrap {
+  .layout-wrap {
     position: absolute;
     width: 510px;
     height: 450px;
-    padding: 50px 80px;
     top: 50%;
     left: 50%;
     margin-top: -225px;
     margin-left: -255px;
-    background-color: #ffffff;
     border-radius: 5px;
     box-shadow: 0 6px 20px 0 rgba(190,190,207,0.50);
+  }
+  .welcome-img {
+    position: absolute;
+    z-index: 97;
+    &.xm-img {
+      top: -120px;
+      left: -80px;
+      width: 160px;
+    }
+    &.kn-img {
+      top: -160px;
+      right: -85px;
+      width: 140px;
+    }
+  }
+  .login-wrap {
+    position: relative;
+    z-index: 98;
+    width: 100%;
+    height: 100%;
+    padding: 50px 80px;
+    background-color: #ffffff;
   }
   .input-body {
     margin-bottom: 40px;
