@@ -10,7 +10,7 @@ const xhr = {
       method: 'GET'
       // error
       // headers: {
-      //   'vecchio-token': getToken()
+      //   'access-token': getToken()
       // }
     })
   },
@@ -20,7 +20,7 @@ const xhr = {
       headers: {
         // 'Content-Type': 'application/x-www-form-urlencoded'
         'Content-Type': 'application/json;charset=UTF-8',
-        'vecchio-token': getToken()
+        'access-token': getToken()
       },
       body: JSON.stringify(data)
     })

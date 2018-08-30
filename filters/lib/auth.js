@@ -8,7 +8,7 @@ const { error } = out
 module.exports = async (ctx, next) => {
   const { headers } = ctx
   const { user, jwtSecret } = config
-  const token = headers['vecchio-token']
+  const token = headers['access-token']
   if (token) {
     try {
       const decode = jwt.verify(token, jwtSecret)
