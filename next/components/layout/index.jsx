@@ -13,7 +13,6 @@ import Menu from 'components/common/aside'
 
 import isServer from 'utils'
 
-import globalStyle from 'static/styles/global.less'
 import layoutStyle from 'static/styles/components/layout/index.less'
 
 /**
@@ -64,9 +63,6 @@ class Layout extends PureComponent {
       <div className="global-wrap">
         <Head>
           <title>{pageTitle}</title>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-          <style dangerouslySetInnerHTML={{ __html: globalStyle }} />
           <style dangerouslySetInnerHTML={{ __html: layoutStyle }} />
         </Head>
         <Menu />
@@ -78,7 +74,10 @@ class Layout extends PureComponent {
                 { title }
               </h4>
             </div>
-            { /** calc(100vh - 300px) 写在 less 里会编译成 -200vh */ }
+            { /**
+               * calc(100vh - 300px) 写在 less 里会编译成 -200vh
+               * 需要写成 calc(~"100vh - 300px")
+               * */ }
             <Row type="flex" justify="center" className="content-body-wrap" style={{ minHeight: 'calc(100vh - 300px)' }}>
               <Col span={24} className="content-body-main">
                 <div className={className}>

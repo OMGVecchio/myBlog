@@ -1,13 +1,13 @@
 'use strict'
 
 module.exports = {
-  info(...i) {
-    console.info(...i)
+  info(d, ...i) {
+    console.info(`--- ${d} ---`, ...i)
   },
-  warn(...w) {
-    console.error(...w)
+  warn(d, ...w) {
+    console.warn(`--- ${d} ---`, ...w)
   },
-  error(...e) {
-    console.error(...e)
+  error(d, ...e) {
+    console.error(`--- ${d} ---`, ...e)
   }
 }

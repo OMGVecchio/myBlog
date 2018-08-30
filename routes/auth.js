@@ -3,8 +3,8 @@
 const jwt = require('jsonwebtoken')
 const config = require('../config')
 
-Router.get('/api/login', async (ctx) => {
-  const { username, password } = ctx.query
+Router.post('/api/login', async (ctx) => {
+  const { username, password } = ctx.request.body
   const { user } = config
   if (user[username] && user[username] === password) {
     const token = await new Promise((resolve, reject) => {

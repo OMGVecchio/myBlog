@@ -9,7 +9,7 @@ export const getToken = () => {
   if (!isServer) {
     return localStorage.getItem('token')
   }
-  return null
+  return ''
 }
 
 export default getToken

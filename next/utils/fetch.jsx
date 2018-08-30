@@ -7,10 +7,11 @@ const prefix = 'http://127.0.0.1:3000'
 const xhr = {
   get(url) {
     return fetch(`${prefix}${url}`, {
-      method: 'GET',
-      headers: {
-        'vecchio-token': getToken()
-      }
+      method: 'GET'
+      // error
+      // headers: {
+      //   'vecchio-token': getToken()
+      // }
     })
   },
   post(url, data) {

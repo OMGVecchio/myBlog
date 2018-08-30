@@ -30,27 +30,27 @@ class RedisFactory {
     this.redisInstance = redisInstance
     this.hasInited = true
     redisInstance.on('error', (err) => {
-      error('--- redis 连接失败 ---', err)
+      error('redis 连接失败', err)
     })
     redisInstance.on('connect', (err) => {
       if (err) {
-        error('--- redis 连接失败 ---', err)
+        error('redis 连接失败', err)
       } else {
-        info('--- redis 连接成功 ---')
+        info('redis 连接成功')
       }
     })
     redisInstance.on('close', (err) => {
       if (err) {
-        error('--- redis 关闭失败 ---', err)
+        error('redis 关闭失败', err)
       } else {
-        info('--- redis 关闭成功 ---')
+        info('redis 关闭成功')
       }
     })
     redisInstance.on('reconnecting', (err) => {
       if (err) {
-        error('--- redis 重连失败 ---', err)
+        error('redis 重连失败', err)
       } else {
-        info('--- redis 重连成功 ---')
+        info('redis 重连成功')
       }
     })
     return redisInstance
