@@ -1,10 +1,16 @@
-import React, { Fragment, PureComponent } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
+import Head from 'next/head'
 
-import Markdown from 'components/article/markdown'
+import { Button } from 'antd'
+
 import Layout from 'components/layout'
+import Markdown from 'components/article/markdown'
+import CommentBox from 'components/article/comment'
 
 import { fetchDetail } from 'store/action/article'
+
+import style from 'static/styles/pages/article.less'
 
 class Article extends PureComponent {
   static defaultProps = {
@@ -15,25 +21,36 @@ class Article extends PureComponent {
     const { articleId = '' } = query
     await store.dispatch(fetchDetail(articleId))
   }
+  commentChange = (comment) => {
+    this.comment = comment
+  }
+  review = () => {
+    alert(this.comment)
+  }
   render() {
-    const { article } = this.props.articleDetail
+    const { article, title } = this.props.articleDetail
     return (
-      <Layout>
-        <Fragment>
-          <div className="article-content">
-            <Markdown source={article} />
+      <Layout className="article-page" showTitle={false} title={title}>
+        <Head>
+          <style dangerouslySetInnerHTML={{ __html: style }} />
+        </Head>
+        <div className="article-content">
+          <Markdown source={article} />
+        </div>
+        <div className="article-comment">
+          <div className="comment-box">
+            <CommentBox onChange={this.commentChange} />
+            <div className="comment-footer clearfix">
+              <Button
+                type="primary"
+                onClick={this.review}
+                className="fr"
+              >
+                回复
+              </Button>
+            </div>
           </div>
-          <style jsx>{`
-            .article-content {
-              background-color: #fff;
-              border-radius: 4px;
-              box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-              padding: 35px;
-              margin-top: -165px;
-            }
-          `}
-          </style>
-        </Fragment>
+        </div>
       </Layout>
     )
   }

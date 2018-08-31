@@ -1,0 +1,26 @@
+.component-emoji {
+  .emoji-wrap {
+    font-size: 18px;
+    max-height: 145px;
+    overflow-y: scroll;
+    box-shadow: 0 0 1px #f0f0f0;
+    margin: 10px 0;
+  }
+  .emoji-item {
+    padding: 7px 0;
+    width: 38px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    outline: none;
+    color: #ffffff;
+    &:hover {
+      transition: transform .2s;
+      transform: scale(1.2);
+    }
+    &::selection {
+      background-color: transparent;
+    }
+  }
+}

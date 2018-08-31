@@ -46,7 +46,8 @@ class Layout extends PureComponent {
       title = '',
       className,
       asideIsOpen,
-      isLongScroll
+      isLongScroll,
+      showTitle = true
     } = this.props
     // 初始化头部阴影状态
     let isLongScrollResult = isLongScroll
@@ -71,7 +72,7 @@ class Layout extends PureComponent {
           <div className="main-content">
             <div className="content-header">
               <h4 className="title">
-                { title }
+                { showTitle && title }
               </h4>
             </div>
             { /**

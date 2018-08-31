@@ -15,12 +15,8 @@ import { fetchList } from 'store/action/tag'
 
 import style from 'static/styles/pages/compose.less'
 
-const AceEditor = dynamic(import('components/editor/ace'), {
-  ssr: false
-})
-const CodeMirrorEditor = dynamic(import('components/editor/codemirror'), {
-  ssr: false
-})
+const AceEditor = dynamic(import('components/editor/ace'), { ssr: false })
+const CodeMirrorEditor = dynamic(import('components/editor/codemirror'), { ssr: false })
 
 class Compose extends PureComponent {
   static async getInitialProps({ ctx }) {

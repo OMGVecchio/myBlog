@@ -25,6 +25,9 @@
 + `calc(100vh - 300px)` 写在 less 里会编译成 -200vh，写在 style 中正常
 + 用 `react` 提供的 `onScroll`，通过回调参数 `event` 获取的 `event.target` 有 `scrollTop`属性。直接原生绑定的 'scroll' 没有直接该属性，但是可以通过 `event.scrollingElement.scrollTop` 获取到。`window.scrollY`(IE不支持)) 或者 `document.documentElement.scrollTop`(声明了DTD,未声明就`d.body.s`) 等属性获取(还有个 `pageYOffset`，兼容IE)
 + Router 的路由拦截有问题，详情见 /pages/_app.js 里的 Router 操作
++ `Uncaught TypeError: Cannot read property 'getIn' of undefined` `Mention SSR` 报的错？
++ `Emoji 下的 source 文件` 在 nodejs 中 require，`.js` 会报错，`.json` 可行。可能是解析式的错误格式导致的
++ `Antd TextArea` 组件能通过 ref 获取到原生的 dom 元素么？
 
 ### server 端配合 next 做路由整合, eg. ?articleId=123 => /articleId
 
