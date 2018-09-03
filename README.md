@@ -28,6 +28,7 @@
 + `Uncaught TypeError: Cannot read property 'getIn' of undefined` `Mention SSR` 报的错？
 + `Emoji 下的 source 文件` 在 nodejs 中 require，`.js` 会报错，`.json` 可行。可能是解析式的错误格式导致的
 + `Antd TextArea` 组件能通过 ref 获取到原生的 dom 元素么？
++ 想提出一个 service 层做一些通用业务逻辑的封装
 
 ### server 端配合 next 做路由整合, eg. ?articleId=123 => /articleId
 

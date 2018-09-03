@@ -3,7 +3,8 @@ import types from 'store/action/article'
 
 const defaultState = Immutable.fromJS({
   articleList: [],
-  articleDetail: {}
+  articleDetail: {},
+  commentMap: {}
 })
 
 export default (initState = defaultState, action) => {
@@ -11,7 +12,9 @@ export default (initState = defaultState, action) => {
     case types.FILL_LIST:
       return initState.set('articleList', action.articleList)
     case types.FILL_DETAIL:
-      return initState.set('articleDetail', action.articleDetail)
+      return initState.updateIn(['articleDetail', action.articleId], () => action.articleDetail)
+    case types.FILL_COMMENT:
+      return initState.updateIn(['commentMap', action.articleId], () => action.commentList)
     default:
       return initState
   }
