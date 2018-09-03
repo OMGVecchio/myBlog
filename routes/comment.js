@@ -58,5 +58,5 @@ Router.get('/api/comment/:articleId', async (ctx) => {
     return ctx.apiError('缺少评论的文章ID')
   }
   const commentList = await commentDB.get(articleId).value()
-  ctx.apiSuccess(commentList)
+  ctx.apiSuccess(commentList || [])
 })

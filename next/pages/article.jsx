@@ -2,11 +2,12 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 
-import { Button, message } from 'antd'
+import { Modal, Button, message } from 'antd'
 
 import Layout from 'components/layout'
 import Markdown from 'components/article/markdown'
 import CommentBox from 'components/article/comment'
+import CommentList from 'components/article/comment-list'
 
 import { fetchDetail, fetchComment } from 'store/action/article'
 
@@ -17,7 +18,7 @@ import style from 'static/styles/pages/article.less'
 class Article extends PureComponent {
   static defaultProps = {
     articleDetail: {},
-    articleComment: []
+    articleComment: {}
   }
   static async getInitialProps({ ctx }) {
     const { query, store } = ctx
@@ -26,27 +27,37 @@ class Article extends PureComponent {
     await store.dispatch(fetchComment(articleId))
     return { articleId }
   }
+  state = {
+    modalVisible: false
+  }
   commentChange = (comment) => {
     this.comment = comment
   }
-  review = () => {
-    xhr.post(`/api/comment/:${this.props.articleId}`, {
+  review = async () => {
+    const res = await xhr.post(`/api/comment/${this.props.articleId}`, {
       reviewId: this.reviewId,
       comment: this.comment
-    }).then((res) => {
-      if (res.success === true) {
-        const { dispatch, articleId } = this.props
-        dispatch(fetchComment(articleId))
-      } else {
-        message.error(res.data)
-      }
     })
+    const data = await res.json()
+    if (data.success === true) {
+      const { dispatch, articleId } = this.props
+      dispatch(fetchComment(articleId))
+    } else {
+      message.error(data.data)
+    }
+  }
+  openModal = (reviewId) => {
+    this.reviewId = reviewId
+    this.setState({ modalVisible: true })
+  }
+  closeModal = () => {
+    this.reviewId = ''
+    this.setState({ modalVisible: false })
   }
   render() {
     const { articleId, articleDetail, articleComment } = this.props
-    const { article, title } = articleDetail[articleId]
-    const commentList = articleComment[articleId]
-    console.log(commentList)
+    const { article, title } = articleDetail[articleId] || {}
+    const commentList = articleComment[articleId] || []
     return (
       <Layout className="article-page" showTitle={false} title={title}>
         <Head>
@@ -68,6 +79,19 @@ class Article extends PureComponent {
               </Button>
             </div>
           </div>
+          <CommentList className="comment-list" commentList={commentList} onReview={this.openModal} />
+          <Modal
+            centered
+            destroyOnClose="true"
+            visible={this.state.modalVisible}
+            okType="primary"
+            okText="回复"
+            onOk={this.review}
+            cancelText="取消"
+            onCancel={this.closeModal}
+          >
+            <CommentBox onChange={this.commentChange} />
+          </Modal>
         </div>
       </Layout>
     )

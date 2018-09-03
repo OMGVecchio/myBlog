@@ -14,7 +14,7 @@ const { TextArea } = Input
 class CommentBox extends PureComponent {
   static defaultProps = {
     rows: 6,
-    placeholder: '我有话说',
+    placeholder: '我有话说(暂时不支持 markdown 吧)',
     onChange: () => {}
   }
   state = {
