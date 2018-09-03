@@ -10,6 +10,7 @@ import types from 'store/action/common'
 import Header from 'components/common/header'
 import Footer from 'components/common/footer'
 import Menu from 'components/common/aside'
+import BackTop from 'components/base/backtop'
 
 import isServer from 'utils'
 
@@ -69,6 +70,7 @@ class Layout extends PureComponent {
         <Menu />
         <div className={classNames('main-wrap', { 'menu-has-close': !asideIsOpen })}>
           <Header title={title} isLongScroll={isLongScrollResult} />
+          <BackTop show={isLongScrollResult} />
           <div className="main-content">
             <div className="content-header">
               <h4 className="title">
