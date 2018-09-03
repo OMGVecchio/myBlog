@@ -23,6 +23,6 @@
     "browser": true
   },
   "globals": {
-
+    "__NEXT_DATA__": true
   }
 }

@@ -1,6 +1,97 @@
-// @import './antd.min.css';
+@import './antd.min.css';
 @import 'normalize.css';
+@import 'codemirror/lib/codemirror.css';
+
+// * {
+//   transition: all .5s;
+// }
+
+* {
+  box-sizing: border-box;
+}
 
 html {
-    min-width: 970px;
+  min-width: 970px;
+}
+p {
+  margin-bottom: 0;
+}
+
+#__next {
+  min-height: 100%;
+}
+
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.clearfix {
+  &::after {
+    display: block;
+    content: '';
+    clear: both;
+  }
+}
+
+// .box-line-loop(@line) when (@line > 0) {
+//   .box-line-loop(@line - 1);
+//   .box-line-@{line} {
+//     display: -webkit-box;
+//     -webkit-box-orient: vertical;
+//     -webkit-line-clamp: @line;
+//   }
+// }
+// .box-line-loop(4);
+
+.anchor-style-fix {
+  position: fixed;
+  top: 300px;
+  right: 10px;
+  background-color: #d7dbf0;
+  padding-left: 0;
+  .ant-anchor {
+    padding-left: 0;
+  }
+  .ant-anchor-ink {
+    display: none;
+  }
+  .ant-anchor-link-active {
+    border-left: 5px solid #2196f3;
+    background-color: #00bcd4;
+    position: relative;
+    .ant-anchor-link-title {
+      color: #ffffff;
+    }
+  }
+}
+.card-list-delimiter {
+  position: relative;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  &:first-of-type {
+    margin-top: 10px;
+  }
+  &:hover {
+    &:after {
+      content: '#';
+      position: absolute;
+      left: -15px;
+    }
+  }
 }

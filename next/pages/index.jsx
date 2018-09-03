@@ -1,43 +1,59 @@
-import { Fragment } from 'react'
-import Layout from 'components/layout'
+import { PureComponent, Fragment } from 'react'
 import { connect } from 'react-redux'
 
-import types from 'store/action/common'
+import { List } from 'antd'
 
-import Button from '@material-ui/core/Button'
+import { fetchList } from 'store/action/article'
 
-const Index = ({
-  dispatch,
-  counter
-}) => {
-  const increase = () => {
-    dispatch({
-      type: types.INCREASE
-    })
+import Layout from 'components/layout'
+import HomeCard from 'components/card/home'
+
+class Index extends PureComponent {
+  static defaultProps = {
+    articleList: []
   }
-  return (
-    <Fragment>
-      <Layout>
-        <div role="button" tabIndex={0} onClick={increase}>
-          increase
-        </div>
-        <div>
-          number: {counter}
-        </div>
-        <Button>
-          asdas
-        </Button>
-      </Layout>
-    </Fragment>
-  )
+  static getInitialProps = async ({ ctx }) => {
+    const { query, store } = ctx
+    const { kw } = query
+    await store.dispatch(fetchList())
+    return { kw }
+  }
+  static renderItem = ({
+    id,
+    title,
+    desc,
+    createTime,
+    cover
+  }) => (<HomeCard id={id} title={title} desc={desc} createTime={createTime} cover={cover} />)
+  render() {
+    const { kw } = this.props
+    let { articleList = [] } = this.props
+    if (kw) {
+      articleList = articleList.filter((articel) => {
+        const { title } = articel
+        if (title.indexOf(kw) !== -1) {
+          return true
+        }
+        return false
+      })
+    }
+    return (
+      <Fragment>
+        <Layout title="老司机带你熟练翻车的主页">
+          <List dataSource={articleList} renderItem={Index.renderItem} />
+        </Layout>
+      </Fragment>
+    )
+  }
 }
 
 const mapStateToProps = (state) => {
-  const common = state.get('common')
-  const counter = common.get('counter')
-  return {
-    counter
+  const article = state.get('article')
+  let articleList = article.get('articleList')
+  if (articleList.toJS) {
+    articleList = articleList.toJS()
   }
+  return { articleList }
 }
 
 export default connect(mapStateToProps)(Index)

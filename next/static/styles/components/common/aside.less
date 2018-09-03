@@ -1,0 +1,111 @@
+@headerHeight: 230px;
+@width: 240px;
+@duration: 0.5s;
+
+.aside-menu {
+  position: fixed;
+  z-index: 100;
+  box-sizing: border-box;
+  width: @width;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #fff;
+  transition: left @duration;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0,0.12);
+  &.close {
+    left: -@width;
+    .aside-close-btn {
+      display: none;
+    }
+  }
+  .aside-close-btn {
+    padding: 2px 5px;
+    position: absolute;
+    font-weight: bold;
+    color: #fff;
+    top: 20px;
+    right: -40px;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .menu-header {
+    height: @headerHeight;
+    padding: 40px;
+    background-color: rgba(63, 81, 181, 0.8);
+    .description {
+      margin-top: 10px;
+      height: 65px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fff;
+    }
+  }
+  .avatar-cover {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .menu-items {
+    .menu-item {
+      margin: 5px 0;
+      width: 100%;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .menu-item-icon {
+      font-size: 18px;
+    }
+  }
+
+  .link-items {
+    margin-top: 20px;
+  }
+  .menu-link {
+    @scale: 1.2;
+    color: rgba(0, 0, 0, .65);
+    .menu-link-icon {
+      transition: color, transform .5s;
+      font-size: 18px;
+    }
+    &:hover {
+      .menu-link-icon {
+        transform: scale(1.2);
+      }
+    }
+    &.gayhub {
+      &:hover {
+        .menu-link-icon {
+          color: #25292E;
+        }
+      }
+    }
+    &.weibo {
+      &:hover {
+        .menu-link-icon {
+          color: #E31C34;
+        }
+      }
+    }
+    &.facebook {
+      &:hover {
+        .menu-link-icon {
+          color: #4469B0;
+        }
+      }
+    }
+    &.twitter {
+      &:hover {
+        .menu-link-icon {
+          color: #2AA3EF;
+        }
+      }
+    }
+  }
+}

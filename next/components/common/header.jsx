@@ -1,11 +1,28 @@
 import { Fragment } from 'react'
 import { connect } from 'react-redux'
-import Menu from '@material-ui/icons/Menu'
+import classNames from 'classnames'
+
+import Router from 'next/router'
+
+import { Row, Col, Icon, Input } from 'antd'
 
 import types from 'store/action/common'
 
+import isServer from 'utils'
+
+import style from 'static/styles/components/common/header.less'
+
+const search = (kw) => {
+  const { pathname, query } = Router
+  query.kw = kw
+  const queryArr = Object.keys(query).map(key => `${key}=${query[key]}`)
+  Router.push(`${pathname}?${queryArr.join('&')}`)
+}
+
 const Header = ({
-  dispatch
+  dispatch,
+  title = '',
+  isLongScroll
 }) => {
   const openMenu = () => {
     dispatch({
@@ -14,29 +31,24 @@ const Header = ({
   }
   return (
     <Fragment>
-      <header className="main-header">
-        <button onClick={openMenu}>
-          <Menu />
-        </button>
-        <div className="header-wrap">
-          我就是菜单啊
-        </div>
+      <style dangerouslySetInnerHTML={{ __html: style }} />
+      <header className={classNames('main-header', { 'show-shadow': isLongScroll })}>
+        <Row type="flex" justify="space-between" align="middle" style={{ height: '100%' }}>
+          <Col>
+            <Icon className="header-close-icon" type="menu-unfold" onClick={openMenu} />
+          </Col>
+          <Col>
+            { isLongScroll && <h4 className="header-title">{title}</h4> }
+          </Col>
+          <Col>
+            <Input.Search
+              defaultValue={isServer ? '' : Router.query.kw}
+              className="header-search-wrap"
+              onSearch={search}
+            />
+          </Col>
+        </Row>
       </header>
-      <style jsx>{`
-        .main-header {
-          position: fixed;
-          left: 0;
-          z-index: 99;
-          height: 65px;
-          width: 100%;
-        }
-        .header-wrap {
-          background-color: #4054B2;
-          width: 100%;
-          height: 100%;
-        }
-      `}
-      </style>
     </Fragment>
   )
 }

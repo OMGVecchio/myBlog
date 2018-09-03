@@ -1,7 +1,12 @@
 'use strict'
 
+// 根据文件名自动遍历
 const mapKey = [
-  'traverse'
+  'traverse',
+  'dbs',
+  'db',
+  'crypto',
+  'out'
 ]
 const utils = {}
 const load = require

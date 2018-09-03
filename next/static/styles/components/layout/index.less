@@ -1,0 +1,34 @@
+@menuWitdh: 240px;
+@menuDuration: 0.5s;
+.global-wrap {
+  overflow-y: scroll;
+}
+.main-wrap {
+  padding-left: @menuWitdh;
+  transition: padding-left @menuDuration;
+  &.menu-has-close {
+    padding-left: 0;
+  }
+}
+.main-content {
+  height: 100%;
+  background-color: #d7dbf0;
+}
+.content-header {
+  padding: 80px 100px 20px 100px;
+  height: 230px;
+  background-color: #4054B2;
+  .title {
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+  }
+}
+.content-body-wrap {
+  .content-body-main {
+    min-width: 840px;
+    width: 70%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}

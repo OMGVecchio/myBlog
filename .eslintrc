@@ -9,5 +9,8 @@
     "isDev": false,
     "Router": false,
     "nextHandle": false
+  },
+  "parserOptions": {
+    "ecmaVersion": 8
   }
 }

@@ -1,0 +1,80 @@
+.compose-page {
+  height: 88vh;
+  .compose-panel-wrap {
+    position: relative;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    padding: 20px;
+    margin-top: -165px;
+    height: 100%;
+    &.full-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin-top: 0;
+      background-color: #ffffff;
+      z-index: 1000;
+      .compose-opt-group {
+        margin: 0 10px 0 10px;
+      }
+      .compose-extra-group {
+        margin: 10px 10px 0 10px;
+      }
+      .compose-write-group {
+        position: absolute;
+        top: 160px;
+        left: 30px;
+        right: 30px;
+        bottom: 20px;
+      }
+    }
+  }
+  .compose-opt-group {
+    .switch-fullscreen {
+      margin-left: 5px;
+    }
+  }
+  .compose-extra-group {
+    margin-top: 10px;
+    .article-desc {
+      margin-top: 10px;
+    }
+  }
+  .compose-write-group {
+    @borderRadius: 6px;
+    position: absolute;
+    top: 170px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: @borderRadius;
+    .compose-write-panel {
+      height: 100%;
+      border: 1px solid #cfcfcf;
+      overflow: hidden;
+      border-top-left-radius: @borderRadius;
+      border-bottom-left-radius: @borderRadius;
+    }
+    .compose-result-panel {
+      height: 100%;
+      border: 1px solid #cfcfcf;
+      background-color: #ffffff;
+      overflow: scroll;
+      border-top-right-radius: @borderRadius;
+      border-bottom-right-radius: @borderRadius;
+      .markdown-wrap {
+        padding: 10px;
+      }
+    }
+  }
+}
+
+.ReactCodeMirror {
+  height: 100%;
+  .CodeMirror {
+    height: 100%;
+  }
+}
