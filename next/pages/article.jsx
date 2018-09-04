@@ -74,6 +74,7 @@ class Article extends PureComponent {
           <p className="article-desc">{format(createTime)}</p>
           <Markdown source={article} />
         </div>
+        {/* 这里会放前后页跳转的链接 */}
         <div className="article-comment">
           <div className="comment-box">
             <CommentBox onChange={this.commentChange} />

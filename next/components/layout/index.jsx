@@ -1,6 +1,7 @@
 import { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
+import Router from 'next/router'
 import classNames from 'classnames'
 
 import { Row, Col } from 'antd'
@@ -36,6 +37,9 @@ class Layout extends PureComponent {
     } else {
       dispatch({ type: types.HIDE_HEADER_SHADOW })
     }
+    // 修改 menu 选中的 pathname
+    // 要改成同步时就渲染好的话，感觉提出一个 hoc 在 node 端获取 pathname 比较好
+    dispatch({ type: types.SWITCH_MENU_ITEM, pathname: this.fetchPathname() })
     // 绑定滚动事件
     window.addEventListener('scroll', this.scrollHandler)
   }
@@ -53,6 +57,13 @@ class Layout extends PureComponent {
     } else if (isLongScroll) {
       dispatch({ type: types.HIDE_HEADER_SHADOW })
     }
+  }
+  fetchPathname = () => {
+    if (!isServer) {
+      const { pathname = '' } = Router
+      return pathname
+    }
+    return ''
   }
   fetchScrollTop = () => {
     if (!isServer) {

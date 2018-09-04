@@ -31,6 +31,7 @@
 + 想提出一个 service 层做一些通用业务逻辑的封装
 + 代码太乱、复用性太差、样式文件写起来跟蛋疼，抽空整理下
 + [优化编译速度](https://zhuanlan.zhihu.com/p/42465502)
++ 可以尝试提出一个公共 hoc，做一些同步渲染时的操作，比如菜单路由在 node 端时就通过 pathname 确定好？Search kw 等同理
 
 ### server 端配合 next 做路由整合, eg. ?articleId=123 => /articleId
 

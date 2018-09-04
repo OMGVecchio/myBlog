@@ -58,13 +58,11 @@ Router.get('/api/article', async (ctx) => {
 })
 
 Router.get('/api/article/:articleId', async (ctx) => {
-  // 获取文章详情的接口在前端会做个缓存，所以其实在这里记录文章的访问量也没什么吧
   const { articleId = '' } = ctx.params
   try {
     const articleObj = await alDB.get(ALDBKEY).find({id: articleId}).value()
     const article = await acDB.get(articleId).value()
     articleObj.article = article
-    // await alDB.get(ALDBKEY).find({id: articleId}).set('',)
     ctx.apiSuccess(articleObj)
   } catch (err) {
     console.error(err)

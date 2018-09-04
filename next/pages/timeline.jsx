@@ -106,7 +106,7 @@ class Timeline extends PureComponent {
     return cardList
   }
   setAnchor = (anchorMap) => {
-    const anchorList = Object.keys(anchorMap).map((anchorYear) => {
+    const anchorList = Object.keys(anchorMap).reverse().map((anchorYear) => {
       const anchorMonthes = anchorMap[anchorYear]
       const anchorSubList = anchorMonthes.map((month) => {
         const hrefTag = `${anchorYear}-${month}`

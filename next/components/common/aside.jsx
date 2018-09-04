@@ -11,7 +11,8 @@ import style from 'static/styles/components/common/aside.less'
 
 const Aside = ({
   dispatch,
-  asideIsOpen
+  asideIsOpen,
+  pathname
 }) => {
   const close = () => {
     dispatch({ type: types.CLOSE_ASIDE })
@@ -45,16 +46,18 @@ const Aside = ({
   const renderMenu = (item) => {
     const { label, url, icon } = item
     return (
-      <List.Item>
+      <List.Item className={pathname === url && 'is-active'}>
         <Link href={url}>
-          <Row className="menu-item" style={{ width: '100%' }}>
-            <Col span={3} offset={2}>
-              <Icon className="menu-item-icon" type={icon} />
-            </Col>
-            <Col span={19}>
-              {label}
-            </Col>
-          </Row>
+          <a className="menu-item-wrap">
+            <Row className="menu-item" style={{ width: '100%' }}>
+              <Col span={3} offset={2}>
+                <Icon className="menu-item-icon" type={icon} />
+              </Col>
+              <Col span={19}>
+                {label}
+              </Col>
+            </Row>
+          </a>
         </Link>
       </List.Item>
     )
@@ -129,9 +132,8 @@ const Aside = ({
 const mapStateToProps = (state) => {
   const common = state.get('common')
   const asideIsOpen = common.get('asideIsOpen')
-  return {
-    asideIsOpen
-  }
+  const pathname = common.get('pathname')
+  return { asideIsOpen, pathname }
 }
 
 export default connect(mapStateToProps)(Aside)
