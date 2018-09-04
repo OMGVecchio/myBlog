@@ -12,6 +12,7 @@ import CommentList from 'components/article/comment-list'
 import { fetchDetail, fetchComment } from 'store/action/article'
 
 import xhr from 'utils/fetch'
+import { format } from 'utils/moment'
 
 import style from 'static/styles/pages/article.less'
 
@@ -56,14 +57,21 @@ class Article extends PureComponent {
   }
   render() {
     const { articleId, articleDetail, articleComment } = this.props
-    const { article, title } = articleDetail[articleId] || {}
+    const { article, title, createTime } = articleDetail[articleId] || {}
     const commentList = articleComment[articleId] || []
     return (
-      <Layout className="article-page" showTitle={false} title={title}>
+      <Layout
+        className="article-page"
+        showTitle={false}
+        title={title}
+        pageTitle={title}
+      >
         <Head>
           <style dangerouslySetInnerHTML={{ __html: style }} />
         </Head>
         <div className="article-content">
+          <h1 className="article-title">{title}</h1>
+          <p className="article-desc">{format(createTime)}</p>
           <Markdown source={article} />
         </div>
         <div className="article-comment">
@@ -72,6 +80,7 @@ class Article extends PureComponent {
             <div className="comment-footer clearfix">
               <Button
                 type="primary"
+                size="small"
                 onClick={this.review}
                 className="fr"
               >
@@ -79,7 +88,11 @@ class Article extends PureComponent {
               </Button>
             </div>
           </div>
-          <CommentList className="comment-list" commentList={commentList} onReview={this.openModal} />
+          <CommentList
+            className="comment-list"
+            commentList={commentList}
+            onReview={this.openModal}
+          />
           <Modal
             centered
             destroyOnClose="true"

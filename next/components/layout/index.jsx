@@ -22,7 +22,21 @@ import layoutStyle from 'static/styles/components/layout/index.less'
  * 所以用到了组件的生命周期，就改成 PureComponent
  */
 class Layout extends PureComponent {
+  static defaultProps = {
+    pageTitle: 'Vecchio\'s Blog',
+    title: '',
+    className: '',
+    showTitle: true
+  }
   componentDidMount() {
+    // 记录滚动的初始状态
+    const { dispatch } = this.props
+    if (this.isLongScroll()) {
+      dispatch({ type: types.SHOW_HEADER_SHADOW })
+    } else {
+      dispatch({ type: types.HIDE_HEADER_SHADOW })
+    }
+    // 绑定滚动事件
     window.addEventListener('scroll', this.scrollHandler)
   }
   componentWillUnmount() {
@@ -40,27 +54,30 @@ class Layout extends PureComponent {
       dispatch({ type: types.HIDE_HEADER_SHADOW })
     }
   }
+  fetchScrollTop = () => {
+    if (!isServer) {
+      const { scrollTop } = document.documentElement
+      return scrollTop
+    }
+    return 0
+  }
+  isLongScroll = () => {
+    const scrollTop = this.fetchScrollTop()
+    if (scrollTop > 220) {
+      return true
+    }
+    return false
+  }
   render() {
     const {
       children,
-      pageTitle = 'Vecchio\'s Blog',
-      title = '',
+      pageTitle,
+      title,
       className,
       asideIsOpen,
       isLongScroll,
-      showTitle = true
+      showTitle
     } = this.props
-    // 初始化头部阴影状态
-    let isLongScrollResult = isLongScroll
-    if (!isServer) {
-      const { scrollTop } = document.documentElement
-      if (scrollTop > 220) {
-        isLongScrollResult = true
-      } else {
-        isLongScrollResult = false
-      }
-    }
-    // scroll 现在应该绑在 body 上
     return (
       <div className="global-wrap">
         <Head>
@@ -69,8 +86,8 @@ class Layout extends PureComponent {
         </Head>
         <Menu />
         <div className={classNames('main-wrap', { 'menu-has-close': !asideIsOpen })}>
-          <Header title={title} isLongScroll={isLongScrollResult} />
-          <BackTop show={isLongScrollResult} />
+          <Header title={title} isLongScroll={isLongScroll} />
+          <BackTop show={isLongScroll} />
           <div className="main-content">
             <div className="content-header">
               <h4 className="title">

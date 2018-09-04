@@ -17,9 +17,12 @@
         "root": ["."],
         "alias": {
           "store": "./store",
+          "#": "./store",
           "components": "./components",
           "static": "./static",
-          "utils": "./utils"
+          "@": "./static",
+          "utils": "./utils",
+          "_": "./utils"
         }
       }
     ]

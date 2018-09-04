@@ -29,6 +29,8 @@
 + `Emoji 下的 source 文件` 在 nodejs 中 require，`.js` 会报错，`.json` 可行。可能是解析式的错误格式导致的
 + `Antd TextArea` 组件能通过 ref 获取到原生的 dom 元素么？
 + 想提出一个 service 层做一些通用业务逻辑的封装
++ 代码太乱、复用性太差、样式文件写起来跟蛋疼，抽空整理下
++ [优化编译速度](https://zhuanlan.zhihu.com/p/42465502)
 
 ### server 端配合 next 做路由整合, eg. ?articleId=123 => /articleId
 
