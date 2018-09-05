@@ -7,6 +7,7 @@ const uuid = require('uuid')
 const ALDBKEY = 'list'
 const TAGDBKEY = 'map'
 
+// 新增文章
 Router.post('/api/article', async (ctx) => {
   const articleId = uuid.v1()
   const { body } = ctx.request
@@ -16,7 +17,6 @@ Router.post('/api/article', async (ctx) => {
     cover,
     desc,
     article,
-    category,
     tags
   } = body
   try {
@@ -25,7 +25,6 @@ Router.post('/api/article', async (ctx) => {
       title,
       cover,
       desc,
-      category,
       tags,
       createTime: timestamp,
       lastModify: timestamp
@@ -48,6 +47,35 @@ Router.post('/api/article', async (ctx) => {
   ctx.apiSuccess('文章创建成功')
 })
 
+// 修改文章
+Router.post('/api/article/:articleId', async (ctx) => {
+  const { articleId = '' } = ctx.params
+  const { body } = ctx.request
+  const timestamp = Date.now()
+  const {
+    title,
+    cover,
+    desc,
+    article,
+    tags
+  } = body
+  try {
+    await alDB.get(ALDBKEY).find({id: articleId})
+              .set('title', title)
+              .set('cover', cover)
+              .set('desc', desc)
+              .set('tags', tags)
+              .set('lastModify', timestamp)
+              .write()
+    await acDB.set(articleId, article).write()
+    ctx.apiSuccess('修改成功')
+  } catch (err) {
+    console.error(err)
+    ctx.apiError('修改失败')
+  }
+})
+
+// 获取文章列表
 Router.get('/api/article', async (ctx) => {
   try {
     const articles = await alDB.get(ALDBKEY).orderBy('lastModify', 'desc').value()
@@ -57,6 +85,7 @@ Router.get('/api/article', async (ctx) => {
   }
 })
 
+// 获取文章详情
 Router.get('/api/article/:articleId', async (ctx) => {
   const { articleId = '' } = ctx.params
   try {

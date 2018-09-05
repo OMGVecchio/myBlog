@@ -11,18 +11,26 @@ import TagGroup from 'components/compose/tag-group'
 import xhr from 'utils/fetch'
 import fullScreen from 'utils/full-screen'
 
+import { fetchDetail } from 'store/action/article'
 import { fetchList } from 'store/action/tag'
 
 import style from 'static/styles/pages/compose.less'
 
 const AceEditor = dynamic(import('components/editor/ace'), { ssr: false })
 const CodeMirrorEditor = dynamic(import('components/editor/codemirror'), { ssr: false })
+const MODE_CREATE = 1
+const MODE_MODIFY = 2
 
 class Compose extends PureComponent {
   static async getInitialProps({ ctx }) {
-    const { store } = ctx
+    const { store, query } = ctx
     const { dispatch } = store
-    dispatch(fetchList())
+    const { articleId = '' } = query
+    if (articleId) {
+      await dispatch(fetchDetail(articleId))
+    }
+    await dispatch(fetchList())
+    return { articleId }
   }
   static defaultProps = {
     tagList: []
@@ -35,6 +43,27 @@ class Compose extends PureComponent {
     article: '',
     desc: '',
     tags: []
+  }
+  componentWillMount() {
+    const { articleId, articleDetail } = this.props
+    const detail = articleDetail[articleId]
+    if (articleId && detail) {
+      const {
+        title,
+        cover,
+        article,
+        desc,
+        tags
+      } = detail
+      this.setModeModify()
+      this.setState({
+        title,
+        cover,
+        article,
+        desc,
+        tags
+      })
+    }
   }
   setTitle = (e) => {
     this.setState({ title: e.target.value })
@@ -54,11 +83,16 @@ class Compose extends PureComponent {
       cover: imageUrl
     })
   }
+  setModeModify = () => {
+    this.mode = MODE_MODIFY
+  }
   // 存储编辑器的 ref
   refHOC = {
     ref: null
   }
-  save = () => {
+  // 撰写模式，分为 新增 和 修改
+  mode = MODE_CREATE
+  save = async () => {
     const {
       title,
       cover,
@@ -66,15 +100,19 @@ class Compose extends PureComponent {
       desc,
       tags
     } = this.state
-    const { dispatch } = this.props
-    xhr.post('/api/article', {
+    const { dispatch, articleId } = this.props
+    const url = this.mode === MODE_CREATE
+      ? '/api/article'
+      : `/api/article/${articleId}`
+    xhr.post(url, {
       title,
       cover,
       article,
       tags,
       desc
     })
-    dispatch(fetchList(true))
+    await dispatch(fetchList(true))
+    await dispatch(fetchDetail(articleId))
   }
   changeValue = (article) => {
     this.setState({ article })
@@ -92,6 +130,7 @@ class Compose extends PureComponent {
       isFullScreen
     })
   }
+  // 在编辑器中插入图片
   insertImage = (res) => {
     const { file = {} } = res
     const { response = {} } = file
@@ -170,12 +209,18 @@ class Compose extends PureComponent {
             </div>
             <div className="compose-extra-group">
               <Input
+                defaultValue={this.state.title}
                 style={{ width: '170px' }}
                 placeholder="文章名"
                 onChange={this.setTitle}
               />
-              <TagGroup tagList={this.props.tagList} onChange={this.setTag} />
+              <TagGroup
+                defaultValue={this.state.tags}
+                tagList={this.props.tagList}
+                onChange={this.setTag}
+              />
               <Input.TextArea
+                defaultValue={this.state.desc}
                 className="article-desc"
                 placeholder="文章简介"
                 onChange={this.setDesc}
@@ -222,14 +267,16 @@ class Compose extends PureComponent {
 
 const mapStateToProps = (state) => {
   const tag = state.get('tag')
-  if (tag) {
-    let tagList = tag.get('tagList')
-    if (tagList.toJS) {
-      tagList = tagList.toJS()
-    }
-    return { tagList }
+  const article = state.get('article')
+  let articleDetail = article.get('articleDetail')
+  if (articleDetail.toJS) {
+    articleDetail = articleDetail.toJS()
   }
-  return { tagList: [] }
+  let tagList = tag.get('tagList')
+  if (tagList.toJS) {
+    tagList = tagList.toJS() || []
+  }
+  return { tagList, articleDetail }
 }
 
 export default connect(mapStateToProps)(Compose)
