@@ -35,6 +35,10 @@ const Aside = ({
     url: '/compose',
     icon: 'edit'
   }, {
+    label: '文章管理',
+    url: '/manage',
+    icon: 'setting'
+  }, {
     label: '试炼场',
     url: '/trials',
     icon: 'tool'
