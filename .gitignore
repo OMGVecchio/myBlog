@@ -60,3 +60,5 @@ typings/
 .vscode/
 .DS_Store
 .next/
+/dbs
+/static/images
