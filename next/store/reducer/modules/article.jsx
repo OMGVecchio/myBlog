@@ -12,11 +12,11 @@ const defaultState = fromJS({
 export default (initState = defaultState, action) => {
   switch (action.type) {
     case types.FILL_LIST:
-      return initState.set('articleList', action.articleList)
+      return initState.set('articleList', fromJS(action.articleList))
     case types.FILL_DETAIL:
-      return initState.updateIn(['articleDetail', action.articleId], () => action.articleDetail)
+      return initState.updateIn(['articleDetail', action.articleId], () => fromJS(action.articleDetail))
     case types.FILL_COMMENT:
-      return initState.updateIn(['commentMap', action.articleId], () => action.commentList)
+      return initState.updateIn(['commentMap', action.articleId], () => fromJS(action.commentList))
     case types.REMOVE_ARTICLE_DONE:
       return initState.set('articleList', fromJS(initState.get('articleList').toJS().filter(article => article.id !== action.articleId)))
     case types.ONLINE_ARTICLE_DONE:
