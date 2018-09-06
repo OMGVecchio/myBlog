@@ -40,6 +40,9 @@ class Tag extends PureComponent {
       }
     })
     Object.keys(cardMap).forEach((tag) => {
+      if (cardMap[tag].length === 0) {
+        return
+      }
       cardList.push((
         <h2 className="card-list-delimiter" id={tag} key={`${tag}-title`}>
           {tag}

@@ -42,17 +42,27 @@ class Manage extends PureComponent {
     align: 'center',
     render: tags => tags.map(tag => <Tag color="cyan" key={tag}>{tag}</Tag>)
   }, {
+    title: '状态',
+    dataIndex: 'online',
+    align: 'center',
+    width: '100px',
+    render: (online) => {
+      const isOnline = !!online
+      const text = isOnline ? '已上线' : '已下线'
+      return <Tag color={isOnline ? 'green' : 'purple'}>{text}</Tag>
+    }
+  }, {
     title: '创建时间',
     dataIndex: 'createTime',
     align: 'center',
     width: '210px',
-    render: createTime => format(createTime)
+    render: createTime => format(createTime, { showWeek: false })
   }, {
     title: '最新修改',
     dataIndex: 'lastModify',
     align: 'center',
     width: '210px',
-    render: lastModify => format(lastModify)
+    render: lastModify => format(lastModify, { showWeek: false })
   }, {
     title: '操作',
     key: 'operation',

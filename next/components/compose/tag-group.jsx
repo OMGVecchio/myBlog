@@ -6,7 +6,8 @@ class TagGroup extends PureComponent {
   static defaultProps = {
     onChange: () => {},
     tagList: [],
-    defaultValue: []
+    defaultValue: [],
+    value: []
   }
   state = {
     tags: [],
@@ -14,6 +15,9 @@ class TagGroup extends PureComponent {
   }
   componentWillMount() {
     this.setState({ tags: this.props.defaultValue })
+  }
+  componentWillReceiveProps(props) {
+    this.setState({ tags: props.value })
   }
   handleClose = (removedTag) => {
     const tags = this.state.tags.filter(tag => tag !== removedTag)

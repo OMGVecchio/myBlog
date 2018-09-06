@@ -34,6 +34,7 @@
 + 可以尝试提出一个公共 hoc，做一些同步渲染时的操作，比如菜单路由在 node 端时就通过 pathname 确定好？Search kw 等同理 [这个是不是在 app.js 里就可以解决了？]
 + 系统中很多 immutable 问题，可能是在转换过程中出了问题，例如：在 store 的 index 中，我们在全局 initState 赋值时使用的 immutable 提供的 fromJS；所以第一次获取该值时可以用 immutable 提供的 toJS 转换成 JS 对象，但是我们转换后再修改，之后再添加到 immutable 类型的 state 中的时候，并没对新增的数据做 immutable 处理，所以下一次取出时直接就是 JS 对象，不在拥有 toJS 方法(这可能就是下列 Immutable 问题的所在)
 + 'true' == true // false
++ 父组件传给子组件的 props ，这个 props 影响子组件的 state，放在 componentWillComponent 和 componentWillReceiveProps(更合理？) 中处理，在这两个钩子中 setState 不会引起多余的 render【详情可建 /compose 里修改时的操作处理】
 
 ### server 端配合 next 做路由整合, eg. ?articleId=123 => /articleId
 

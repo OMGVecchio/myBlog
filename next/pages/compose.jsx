@@ -33,7 +33,8 @@ class Compose extends PureComponent {
     return { articleId }
   }
   static defaultProps = {
-    tagList: []
+    tagList: [],
+    articleDetail: []
   }
   state = {
     editorType: 1,
@@ -42,10 +43,35 @@ class Compose extends PureComponent {
     cover: '',
     article: '',
     desc: '',
-    tags: []
+    tags: [],
+    // 撰写模式，分为 新增 和 修改
+    mode: MODE_CREATE
   }
-  componentWillMount() {
-    const { articleId, articleDetail } = this.props
+  // redux-sage 并不能在 getInitialProps 时同步完成
+  // 在挂载前，子组件的 defaultValue 可以生效，但是 componentWillReceiveProps 不行(改成 value ?)
+  // componentWillMount() {
+  //   const { articleId, articleDetail } = this.props
+  //   const detail = articleDetail[articleId]
+  //   if (articleId && detail) {
+  //     const {
+  //       title,
+  //       cover,
+  //       article,
+  //       desc,
+  //       tags
+  //     } = detail
+  //     this.setState({
+  //       title,
+  //       cover,
+  //       article,
+  //       desc,
+  //       tags,
+  //       mode: MODE_MODIFY
+  //     })
+  //   }
+  // }
+  componentWillReceiveProps(props) {
+    const { articleId, articleDetail } = props
     const detail = articleDetail[articleId]
     if (articleId && detail) {
       const {
@@ -55,13 +81,13 @@ class Compose extends PureComponent {
         desc,
         tags
       } = detail
-      this.setModeModify()
       this.setState({
         title,
         cover,
         article,
         desc,
-        tags
+        tags,
+        mode: MODE_MODIFY
       })
     }
   }
@@ -83,15 +109,10 @@ class Compose extends PureComponent {
       cover: imageUrl
     })
   }
-  setModeModify = () => {
-    this.mode = MODE_MODIFY
-  }
   // 存储编辑器的 ref
   refHOC = {
     ref: null
   }
-  // 撰写模式，分为 新增 和 修改
-  mode = MODE_CREATE
   save = async () => {
     const {
       title,
@@ -101,7 +122,7 @@ class Compose extends PureComponent {
       tags
     } = this.state
     const { dispatch, articleId } = this.props
-    const url = this.mode === MODE_CREATE
+    const url = this.state.mode === MODE_CREATE
       ? '/api/article'
       : `/api/article/${articleId}`
     await xhr.post(url, {
@@ -209,18 +230,18 @@ class Compose extends PureComponent {
             </div>
             <div className="compose-extra-group">
               <Input
-                defaultValue={this.state.title}
+                value={this.state.title}
                 style={{ width: '170px' }}
                 placeholder="文章名"
                 onChange={this.setTitle}
               />
               <TagGroup
-                defaultValue={this.state.tags}
+                value={this.state.tags}
                 tagList={this.props.tagList}
                 onChange={this.setTag}
               />
               <Input.TextArea
-                defaultValue={this.state.desc}
+                value={this.state.desc}
                 className="article-desc"
                 placeholder="文章简介"
                 onChange={this.setDesc}
