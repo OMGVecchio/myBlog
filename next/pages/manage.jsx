@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { Table, Button, Tag } from 'antd'
 
-import { fetchList, removeArticle } from 'store/action/article'
+import { fetchList, removeArticle, onlineArticle } from 'store/action/article'
 
 import Layout from 'components/layout'
 
@@ -29,10 +29,12 @@ class Manage extends PureComponent {
     'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple'
   ]
   removeArticle = id => this.props.dispatch(removeArticle(id))
+  switchOnline = (id, online) => this.props.dispatch(onlineArticle(id, online))
   columns = [{
     title: '文章名',
     dataIndex: 'title',
-    align: 'center'
+    align: 'center',
+    width: '200px'
   }, {
     title: '标签',
     dataIndex: 'tags',
@@ -53,10 +55,10 @@ class Manage extends PureComponent {
   }, {
     title: '操作',
     key: 'operation',
-    width: '140px',
+    width: '180px',
     align: 'center',
     render: (record) => {
-      const { id } = record
+      const { id, online } = record
       return (
         <div className="operation-wrap">
           <Link href={`/compose?articleId=${id}`}>
@@ -67,6 +69,12 @@ class Manage extends PureComponent {
               修改
             </Button>
           </Link>
+          <Button
+            size="small"
+            onClick={() => this.switchOnline(id, !online)}
+          >
+            {online ? '下线' : '上线'}
+          </Button>
           <Button
             type="danger"
             size="small"

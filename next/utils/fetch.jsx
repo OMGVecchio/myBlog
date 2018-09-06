@@ -1,5 +1,6 @@
 import 'isomorphic-fetch'
 
+import { isObject, getUrlQuery } from 'utils'
 import { getToken } from 'utils/token'
 
 const prefix = 'http://127.0.0.1:3000'
@@ -17,25 +18,31 @@ const getUrl = (url, needPrefix = true) => {
   }
   return url
 }
-const getOpt = (optObj) => {
+// 组装 fetch 参数
+const getOpt = (optObj, extraObj = {}) => {
   let obj = optObj
-  if (Object.prototype.toString.call(optObj) !== '[object Object]') {
+  let extra = extraObj
+  if (!isObject(optObj)) {
     obj = {}
   }
-  return Object.assign(obj, fetchOpt)
+  if (!isObject(extraObj)) {
+    extra = {}
+  }
+  return Object.assign(obj, fetchOpt, extra)
 }
 
 const xhr = {
-  get(url) {
-    return fetch(getUrl(url), getOpt({
+  get(url, data = {}, extra) {
+    const query = `?${getUrlQuery(data)}`
+    return fetch(`${getUrl(url)}${query}`, getOpt({
       method: 'GET'
       // error
       // headers: {
       //   'access-token': getToken()
       // }
-    })).then(res => res.json())
+    }, extra)).then(res => res.json())
   },
-  post(url, data) {
+  post(url, data = {}, extra) {
     return fetch(getUrl(url), getOpt({
       method: 'POST',
       headers: {
@@ -44,12 +51,19 @@ const xhr = {
         'access-token': getToken()
       },
       body: JSON.stringify(data)
-    })).then(res => res.json())
+    }, extra)).then(res => res.json())
   },
-  del(url) {
-    return fetch(getUrl(url), getOpt({
+  del(url, data = {}, extra) {
+    const query = `?${getUrlQuery(data)}`
+    return fetch(`${getUrl(url)}${query}`, getOpt({
       method: 'DELETE'
-    })).then(res => res.json())
+    }, extra)).then(res => res.json())
+  },
+  put(url, data = {}, extra) {
+    const query = `?${getUrlQuery(data)}`
+    return fetch(`${getUrl(url)}${query}`, getOpt({
+      method: 'put'
+    }, extra)).then(res => res.json())
   }
 }
 

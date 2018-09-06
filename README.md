@@ -33,6 +33,7 @@
 + [优化编译速度](https://zhuanlan.zhihu.com/p/42465502)
 + 可以尝试提出一个公共 hoc，做一些同步渲染时的操作，比如菜单路由在 node 端时就通过 pathname 确定好？Search kw 等同理 [这个是不是在 app.js 里就可以解决了？]
 + 系统中很多 immutable 问题，可能是在转换过程中出了问题，例如：在 store 的 index 中，我们在全局 initState 赋值时使用的 immutable 提供的 fromJS；所以第一次获取该值时可以用 immutable 提供的 toJS 转换成 JS 对象，但是我们转换后再修改，之后再添加到 immutable 类型的 state 中的时候，并没对新增的数据做 immutable 处理，所以下一次取出时直接就是 JS 对象，不在拥有 toJS 方法(这可能就是下列 Immutable 问题的所在)
++ 'true' == true // false
 
 ### server 端配合 next 做路由整合, eg. ?articleId=123 => /articleId
 

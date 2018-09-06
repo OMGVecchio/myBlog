@@ -13,7 +13,8 @@ import articleTypes, {
   fillList,
   fillDetail,
   fillComment,
-  removeArticleDone
+  removeArticleDone,
+  onlineArticleDone
 } from 'store/action/article'
 import tagTypes, { fillList as fillTagList } from 'store/action/tag'
 
@@ -64,6 +65,16 @@ function* removeArticle({ articleId }) {
   }
 }
 
+function* onlineArticle({ articleId, online }) {
+  // on:上线  off:下线
+  const tag = online ? 'on' : 'off'
+  const dataResolve = yield xhr.put(`/api/article/${articleId}`, { online: tag })
+  const { success } = dataResolve
+  if (success) {
+    yield put(onlineArticleDone(articleId, online))
+  }
+}
+
 function* fetchTagList({ clearCache = false }) {
   if (!clearCache) {
     const tagList = yield select((state) => {
@@ -87,6 +98,7 @@ function* rootSaga() {
   yield takeEvery(articleTypes.FETCH_DETAIL, fetchDetail)
   yield takeEvery(articleTypes.FETCH_COMMENT, fetchComment)
   yield takeEvery(articleTypes.REMOVE_ARTICLE, removeArticle)
+  yield takeEvery(articleTypes.ONLINE_ARTICLE, onlineArticle)
   yield takeEvery(tagTypes.FETCH_LIST, fetchTagList)
 }
 

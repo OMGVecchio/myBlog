@@ -19,6 +19,14 @@ export default (initState = defaultState, action) => {
       return initState.updateIn(['commentMap', action.articleId], () => action.commentList)
     case types.REMOVE_ARTICLE_DONE:
       return initState.set('articleList', fromJS(initState.get('articleList').toJS().filter(article => article.id !== action.articleId)))
+    case types.ONLINE_ARTICLE_DONE:
+      return initState.set('articleList', fromJS(initState.get('articleList').toJS().map((article) => {
+        const temp = article
+        if (temp.id === action.articleId) {
+          temp.online = action.online
+        }
+        return temp
+      })))
     default:
       return initState
   }

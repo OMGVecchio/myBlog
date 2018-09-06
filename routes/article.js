@@ -110,3 +110,20 @@ Router.delete('/api/article/:articleId', async (ctx) => {
     ctx.apiSuccess('删除失败')
   }
 })
+
+// 文章上下线
+Router.put('/api/article/:articleId', async (ctx) => {
+  const { articleId = '' } = ctx.params
+  if (!articleId) {
+    return apiError('缺少文章ID')
+  }
+  let { online = 'off' } = ctx.query
+  online = online === 'on';
+  try {
+    await alDB.get(ALDBKEY).find({id: articleId}).set('online', online).write()
+    ctx.apiSuccess('上下线成功')
+  } catch (err) {
+    console.error(err)
+    ctx.apiSuccess('上下线失败')
+  }
+})
