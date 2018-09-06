@@ -104,7 +104,7 @@ class Compose extends PureComponent {
     const url = this.mode === MODE_CREATE
       ? '/api/article'
       : `/api/article/${articleId}`
-    xhr.post(url, {
+    await xhr.post(url, {
       title,
       cover,
       article,

@@ -4,7 +4,9 @@ const actionTypes = {
   FETCH_DETAIL: 'article/fetchdetail',
   FILL_DETAIL: 'article/filldetail',
   FETCH_COMMENT: 'article/fetchcomment',
-  FILL_COMMENT: 'article/fillcomment'
+  FILL_COMMENT: 'article/fillcomment',
+  REMOVE_ARTICLE: 'article/removearticle',
+  REMOVE_ARTICLE_DONE: 'article/removearticledone'
 }
 
 export default actionTypes
@@ -34,4 +36,13 @@ export const fillComment = (articleId, commentList) => ({
   type: actionTypes.FILL_COMMENT,
   articleId,
   commentList
+})
+
+export const removeArticle = articleId => ({
+  type: actionTypes.REMOVE_ARTICLE,
+  articleId
+})
+export const removeArticleDone = articleId => ({
+  type: actionTypes.REMOVE_ARTICLE_DONE,
+  articleId
 })

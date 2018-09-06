@@ -9,12 +9,16 @@ import {
 import xhr from 'utils/fetch'
 
 // import types from 'store/action/common'
-import articleTypes, { fillList, fillDetail, fillComment } from 'store/action/article'
+import articleTypes, {
+  fillList,
+  fillDetail,
+  fillComment,
+  removeArticleDone
+} from 'store/action/article'
 import tagTypes, { fillList as fillTagList } from 'store/action/tag'
 
 function* fetchList() {
-  const res = yield xhr.get('/api/article')
-  const dataResolve = yield res.json()
+  const dataResolve = yield xhr.get('/api/article')
   const { data } = dataResolve
   yield put(fillList(data))
 }
@@ -30,8 +34,7 @@ function* fetchDetail({ articleId }) {
   if (detailCache[articleId]) {
     return
   }
-  const res = yield xhr.get(`/api/article/${articleId}`)
-  const dataResolve = yield res.json()
+  const dataResolve = yield xhr.get(`/api/article/${articleId}`)
   const { data } = dataResolve
   yield put(fillDetail(articleId, data))
 }
@@ -48,10 +51,17 @@ function* fetchComment({ articleId }) {
   // if (commentCache[articleId]) {
   //   return
   // }
-  const res = yield xhr.get(`/api/comment/${articleId}`)
-  const dataResolve = yield res.json()
+  const dataResolve = yield xhr.get(`/api/comment/${articleId}`)
   const { data } = dataResolve
   yield put(fillComment(articleId, data))
+}
+
+function* removeArticle({ articleId }) {
+  const dataResolve = yield xhr.del(`/api/article/${articleId}`)
+  const { success } = dataResolve
+  if (success) {
+    yield put(removeArticleDone(articleId))
+  }
 }
 
 function* fetchTagList({ clearCache = false }) {
@@ -67,8 +77,7 @@ function* fetchTagList({ clearCache = false }) {
       return
     }
   }
-  const res = yield xhr.get('/api/tags')
-  const dataResolve = yield res.json()
+  const dataResolve = yield xhr.get('/api/tags')
   const { data } = dataResolve
   yield put(fillTagList(data))
 }
@@ -77,6 +86,7 @@ function* rootSaga() {
   yield takeEvery(articleTypes.FETCH_LIST, fetchList)
   yield takeEvery(articleTypes.FETCH_DETAIL, fetchDetail)
   yield takeEvery(articleTypes.FETCH_COMMENT, fetchComment)
+  yield takeEvery(articleTypes.REMOVE_ARTICLE, removeArticle)
   yield takeEvery(tagTypes.FETCH_LIST, fetchTagList)
 }
 

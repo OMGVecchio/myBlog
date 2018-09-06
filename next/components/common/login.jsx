@@ -34,15 +34,13 @@ class LoginModal extends PureComponent {
     xhr.post('/api/login', {
       username,
       password
-    }).then((res) => {
-      res.json().then((data) => {
-        if (data.code === 201) {
-          setToken(data.data)
-          this.setState({ showLogin: false })
-        } else {
-          message.error(data.data)
-        }
-      })
+    }).then((data) => {
+      if (data.code === 201) {
+        setToken(data.data)
+        this.setState({ showLogin: false })
+      } else {
+        message.error(data.data)
+      }
     })
   }
   loginCancel = () => {

@@ -35,11 +35,10 @@ class Article extends PureComponent {
     this.comment = comment
   }
   review = async () => {
-    const res = await xhr.post(`/api/comment/${this.props.articleId}`, {
+    const data = await xhr.post(`/api/comment/${this.props.articleId}`, {
       reviewId: this.reviewId,
       comment: this.comment
     })
-    const data = await res.json()
     if (data.success === true) {
       const { dispatch, articleId } = this.props
       dispatch(fetchComment(articleId))

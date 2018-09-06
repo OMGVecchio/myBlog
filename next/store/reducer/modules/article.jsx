@@ -1,7 +1,9 @@
 import Immutable from 'immutable'
 import types from 'store/action/article'
 
-const defaultState = Immutable.fromJS({
+const { fromJS } = Immutable
+
+const defaultState = fromJS({
   articleList: [],
   articleDetail: {},
   commentMap: {}
@@ -15,6 +17,8 @@ export default (initState = defaultState, action) => {
       return initState.updateIn(['articleDetail', action.articleId], () => action.articleDetail)
     case types.FILL_COMMENT:
       return initState.updateIn(['commentMap', action.articleId], () => action.commentList)
+    case types.REMOVE_ARTICLE_DONE:
+      return initState.set('articleList', fromJS(initState.get('articleList').toJS().filter(article => article.id !== action.articleId)))
     default:
       return initState
   }

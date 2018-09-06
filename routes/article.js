@@ -97,3 +97,16 @@ Router.get('/api/article/:articleId', async (ctx) => {
     console.error(err)
   }
 })
+
+// 删除文章
+Router.delete('/api/article/:articleId', async (ctx) => {
+  const { articleId = '' } = ctx.params
+  try {
+    await alDB.get(ALDBKEY).remove({id: articleId}).write()
+    await acDB.unset(articleId).write()
+    ctx.apiSuccess('删除成功')
+  } catch (err) {
+    console.error(err)
+    ctx.apiSuccess('删除失败')
+  }
+})

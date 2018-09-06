@@ -5,11 +5,12 @@ import { connect } from 'react-redux'
 
 import { Table, Button, Tag } from 'antd'
 
-import { fetchList } from 'store/action/article'
+import { fetchList, removeArticle } from 'store/action/article'
 
 import Layout from 'components/layout'
 
 import { format } from 'utils/moment'
+import xhr from 'utils/fetch'
 
 import style from 'static/styles/pages/manage.less'
 
@@ -27,6 +28,7 @@ class Manage extends PureComponent {
     'magenta', 'red', 'volcano', 'orange', 'gold',
     'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple'
   ]
+  removeArticle = id => this.props.dispatch(removeArticle(id))
   columns = [{
     title: '文章名',
     dataIndex: 'title',
@@ -53,7 +55,7 @@ class Manage extends PureComponent {
     key: 'operation',
     width: '140px',
     align: 'center',
-    render(record) {
+    render: (record) => {
       const { id } = record
       return (
         <div className="operation-wrap">
