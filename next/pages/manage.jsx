@@ -10,7 +10,6 @@ import { fetchList, removeArticle, onlineArticle } from 'store/action/article'
 import Layout from 'components/layout'
 
 import { format } from 'utils/moment'
-import xhr from 'utils/fetch'
 
 import style from 'static/styles/pages/manage.less'
 
@@ -19,9 +18,11 @@ class Manage extends PureComponent {
     articleList: []
   }
   static getInitialProps({ ctx }) {
-    const { store } = ctx
+    const { store, query } = ctx
     const { dispatch } = store
+    const { kw = '' } = query
     dispatch(fetchList())
+    return { kw }
   }
   randomColor = () => this.colors[Math.ceil(Math.random() * 10)]
   colors = [
@@ -87,7 +88,17 @@ class Manage extends PureComponent {
     }
   }]
   render() {
-    const { articleList } = this.props
+    const { kw } = this.props
+    let { articleList = [] } = this.props
+    if (kw) {
+      articleList = articleList.filter((article) => {
+        const { title } = article
+        if (title.indexOf(kw) !== -1) {
+          return true
+        }
+        return false
+      })
+    }
     return (
       <Layout
         className="manage-page"

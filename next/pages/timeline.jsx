@@ -11,6 +11,7 @@ import Layout from 'components/layout'
 import TimelineCard from 'components/card/timeline'
 
 import Moment from 'utils/moment'
+import { filterArticleList } from 'utils'
 
 import style from 'static/styles/pages/timeline.less'
 
@@ -130,15 +131,7 @@ class Timeline extends PureComponent {
   render() {
     const { kw } = this.props
     let { articleList = [] } = this.props
-    if (kw) {
-      articleList = articleList.filter((articel) => {
-        const { title } = articel
-        if (title.indexOf(kw) !== -1) {
-          return true
-        }
-        return false
-      })
-    }
+    articleList = filterArticleList(articleList, kw)
     const getCardList = this.setCardList(articleList)
     return (
       <Layout title="文章时间轴">
