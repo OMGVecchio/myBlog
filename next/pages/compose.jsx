@@ -1,4 +1,4 @@
-import React, { Fragment, PureComponent } from 'react'
+import { Fragment, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import dynamic from 'next/dynamic'
 import classNames from 'classnames'
@@ -189,6 +189,10 @@ class Compose extends PureComponent {
       article,
       isFullScreen
     } = this.state
+    const {
+      articleId,
+      articleDetail
+    } = this.props
     return (
       <Layout className="compose-page">
         <style dangerouslySetInnerHTML={{ __html: style }} />
@@ -254,8 +258,10 @@ class Compose extends PureComponent {
                   editorType === 1
                     ? (
                       <CodeMirrorEditor
+                        key={articleId && articleDetail[articleId]}
                         refHOC={this.refHOC}
                         value={article}
+                        defaultValue={article}
                         opts={{
                           options: {
                             mode: 'markdown',
@@ -267,8 +273,10 @@ class Compose extends PureComponent {
                     )
                     : (
                       <AceEditor
+                        key={articleId && articleDetail[articleId]}
                         refHOC={this.refHOC}
                         value={article}
+                        defaultValue={article}
                         onChange={this.changeValue}
                         lan="markdown"
                       />
