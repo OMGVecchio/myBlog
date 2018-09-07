@@ -5,6 +5,8 @@ import { fetchList } from 'store/action/article'
 
 import { Row, Col } from 'antd'
 
+import { filterArticleList } from 'utils'
+
 import Layout from 'components/layout'
 import TagCard from 'components/card/tag'
 
@@ -38,6 +40,9 @@ class Tag extends PureComponent {
       }
     })
     Object.keys(cardMap).forEach((tag) => {
+      if (cardMap[tag].length === 0) {
+        return
+      }
       cardList.push((
         <h2 className="card-list-delimiter" id={tag} key={`${tag}-title`}>
           {tag}
@@ -78,15 +83,7 @@ class Tag extends PureComponent {
   render() {
     const { kw } = this.props
     let { articleList = [] } = this.props
-    if (kw) {
-      articleList = articleList.filter((articel) => {
-        const { title } = articel
-        if (title.indexOf(kw) !== -1) {
-          return true
-        }
-        return false
-      })
-    }
+    articleList = filterArticleList(articleList, kw)
     return (
       <Layout title="老司机带你熟练翻车的标签页">
         <Fragment>

@@ -5,24 +5,28 @@ import { Tag, AutoComplete, Tooltip } from 'antd'
 class TagGroup extends PureComponent {
   static defaultProps = {
     onChange: () => {},
-    tagList: []
+    tagList: [],
+    defaultValue: [],
+    value: []
   }
-
   state = {
     tags: [],
     inputValue: ''
   }
-
+  componentWillMount() {
+    this.setState({ tags: this.props.defaultValue })
+  }
+  componentWillReceiveProps(props) {
+    this.setState({ tags: props.value })
+  }
   handleClose = (removedTag) => {
     const tags = this.state.tags.filter(tag => tag !== removedTag)
     this.setState({ tags })
     this.props.onChange(tags)
   }
-
   handleInputChange = (inputValue) => {
     this.setState({ inputValue })
   }
-
   handleInputConfirm = () => {
     const { state } = this
     const { inputValue } = state
@@ -36,7 +40,6 @@ class TagGroup extends PureComponent {
     })
     this.props.onChange(tags)
   }
-
   render() {
     const { tags, inputValue } = this.state
     const tagFilters = this.props.tagList.map(item => ({

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
+import dynamic from 'next/dynamic'
 
 import { Modal, Button, message } from 'antd'
 
@@ -12,8 +13,13 @@ import CommentList from 'components/article/comment-list'
 import { fetchDetail, fetchComment } from 'store/action/article'
 
 import xhr from 'utils/fetch'
+import { format } from 'utils/moment'
+import { setCookie, getCookie } from 'utils/cookie'
 
 import style from 'static/styles/pages/article.less'
+
+// 因为涉及到 cookie 的操作，服务端渲染会有一定问题，暂时停止该组件的服务端渲染，并用更好的提示代替 loading 效果
+const BaseInput = dynamic(import('components/base/input'), { ssr: false })
 
 class Article extends PureComponent {
   static defaultProps = {
@@ -28,17 +34,38 @@ class Article extends PureComponent {
     return { articleId }
   }
   state = {
-    modalVisible: false
+    modalVisible: false,
+    username: '',
+    userblog: ''
+  }
+  componentWillMount() {
+    // 挂载后，从 cookie 中获取用户保存的资料
+    const cookie = getCookie() || {}
+    const { username = '', userblog = '' } = cookie
+    /* eslint-disable react/no-did-mount-set-state */
+    this.setState({
+      username,
+      userblog
+    })
+  }
+  setUserName = (username) => {
+    this.setState({ username })
+    setCookie('username', username)
+  }
+  setUserBlog = (userblog) => {
+    this.setState({ userblog })
+    setCookie('userblog', userblog)
   }
   commentChange = (comment) => {
     this.comment = comment
   }
   review = async () => {
-    const res = await xhr.post(`/api/comment/${this.props.articleId}`, {
+    const data = await xhr.post(`/api/comment/${this.props.articleId}`, {
       reviewId: this.reviewId,
-      comment: this.comment
+      comment: this.comment,
+      username: this.state.username,
+      userblog: this.state.userblog
     })
-    const data = await res.json()
     if (data.success === true) {
       const { dispatch, articleId } = this.props
       dispatch(fetchComment(articleId))
@@ -56,22 +83,44 @@ class Article extends PureComponent {
   }
   render() {
     const { articleId, articleDetail, articleComment } = this.props
-    const { article, title } = articleDetail[articleId] || {}
+    const { article, title, createTime } = articleDetail[articleId] || {}
     const commentList = articleComment[articleId] || []
     return (
-      <Layout className="article-page" showTitle={false} title={title}>
+      <Layout
+        className="article-page"
+        showTitle={false}
+        title={title}
+        pageTitle={title}
+      >
         <Head>
           <style dangerouslySetInnerHTML={{ __html: style }} />
         </Head>
         <div className="article-content">
+          <h1 className="article-title">{title}</h1>
+          <p className="article-desc">{format(createTime)}</p>
           <Markdown source={article} />
         </div>
+        {/* 这里会放前后页跳转的链接 */}
         <div className="article-comment">
+          <div className="user-info">
+            <BaseInput
+              placeholder="您的大名"
+              onChange={this.setUserName}
+              defaultValue={this.state.username}
+            />
+            <BaseInput
+              placeholder="个人博客"
+              width="250"
+              onChange={this.setUserBlog}
+              defaultValue={this.state.userblog}
+            />
+          </div>
           <div className="comment-box">
             <CommentBox onChange={this.commentChange} />
             <div className="comment-footer clearfix">
               <Button
                 type="primary"
+                size="small"
                 onClick={this.review}
                 className="fr"
               >
@@ -79,7 +128,11 @@ class Article extends PureComponent {
               </Button>
             </div>
           </div>
-          <CommentList className="comment-list" commentList={commentList} onReview={this.openModal} />
+          <CommentList
+            className="comment-list"
+            commentList={commentList}
+            onReview={this.openModal}
+          />
           <Modal
             centered
             destroyOnClose="true"

@@ -5,9 +5,15 @@ const { db } = require('../utils')
 
 const { commentDB } = db
 
+// 新增评论
 Router.post('/api/comment/:articleId', async (ctx) => {
   const { articleId = '' } = ctx.params
-  const { reviewId, comment } = ctx.request.body
+  const {
+    reviewId,
+    comment,
+    username = '',
+    userblog = ''
+  } = ctx.request.body
   if (!articleId) {
     return ctx.apiError('缺少评论的文章ID')
   }
@@ -22,6 +28,8 @@ Router.post('/api/comment/:articleId', async (ctx) => {
     const firstLevel = [{
       id: commentId,
       comment,
+      username,
+      userblog,
       isFirst: true,
       createTime: Date.now(),
       sub: []
@@ -33,6 +41,8 @@ Router.post('/api/comment/:articleId', async (ctx) => {
       const secondLevel = {
         id: commentId,
         comment,
+        username,
+        userblog,
         isFirst: false,
         createTime: Date.now()
       }
@@ -42,6 +52,8 @@ Router.post('/api/comment/:articleId', async (ctx) => {
       const firstLevel = {
         id: commentId,
         comment,
+        username,
+        userblog,
         isFirst: true,
         createTime: Date.now(),
         sub: []
@@ -52,6 +64,7 @@ Router.post('/api/comment/:articleId', async (ctx) => {
   }
 })
 
+// 获取评论
 Router.get('/api/comment/:articleId', async (ctx) => {
   const { articleId = '' } = ctx.params
   if (!articleId) {

@@ -5,6 +5,8 @@ import { List } from 'antd'
 
 import { fetchList } from 'store/action/article'
 
+import { filterArticleList } from 'utils'
+
 import Layout from 'components/layout'
 import HomeCard from 'components/card/home'
 
@@ -28,15 +30,7 @@ class Index extends PureComponent {
   render() {
     const { kw } = this.props
     let { articleList = [] } = this.props
-    if (kw) {
-      articleList = articleList.filter((articel) => {
-        const { title } = articel
-        if (title.indexOf(kw) !== -1) {
-          return true
-        }
-        return false
-      })
-    }
+    articleList = filterArticleList(articleList, kw)
     return (
       <Fragment>
         <Layout title="老司机带你熟练翻车的主页">

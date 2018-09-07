@@ -2,7 +2,8 @@ const actionTypes = {
   OPEN_ASIDE: 'common/open_aside',
   CLOSE_ASIDE: 'common/close_aside',
   SHOW_HEADER_SHADOW: 'common/show_header_shadow',
-  HIDE_HEADER_SHADOW: 'common/hide_header_shadow'
+  HIDE_HEADER_SHADOW: 'common/hide_header_shadow',
+  SWITCH_MENU_ITEM: 'common/switch_menu_item'
 }
 
 export default actionTypes
@@ -21,4 +22,9 @@ export const showHeaderShadow = () => ({
 
 export const hideHeaderShadow = () => ({
   type: actionTypes.HIDE_HEADER_SHADOW
+})
+
+export const switchMenuItem = pathname => ({
+  type: actionTypes.SWITCH_MENU_ITEM,
+  pathname
 })

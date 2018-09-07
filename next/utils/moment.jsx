@@ -1,4 +1,4 @@
-export const digitalToChinese = (digital, isWeek) => {
+export const digitalToChinese = (digital, isWeek = false) => {
   const d = parseInt(digital, 10) || 0
   const dcMap = {
     0: '零',
@@ -15,13 +15,23 @@ export const digitalToChinese = (digital, isWeek) => {
   return dcMap[d]
 }
 
-export const format = (timestamp) => {
+export const format = (timestamp, {
+  sep = '-',
+  showTime = true,
+  showWeek = true
+} = {}) => {
   const d = new Date(timestamp)
   const year = d.getFullYear()
   const month = d.getMonth() + 1
   const date = d.getDate()
-  const day = d.getDay()
-  return `${year}-${month}-${date} 星期${digitalToChinese(day, true)}`
+  const dateText = `${year}${sep}${month}${sep}${date}`
+  const day = d.getDay() === 0 ? 7 : d.getDay()
+  const dayText = ` 星期${digitalToChinese(day, true)}`
+  const hour = d.getHours()
+  const minute = d.getMinutes()
+  const second = d.getSeconds()
+  const timeText = ` ${hour}:${minute}:${second}`
+  return `${dateText}${showTime ? timeText : ''}${showWeek ? dayText : ''}`
 }
 
 class Moment {

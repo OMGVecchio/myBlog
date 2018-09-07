@@ -8,8 +8,12 @@
     }
   }
   .comment-title {
-    color: #1abc9c;
+    @titleColor: #1abc9c;
+    color: @titleColor;
     margin-bottom: 4px;
+    a {
+      color: @titleColor;
+    }
   }
   .comment-time {
     font-size: 12px;

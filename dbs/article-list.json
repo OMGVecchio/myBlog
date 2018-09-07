@@ -34,16 +34,8 @@
       ],
       "createTime": 1528560000000,
       "lastModify": 1528560000000,
-      "article": "# Nodejs项目-nodejs-zzgg-clickfallback-api\n\n项目描述\n### 开发准备\n1. 项目\b启动\n\n    ```sh\n    npm install\n    u start\n    ```\n\n### 项目\b相关信息\n - 上线jira： http://jira.zhubajie.la/browse/ZZGG-6842\n - 新建项目jira： http://jira.zhubajie.la/browse/WORKFLOW-20776\n - 开发jira：http://jira.zhubajie.la/secure/RapidBoard.jspa?rapidView=342&projectKey=SDJWY&selectedIssue=SDJWY-27\n- \bdubbo生成物地址：https://git.zhubajie.la/dept-ad-nodejs/nodejs-zzgg-clickfallback-api.git#clickfallback_2.0\n- 接口文档地址：http://doc.zhubajie.la/pages/viewpage.action?pageId=44149283\n- 资料可参考地址：\n    - http://cn.redux.js.org/docs/basics/Reducers.html\n    - https://reactjs.org/\n    - https://zeit.co/blog/next\n\n- \b\b头部，尾部，侧边栏均引用的公共服务\n    - 头部（http://zhumacs.zbj.com/service/js-common-header）\n    - 尾部（http://utopiacs.zbj.com/service/footer-v1）\n    - 侧边栏（http://zhumacs.zbj.com/service/jinshi-left-nav）\n    - 提示信息\b（http://js.zbj.com/cms/recommend?p=account&m=notice)\n\n##### 涉及到的页面\n+ 访问\b路由均要加上： `djwy` 前缀，通过配置中心的 `globalPrefix` 决定\n+ 页面涉及\n    + 首页 `/djwy/`\n    + 订单页 `/djwy/order`\n    + 报表页 `/djwy/report?orderId=xxx`\n    + 投放设置页 `/djwy/setting?orderId=xxx`\n\n### \b项目中已经解决的问题\n1. nextApp 需要在 UA 启动前调用：修改 www 启动文件\n    - 主要增加nextApp和render的绑定，方便之后next里面render页面使用\n2. 项目编译后找不到文件：可能是根目录错误，修改 require('next')({ dir }) 的 dir 参数\n3. 资源 404，但能加载出来：UA 初始化前加上 routes 补丁，绑定路由监听 next 静态资源并交 nextApp.getRequestHandler() 处理\n    - \b此处是在patch里面的routes里面进行解决的。\n4. 'import style from \"style\"' 编译 style 样式文件报错：SSR 原因，使用新 loader [next-style-loader](https://www.npmjs.com/package/next-style-loader)（`此方式已经弃用`）\n    - 后面采用的一种方式是提取出一个hoc的文件，将公共的\b组件和编译后的文件在这里进行加载，然后以PageWrapper的方式抛出，之后每个页面引入，实现了样式的加载\n5. webpack alias 无效：SSR 原因，[babel-plugin-module-resolver](https://github.com/zeit/next.js/tree/master/examples/with-absolute-imports)\n6. 'import img from \"img\"' 报错：使用 [babel-plugin-import-static-files](https://github.com/ahalimkara/babel-plugin-import-static-files), 可加 hash\n7. 定义全局变量：使用 [babel-plugin-transform-define](https://github.com/FormidableLabs/babel-plugin-transform-define)\n8. 在_document.js里面引入组件，样式无法加载；官方推荐是components里面新建layout文件来引用公共的组件，但是，无法在组件里面请求数据(`已经在第四条里面的hoc解决`)\n9. 为引入的侧边栏可使用jquery，jquery绑定到window的方式比较鸡肋，后期优化\n\n### Tips\n+ 客户端渲染时，echarts异步初始化的样式需要写成行内样式加载\n+ 全局只需同步访问时的公共数据，放在 /hoc/index 下 getInitialProps 中的 isServer 判断里\n+ /pages 下的路由，getInitialProps 统一改为 getAsyncProps，并在 /hoc/index 下的 getInitialProps 中调用(`为解决接入hoc之后，hoc 里面的getInitialProps覆盖page里面的`)\n+ 浏览器端曾遇到一个错 `net:ERR_CONTENT_LENGTH_MISMATCH`。这是 nginx 缓存大文件，因为权限等原因读取不到时报的错\n\n### 头部、侧边菜单栏、底部等公司内部组件引入问题\n+ 问题描述：这些组件的 JS 中用到了 define、jquery 等浏览器端全局变量\n+ 解决方案：绑定 window.jquery 的操作，放在了 /hoc/index.js 中的 componentDidMount 方法中；在 _document.js 中的 Head 中绑定了 ZBJIndo 及 seajs 变量，添加了 define 函数；但 componentDidMount 的执行在解析了加载的 JS 之后，如果在 define 时执行执行组件提供的 JS 代码，里面的 jquery 会报错，所以在 define 中制作了一个监听器：在页面加载完 jquery 后再执行 define 中的回调\n\n### 侧边菜单栏 与 react 中的通信\n+ 问题描述：点击侧边菜单栏的某些菜单时，不应该触发该组件原生的跳转功能，需要通知 react 做浏览器端路由跳转\n+ 解决方案：在 window 在绑定自定义事件，通过 trigger 手动触发进行双方通信\n\n### 服务端渲染，cookie 信息丢失\n+ 问题描述：在服务端渲染时，浏览器发送一个 req 同步请求；之后服务器处理这个请求，并在服务端渲染时调用接口获取同步渲染所需数据；此时 API 调用的接口地址为 `127.0.0.1:3110`，且为服务器自身新起的一个 req，无法带上浏览器请求 req 附带的 cookie 信息\n+ 解决方案：手动封装了一个 /utils/axios 方法，接收一个 req 对象，可以把 req.headers 信息放在 axios 上，相当于服务端渲染请求的 req 附有浏览器 req 中的 header\n\n### 项目开发TIP\n+ 快车推广数据和订单中已推广详情数据的两个接口，推广ID的字段名一个为 adId，一个为 promotionId。所以在前端交互过程中统一转化为 promotionId(Node 端返回已推广详情数据的接口在返回时做了替换)，修改提交时改为 adId(后面做统一优化处理)\n"
-    },
-    {
-      "id": "52f2b020-9be6-11e8-bdab-a188233769c4",
-      "title": "少妇白洁",
-      "desc": "看怎么实现简介吧",
-      "category": "YY爽文",
-      "tags": [],
-      "createTime": 1525881600000,
-      "lastModify": 1525881600000
+      "article": "# Nodejs项目-nodejs-zzgg-clickfallback-api\n\n项目描述\n### 开发准备\n1. 项目\b启动\n\n    ```sh\n    npm install\n    u start\n    ```\n\n### 项目\b相关信息\n - 上线jira： http://jira.zhubajie.la/browse/ZZGG-6842\n - 新建项目jira： http://jira.zhubajie.la/browse/WORKFLOW-20776\n - 开发jira：http://jira.zhubajie.la/secure/RapidBoard.jspa?rapidView=342&projectKey=SDJWY&selectedIssue=SDJWY-27\n- \bdubbo生成物地址：https://git.zhubajie.la/dept-ad-nodejs/nodejs-zzgg-clickfallback-api.git#clickfallback_2.0\n- 接口文档地址：http://doc.zhubajie.la/pages/viewpage.action?pageId=44149283\n- 资料可参考地址：\n    - http://cn.redux.js.org/docs/basics/Reducers.html\n    - https://reactjs.org/\n    - https://zeit.co/blog/next\n\n- \b\b头部，尾部，侧边栏均引用的公共服务\n    - 头部（http://zhumacs.zbj.com/service/js-common-header）\n    - 尾部（http://utopiacs.zbj.com/service/footer-v1）\n    - 侧边栏（http://zhumacs.zbj.com/service/jinshi-left-nav）\n    - 提示信息\b（http://js.zbj.com/cms/recommend?p=account&m=notice)\n\n##### 涉及到的页面\n+ 访问\b路由均要加上： `djwy` 前缀，通过配置中心的 `globalPrefix` 决定\n+ 页面涉及\n    + 首页 `/djwy/`\n    + 订单页 `/djwy/order`\n    + 报表页 `/djwy/report?orderId=xxx`\n    + 投放设置页 `/djwy/setting?orderId=xxx`\n\n### \b项目中已经解决的问题\n1. nextApp 需要在 UA 启动前调用：修改 www 启动文件\n    - 主要增加nextApp和render的绑定，方便之后next里面render页面使用\n2. 项目编译后找不到文件：可能是根目录错误，修改 require('next')({ dir }) 的 dir 参数\n3. 资源 404，但能加载出来：UA 初始化前加上 routes 补丁，绑定路由监听 next 静态资源并交 nextApp.getRequestHandler() 处理\n    - \b此处是在patch里面的routes里面进行解决的。\n4. 'import style from \"style\"' 编译 style 样式文件报错：SSR 原因，使用新 loader [next-style-loader](https://www.npmjs.com/package/next-style-loader)（`此方式已经弃用`）\n    - 后面采用的一种方式是提取出一个hoc的文件，将公共的\b组件和编译后的文件在这里进行加载，然后以PageWrapper的方式抛出，之后每个页面引入，实现了样式的加载\n5. webpack alias 无效：SSR 原因，[babel-plugin-module-resolver](https://github.com/zeit/next.js/tree/master/examples/with-absolute-imports)\n6. 'import img from \"img\"' 报错：使用 [babel-plugin-import-static-files](https://github.com/ahalimkara/babel-plugin-import-static-files), 可加 hash\n7. 定义全局变量：使用 [babel-plugin-transform-define](https://github.com/FormidableLabs/babel-plugin-transform-define)\n8. 在_document.js里面引入组件，样式无法加载；官方推荐是components里面新建layout文件来引用公共的组件，但是，无法在组件里面请求数据(`已经在第四条里面的hoc解决`)\n9. 为引入的侧边栏可使用jquery，jquery绑定到window的方式比较鸡肋，后期优化\n\n### Tips\n+ 客户端渲染时，echarts异步初始化的样式需要写成行内样式加载\n+ 全局只需同步访问时的公共数据，放在 /hoc/index 下 getInitialProps 中的 isServer 判断里\n+ /pages 下的路由，getInitialProps 统一改为 getAsyncProps，并在 /hoc/index 下的 getInitialProps 中调用(`为解决接入hoc之后，hoc 里面的getInitialProps覆盖page里面的`)\n+ 浏览器端曾遇到一个错 `net:ERR_CONTENT_LENGTH_MISMATCH`。这是 nginx 缓存大文件，因为权限等原因读取不到时报的错\n\n### 头部、侧边菜单栏、底部等公司内部组件引入问题\n+ 问题描述：这些组件的 JS 中用到了 define、jquery 等浏览器端全局变量\n+ 解决方案：绑定 window.jquery 的操作，放在了 /hoc/index.js 中的 componentDidMount 方法中；在 _document.js 中的 Head 中绑定了 ZBJIndo 及 seajs 变量，添加了 define 函数；但 componentDidMount 的执行在解析了加载的 JS 之后，如果在 define 时执行执行组件提供的 JS 代码，里面的 jquery 会报错，所以在 define 中制作了一个监听器：在页面加载完 jquery 后再执行 define 中的回调\n\n### 侧边菜单栏 与 react 中的通信\n+ 问题描述：点击侧边菜单栏的某些菜单时，不应该触发该组件原生的跳转功能，需要通知 react 做浏览器端路由跳转\n+ 解决方案：在 window 在绑定自定义事件，通过 trigger 手动触发进行双方通信\n\n### 服务端渲染，cookie 信息丢失\n+ 问题描述：在服务端渲染时，浏览器发送一个 req 同步请求；之后服务器处理这个请求，并在服务端渲染时调用接口获取同步渲染所需数据；此时 API 调用的接口地址为 `127.0.0.1:3110`，且为服务器自身新起的一个 req，无法带上浏览器请求 req 附带的 cookie 信息\n+ 解决方案：手动封装了一个 /utils/axios 方法，接收一个 req 对象，可以把 req.headers 信息放在 axios 上，相当于服务端渲染请求的 req 附有浏览器 req 中的 header\n\n### 项目开发TIP\n+ 快车推广数据和订单中已推广详情数据的两个接口，推广ID的字段名一个为 adId，一个为 promotionId。所以在前端交互过程中统一转化为 promotionId(Node 端返回已推广详情数据的接口在返回时做了替换)，修改提交时改为 adId(后面做统一优化处理)\n",
+      "online": true
     },
     {
       "id": "1bfc5030-9c4f-11e8-90da-0fbf5f92f85d",
@@ -68,15 +60,6 @@
       "createTime": 1520611200000,
       "lastModify": 1520611200000,
       "article": "# h1\n# h2\n# h3\n\n```\nasdsadasd\n```"
-    },
-    {
-      "id": "1a2715d0-9ed2-11e8-90fa-27589ead612f",
-      "title": "",
-      "desc": "",
-      "category": "",
-      "tags": [],
-      "createTime": 1518192000000,
-      "lastModify": 1518192000000
     },
     {
       "id": "45d93360-9ee2-11e8-96bd-9bd3ec1a2d0e",
@@ -250,22 +233,16 @@
       "lastModify": 1534743369481
     },
     {
-      "id": "cfc53100-a43c-11e8-aa26-efc93289f4d5",
-      "title": "asdasdd",
-      "desc": "asdasd",
-      "tags": [],
-      "createTime": 1534744172560,
-      "lastModify": 1534744172560
-    },
-    {
       "id": "d4cc9350-a43c-11e8-aa26-efc93289f4d5",
-      "title": "asdasdd",
-      "desc": "asdasd",
+      "title": "就是想测试下修改",
+      "desc": "测试下描述修改",
       "tags": [
-        "asdasd"
+        "asdasd",
+        "哈哈哈"
       ],
       "createTime": 1534744180998,
-      "lastModify": 1534744180998
+      "lastModify": 1536288589222,
+      "article": "asdasd\n## 啊哈哈哈"
     },
     {
       "id": "f813cb80-a43c-11e8-aa26-efc93289f4d5",
@@ -275,7 +252,9 @@
         "测试标签"
       ],
       "createTime": 1534744240184,
-      "lastModify": 1534744240184
+      "lastModify": 1534744240184,
+      "online": true,
+      "article": "### 阿萨德撒大大撒大所多"
     },
     {
       "id": "99ce93a0-a43e-11e8-89c8-b1a17245fcab",
@@ -285,7 +264,8 @@
         "测试标签2"
       ],
       "createTime": 1534744941018,
-      "lastModify": 1534744941018
+      "lastModify": 1534744941018,
+      "article": "### asdasdasd"
     },
     {
       "id": "39055380-a441-11e8-8938-47a2fd90d0e6",
@@ -295,15 +275,8 @@
         "测试标签3"
       ],
       "createTime": 1534746067128,
-      "lastModify": 1534746067128
-    },
-    {
-      "id": "1e2c2210-a45e-11e8-9571-757f7369a9d1",
-      "title": "asdasd",
-      "desc": "asdas",
-      "tags": [],
-      "createTime": 1534758477489,
-      "lastModify": 1534758477489
+      "lastModify": 1534746067128,
+      "article": "---\nasdasd\n---asdasdsadsadsadasdasdasdasdad"
     },
     {
       "id": "4f59be20-a6ab-11e8-9a0e-991b5007e88c",
@@ -327,7 +300,8 @@
       ],
       "createTime": 1535011600777,
       "lastModify": 1535011600777,
-      "article": "![](/images/illustrati/visualstudio-code_1535011598134.png)\n"
+      "article": "![](/images/illustrati/visualstudio-code_1535011598134.png)\n",
+      "online": true
     },
     {
       "id": "b55fc110-a6ab-11e8-9a0e-991b5007e88c",
@@ -338,7 +312,9 @@
         "测试"
       ],
       "createTime": 1535011704737,
-      "lastModify": 1535011704737
+      "lastModify": 1535011704737,
+      "online": true,
+      "article": "![](/images/illustrati/intellijIDEA_1535011691494.png)\n"
     },
     {
       "id": "c35e4100-a6ac-11e8-9b50-af33f591519e",
@@ -349,7 +325,37 @@
         "测试"
       ],
       "createTime": 1535012157712,
-      "lastModify": 1535012157712
+      "lastModify": 1535012157712,
+      "article": "asdasdsadasdasdasdasdasdasdasdasdasd\n```\nasdasdasd\nvar s=  saasdsad\n![](/images/illustrati/sublimetext_1535012154721.png)\n",
+      "online": true
+    },
+    {
+      "id": "2f3f1580-b0b6-11e8-926d-11b19f439d2e",
+      "title": "从 Vuex 剖析 Vue 响应式原理",
+      "cover": "",
+      "desc": "准备写而已",
+      "tags": [
+        "JavaScript",
+        "Vue"
+      ],
+      "createTime": 1536115715800,
+      "lastModify": 1536115715800,
+      "article": "##### 还没开始写的\n##### 但这样开头，肯定要先把系统文章修改的功能做了",
+      "online": true
+    },
+    {
+      "id": "d98f3e20-b0b6-11e8-926d-11b19f439d2e",
+      "title": "浅谈浏览器性能资源监测",
+      "cover": "",
+      "desc": "也没还没写的",
+      "tags": [
+        "性能",
+        "测试tag"
+      ],
+      "createTime": 1536116001538,
+      "lastModify": 1536286638766,
+      "article": "#### performance 相关 Api\n#### 测试修改= =",
+      "online": true
     }
   ]
 }

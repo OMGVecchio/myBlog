@@ -3,7 +3,8 @@ import types from 'store/action/common'
 
 const defaultState = Immutable.fromJS({
   asideIsOpen: true,
-  isLongScroll: false
+  isLongScroll: false,
+  pathname: ''
 })
 
 export default (initState = defaultState, action) => {
@@ -16,6 +17,8 @@ export default (initState = defaultState, action) => {
       return initState.set('isLongScroll', true)
     case types.HIDE_HEADER_SHADOW:
       return initState.set('isLongScroll', false)
+    case types.SWITCH_MENU_ITEM:
+      return initState.set('pathname', action.pathname)
     default:
       return initState
   }

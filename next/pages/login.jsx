@@ -24,16 +24,14 @@ const LoginModal = () => {
       username: this.username,
       password: this.password
     }
-    xhr.post('/api/login', { ...param }).then((res) => {
-      res.json().then((data) => {
-        if (data.code === 201) {
-          setToken(data.data)
-          message.success('管理员登录成功')
-          Router.push('/')
-        } else {
-          message.error(data.data)
-        }
-      })
+    xhr.post('/api/login', { ...param }).then((data) => {
+      if (data.code === 201) {
+        setToken(data.data)
+        message.success('管理员登录成功')
+        Router.push('/')
+      } else {
+        message.error(data.data)
+      }
     })
   }
   return (

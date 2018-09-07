@@ -2,9 +2,10 @@ import { Fragment } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 
+import Link from 'next/link'
 import Router from 'next/router'
 
-import { Row, Col, Icon, Input } from 'antd'
+import { Icon, Input } from 'antd'
 
 import types from 'store/action/common'
 
@@ -33,21 +34,22 @@ const Header = ({
     <Fragment>
       <style dangerouslySetInnerHTML={{ __html: style }} />
       <header className={classNames('main-header', { 'show-shadow': isLongScroll })}>
-        <Row type="flex" justify="space-between" align="middle" style={{ height: '100%' }}>
-          <Col>
-            <Icon className="header-close-icon" type="menu-unfold" onClick={openMenu} />
-          </Col>
-          <Col>
-            { isLongScroll && <h4 className="header-title">{title}</h4> }
-          </Col>
-          <Col>
-            <Input.Search
-              defaultValue={isServer ? '' : Router.query.kw}
-              className="header-search-wrap"
-              onSearch={search}
-            />
-          </Col>
-        </Row>
+        <div>
+          <Icon className="header-icon header-close-icon" type="menu-unfold" onClick={openMenu} />
+        </div>
+        <div>
+          { isLongScroll && <h4 className="header-title">{title}</h4> }
+        </div>
+        <div>
+          <Input.Search
+            defaultValue={isServer ? '' : Router.query.kw}
+            className="header-search-wrap"
+            onSearch={search}
+          />
+          <Link href="/login">
+            <Icon className="header-icon header-login-icon" type="login" />
+          </Link>
+        </div>
       </header>
     </Fragment>
   )

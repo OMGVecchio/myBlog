@@ -9,12 +9,17 @@ import {
 import xhr from 'utils/fetch'
 
 // import types from 'store/action/common'
-import articleTypes, { fillList, fillDetail, fillComment } from 'store/action/article'
+import articleTypes, {
+  fillList,
+  fillDetail,
+  fillComment,
+  removeArticleDone,
+  onlineArticleDone
+} from 'store/action/article'
 import tagTypes, { fillList as fillTagList } from 'store/action/tag'
 
 function* fetchList() {
-  const res = yield xhr.get('/api/article')
-  const dataResolve = yield res.json()
+  const dataResolve = yield xhr.get('/api/article')
   const { data } = dataResolve
   yield put(fillList(data))
 }
@@ -30,8 +35,7 @@ function* fetchDetail({ articleId }) {
   if (detailCache[articleId]) {
     return
   }
-  const res = yield xhr.get(`/api/article/${articleId}`)
-  const dataResolve = yield res.json()
+  const dataResolve = yield xhr.get(`/api/article/${articleId}`)
   const { data } = dataResolve
   yield put(fillDetail(articleId, data))
 }
@@ -48,10 +52,27 @@ function* fetchComment({ articleId }) {
   // if (commentCache[articleId]) {
   //   return
   // }
-  const res = yield xhr.get(`/api/comment/${articleId}`)
-  const dataResolve = yield res.json()
+  const dataResolve = yield xhr.get(`/api/comment/${articleId}`)
   const { data } = dataResolve
   yield put(fillComment(articleId, data))
+}
+
+function* removeArticle({ articleId }) {
+  const dataResolve = yield xhr.del(`/api/article/${articleId}`)
+  const { success } = dataResolve
+  if (success) {
+    yield put(removeArticleDone(articleId))
+  }
+}
+
+function* onlineArticle({ articleId, online }) {
+  // on:上线  off:下线
+  const tag = online ? 'on' : 'off'
+  const dataResolve = yield xhr.put(`/api/article/${articleId}`, { online: tag })
+  const { success } = dataResolve
+  if (success) {
+    yield put(onlineArticleDone(articleId, online))
+  }
 }
 
 function* fetchTagList({ clearCache = false }) {
@@ -67,8 +88,7 @@ function* fetchTagList({ clearCache = false }) {
       return
     }
   }
-  const res = yield xhr.get('/api/tags')
-  const dataResolve = yield res.json()
+  const dataResolve = yield xhr.get('/api/tags')
   const { data } = dataResolve
   yield put(fillTagList(data))
 }
@@ -77,6 +97,8 @@ function* rootSaga() {
   yield takeEvery(articleTypes.FETCH_LIST, fetchList)
   yield takeEvery(articleTypes.FETCH_DETAIL, fetchDetail)
   yield takeEvery(articleTypes.FETCH_COMMENT, fetchComment)
+  yield takeEvery(articleTypes.REMOVE_ARTICLE, removeArticle)
+  yield takeEvery(articleTypes.ONLINE_ARTICLE, onlineArticle)
   yield takeEvery(tagTypes.FETCH_LIST, fetchTagList)
 }
 
