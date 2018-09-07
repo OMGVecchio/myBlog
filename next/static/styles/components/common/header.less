@@ -1,5 +1,9 @@
 .main-header {
   position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   left: 0;
   z-index: 99;
   height: 65px;
@@ -10,11 +14,18 @@
   &.show-shadow {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   }
-  .header-close-icon {
+  .header-icon {
     font-weight: bold;
-    margin-left: 20px;
     font-size: 20px;
     cursor: pointer;
+  }
+  .header-close-icon {
+    margin-left: 20px;
+  }
+  .header-login-icon {
+    position: relative;
+    top: 4px;
+    margin-right: 40px;
   }
   .header-title {
     color: #ffffff;
@@ -23,7 +34,7 @@
   }
   .header-search-wrap {
     transition: all .5s;
-    margin-right: 20px;
+    margin-right: 40px;
     width: 210px;
   }
 }
