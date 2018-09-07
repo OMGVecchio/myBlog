@@ -37,6 +37,7 @@
 + 父组件传给子组件的 props ，这个 props 影响子组件的 state，放在 componentWillComponent 和 componentWillReceiveProps(更合理？) 中处理，在这两个钩子中 setState 不会引起多余的 render【详情可建 /compose 里修改时的操作处理】
 + 为了做前端数据缓存，在各个类型的文章列表及文章管理页中通用，暂时是一次性加载完所有文章列表的，其实照理说本系统的所有文章总数并不会太大，及时一次性加载完所有文章列表数据影响也不会过甚
 + `/pages/compose.jsx` 修改模式下，第一次访问页面时的 editor，value 正常，但是显示出来 UI 有问题，看流程是渲染了两次，第一次时接收的值为空，所以 UI 呈现的为空，第二次接收父组件在 componentWillReceiveProps 时设置的正常值，但是 UI 还是第一次渲染时的样纸。可能是 diff 过程中一些因素造成的没有重新渲染？所以暂时对每个 editor 加一个简单 key 做重新渲染
++ 有些涉及到 cookie 等操作的过程，在服务端渲染的结果和客户端应当渲染出来的结构有差异，这个时候暂时可以先停止那个组件的 ssr[可以吧 loading 替换成更美观的过渡]。ex.编辑页的 editor、文章详情页用户信息的 BaseInput
 
 ### server 端配合 next 做路由整合, eg. ?articleId=123 => /articleId
 

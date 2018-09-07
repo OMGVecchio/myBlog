@@ -1,5 +1,6 @@
-import { Fragment, PureComponent } from 'react'
+import { PureComponent } from 'react'
 import { connect } from 'react-redux'
+import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import classNames from 'classnames'
 
@@ -8,6 +9,7 @@ import { Radio, Upload, Switch, Input, Button, Row, Col } from 'antd'
 import Layout from 'components/layout'
 import Markdown from 'components/article/markdown'
 import TagGroup from 'components/compose/tag-group'
+
 import xhr from 'utils/fetch'
 import fullScreen from 'utils/full-screen'
 
@@ -195,100 +197,100 @@ class Compose extends PureComponent {
     } = this.props
     return (
       <Layout className="compose-page">
-        <style dangerouslySetInnerHTML={{ __html: style }} />
-        <Fragment>
-          <div className={classNames('compose-panel-wrap', { 'full-screen': isFullScreen })}>
-            <div className="compose-opt-group">
-              <Radio.Group value={editorType} onChange={this.changeEditorType}>
-                <Radio.Button value={1}>
-                  CodeMirror
-                </Radio.Button>
-                <Radio.Button value={2}>
-                  Ace
-                </Radio.Button>
-              </Radio.Group>
-              <Upload
-                name="file"
-                showUploadList={false}
-                action="/api/upload/illustrati"
-                onChange={this.insertImage}
-              >
-                <Button>
-                  插入图片
-                </Button>
-              </Upload>
-              <Upload
-                name="cover"
-                showUploadList={false}
-                action="/api/upload/cover"
-                onChange={this.setCover}
-              >
-                <Button>
-                  插入封面
-                </Button>
-              </Upload>
-              <Switch className="switch-fullscreen" defaultChecked={isFullScreen} onChange={this.changeFullScreen} />
-              <Button className="fr" onClick={this.save}>
-                保存
+        <Head>
+          <style dangerouslySetInnerHTML={{ __html: style }} />
+        </Head>
+        <div className={classNames('compose-panel-wrap', { 'full-screen': isFullScreen })}>
+          <div className="compose-opt-group">
+            <Radio.Group value={editorType} onChange={this.changeEditorType}>
+              <Radio.Button value={1}>
+                CodeMirror
+              </Radio.Button>
+              <Radio.Button value={2}>
+                Ace
+              </Radio.Button>
+            </Radio.Group>
+            <Upload
+              name="file"
+              showUploadList={false}
+              action="/api/upload/illustrati"
+              onChange={this.insertImage}
+            >
+              <Button>
+                插入图片
               </Button>
-            </div>
-            <div className="compose-extra-group">
-              <Input
-                value={this.state.title}
-                style={{ width: '170px' }}
-                placeholder="文章名"
-                onChange={this.setTitle}
-              />
-              <TagGroup
-                value={this.state.tags}
-                tagList={this.props.tagList}
-                onChange={this.setTag}
-              />
-              <Input.TextArea
-                value={this.state.desc}
-                className="article-desc"
-                placeholder="文章简介"
-                onChange={this.setDesc}
-                autosize={{ minRows: 1, maxRows: 2 }}
-              />
-            </div>
-            <Row className="compose-write-group">
-              <Col className="compose-write-panel" span={12}>
-                {
-                  editorType === 1
-                    ? (
-                      <CodeMirrorEditor
-                        key={articleId && articleDetail[articleId]}
-                        refHOC={this.refHOC}
-                        value={article}
-                        defaultValue={article}
-                        opts={{
-                          options: {
-                            mode: 'markdown',
-                            lineNumbers: true
-                          }
-                        }}
-                        onChange={this.changeValue}
-                      />
-                    )
-                    : (
-                      <AceEditor
-                        key={articleId && articleDetail[articleId]}
-                        refHOC={this.refHOC}
-                        value={article}
-                        defaultValue={article}
-                        onChange={this.changeValue}
-                        lan="markdown"
-                      />
-                    )
-                }
-              </Col>
-              <Col className="compose-result-panel" span={12}>
-                <Markdown source={article} />
-              </Col>
-            </Row>
+            </Upload>
+            <Upload
+              name="cover"
+              showUploadList={false}
+              action="/api/upload/cover"
+              onChange={this.setCover}
+            >
+              <Button>
+                插入封面
+              </Button>
+            </Upload>
+            <Switch className="switch-fullscreen" defaultChecked={isFullScreen} onChange={this.changeFullScreen} />
+            <Button className="fr" onClick={this.save}>
+              保存
+            </Button>
           </div>
-        </Fragment>
+          <div className="compose-extra-group">
+            <Input
+              value={this.state.title}
+              style={{ width: '170px' }}
+              placeholder="文章名"
+              onChange={this.setTitle}
+            />
+            <TagGroup
+              value={this.state.tags}
+              tagList={this.props.tagList}
+              onChange={this.setTag}
+            />
+            <Input.TextArea
+              value={this.state.desc}
+              className="article-desc"
+              placeholder="文章简介"
+              onChange={this.setDesc}
+              autosize={{ minRows: 1, maxRows: 2 }}
+            />
+          </div>
+          <Row className="compose-write-group">
+            <Col className="compose-write-panel" span={12}>
+              {
+                editorType === 1
+                  ? (
+                    <CodeMirrorEditor
+                      key={articleId && articleDetail[articleId]}
+                      refHOC={this.refHOC}
+                      value={article}
+                      defaultValue={article}
+                      opts={{
+                        options: {
+                          mode: 'markdown',
+                          lineNumbers: true
+                        }
+                      }}
+                      onChange={this.changeValue}
+                    />
+                  )
+                  : (
+                    <AceEditor
+                      key={articleId && articleDetail[articleId]}
+                      refHOC={this.refHOC}
+                      value={article}
+                      defaultValue={article}
+                      onChange={this.changeValue}
+                      lan="markdown"
+                    />
+                  )
+              }
+            </Col>
+            <Col className="compose-result-panel" span={12}>
+              <Markdown source={article} />
+            </Col>
+          </Row>
+        </div>
       </Layout>
     )
   }

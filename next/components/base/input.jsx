@@ -12,6 +12,7 @@ class Input extends PureComponent {
     className: '',
     placeholder: '',
     defaultValue: '',
+    width: '',
     onChange: () => {}
   }
   state = {
@@ -19,7 +20,7 @@ class Input extends PureComponent {
   }
   componentWillMount() {
     const { defaultValue } = this.props
-    if (this.checkEmpty(this.state.value) && this.checkEmpty(defaultValue)) {
+    if (this.checkEmpty(this.state.value) && !this.checkEmpty(defaultValue)) {
       this.setState({ value: defaultValue })
     }
   }
@@ -34,14 +35,18 @@ class Input extends PureComponent {
       block,
       type,
       className,
-      placeholder
+      placeholder,
+      width = ''
     } = this.props
     return (
       <Fragment>
         <Head>
           <style dangerouslySetInnerHTML={{ __html: style }} key="b-input-style" />
         </Head>
-        <div className={classnames('_b-input', className, { block, isFilled: !this.checkEmpty(this.state.value) })}>
+        <div
+          className={classnames('_b-input', className, { block, 'is-filled': !this.checkEmpty(this.state.value) })}
+          style={width ? { width: `${width}px` } : {}}
+        >
           <div className="_b-input-box-wrap">
             <input
               value={this.state.value}
