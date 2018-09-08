@@ -14,9 +14,7 @@ const Aside = ({
   asideIsOpen,
   pathname
 }) => {
-  const close = () => {
-    dispatch({ type: types.CLOSE_ASIDE })
-  }
+  const close = () => dispatch({ type: types.CLOSE_ASIDE })
   const briefTip = 'UI丑到爆我是知道的，功能简陋我也是知道的，交互贼差我又没关注有啥办法，优化中'
   const menuData = [{
     label: '主页',
