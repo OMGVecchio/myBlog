@@ -1,9 +1,11 @@
 import 'isomorphic-fetch'
 
-import { isObject, getUrlQuery } from 'utils'
+import { isServer, isObject, getUrlQuery } from 'utils'
 import { getToken } from 'utils/token'
 
-const prefix = 'http://127.0.0.1:3000'
+const config = require('../../config')
+
+const prefix = `http://${isServer ? '127.0.0.1' : config.host}:${config.port}`
 const fetchOpt = {
   cache: 'no-cache',
   credentials: 'same-origin',
