@@ -21,11 +21,11 @@ const CommentListItem = ({
   }
   const getTitle = () => {
     if (username && blogFix) {
-      return <a href={blogFix}>{username}</a>
+      return <a href={blogFix} target="_blank">{username}</a>
     } else if (username) {
       return username
     } else if (blogFix) {
-      return <a href={blogFix}>{id}</a>
+      return <a href={blogFix} target="_blank">{id}</a>
     }
     return id
   }

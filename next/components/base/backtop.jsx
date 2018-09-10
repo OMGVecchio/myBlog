@@ -16,7 +16,7 @@ const BackTop = ({
 }) => (
   <Fragment>
     <Head>
-      <style dangerouslySetInnerHTML={{ __html: style }} key="b-backtop-style" />
+      <style dangerouslySetInnerHTML={{ __html: style }} key="style-backtop" />
     </Head>
     <div
       className={classnames('_b-backtop', { visible: show })}

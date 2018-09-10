@@ -30,7 +30,7 @@ const EmojiWrap = ({
     <Fragment>
       <div className="component-emoji">
         <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} />
+          <style dangerouslySetInnerHTML={{ __html: style }} key="style-emoji" />
         </Head>
         {visible && (
           <div className="emoji-wrap">
