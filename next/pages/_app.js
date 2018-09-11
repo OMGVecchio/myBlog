@@ -1,11 +1,15 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import App, { Container } from 'next/app'
+import Router from 'next/router'
 import withRedux from 'next-redux-wrapper'
 import withReduxSaga from 'next-redux-saga'
-import Router from 'next/router'
+
+import { message } from 'antd'
 
 import createStore from 'store'
+
+import { showProgress, hideProgress } from 'store/action/common'
 
 import { getToken } from 'utils/token'
 
@@ -17,23 +21,31 @@ class MyApp extends App {
       pageProps = await Component.getInitialProps({ ctx })
     }
 
+    const { store } = ctx
+    const { dispatch } = store
+
+    Router.onRouteChangeStart = (to) => {
+      dispatch(showProgress())
+      const protectedPathes = ['/compose', '/manage']
+      if (protectedPathes.indexOf(to) !== -1) {
+        if (!getToken()) {
+          Router.replace('/login')
+        }
+      }
+    }
+
+    Router.onRouteChangeComplete = () => {
+      dispatch(hideProgress())
+    }
+
     return { pageProps }
   }
   componentDidMount() {
-    // TOOD 路由拦截有问题
-    // Router.onBeforeHistoryChange = (to) => {
-    //   const protectedPathes = ['/compose']
-    //   if (protectedPathes.indexOf(to) !== -1) {
-    //     Router.push('/login')
-    //   }
-    // }
-    Router.onRouteChangeStart = (to) => {
-      const protectedPathes = ['/compose']
-      if (protectedPathes.indexOf(to) !== -1) {
-        if (!getToken()) {
-          Router.push('/login')
-        }
-      }
+    // 在这里可以获取到 onRouteChangeStart 获取不到的服务端渲染的第一个路由？
+
+    // 检测是否安装了 adblock 之类的广告屏蔽插件
+    if (typeof adblockWorkWell === 'undefined') {
+      message.warn('大哥大姐，麻烦关个 adBlock ?')
     }
   }
   render() {

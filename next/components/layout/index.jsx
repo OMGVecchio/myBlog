@@ -4,16 +4,15 @@ import Head from 'next/head'
 import Router from 'next/router'
 import classNames from 'classnames'
 
-import { Row, Col } from 'antd'
-
 import types from 'store/action/common'
 
 import Header from 'components/common/header'
 import Footer from 'components/common/footer'
 import Menu from 'components/common/aside'
 import BackTop from 'components/base/backtop'
+import LinearProgress from 'components/base/linearprogress'
 
-import isServer from 'utils'
+import { isServer } from 'utils'
 
 import layoutStyle from 'static/styles/components/layout/index.less'
 
@@ -95,6 +94,7 @@ class Layout extends PureComponent {
           <title>{pageTitle}</title>
           <style dangerouslySetInnerHTML={{ __html: layoutStyle }} />
         </Head>
+        <LinearProgress visible={this.props.globalProgress} className="global-router-progress" />
         <Menu />
         <div className={classNames('main-wrap', { 'menu-has-close': !asideIsOpen })}>
           <Header title={title} isLongScroll={isLongScroll} />
@@ -105,17 +105,13 @@ class Layout extends PureComponent {
                 { showTitle && title }
               </h4>
             </div>
-            { /**
-               * calc(100vh - 300px) 写在 less 里会编译成 -200vh
-               * 需要写成 calc(~"100vh - 300px")
-               * */ }
-            <Row type="flex" justify="center" className="content-body-wrap" style={{ minHeight: 'calc(100vh - 300px)' }}>
-              <Col span={24} className="content-body-main">
-                <div className={className}>
+            <div className="content-body-wrap">
+              <div className="content-body-main">
+                <div className={classNames({ [className]: !!className })}>
                   {children}
                 </div>
-              </Col>
-            </Row>
+              </div>
+            </div>
             <Footer />
           </div>
         </div>
@@ -128,10 +124,8 @@ const mapStateToProps = (state) => {
   const common = state.get('common')
   const asideIsOpen = common.get('asideIsOpen')
   const isLongScroll = common.get('isLongScroll')
-  return {
-    asideIsOpen,
-    isLongScroll
-  }
+  const globalProgress = common.get('globalProgress')
+  return { asideIsOpen, isLongScroll, globalProgress }
 }
 
 export default connect(mapStateToProps)(Layout)

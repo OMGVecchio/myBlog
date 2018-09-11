@@ -25,6 +25,7 @@
     "browser": true
   },
   "globals": {
-    "__NEXT_DATA__": true
+    "__NEXT_DATA__": true,
+    "adblockWorkWell": true
   }
 }

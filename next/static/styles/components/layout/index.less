@@ -3,6 +3,10 @@
 .global-wrap {
   overflow-y: scroll;
 }
+.global-router-progress {
+  position: fixed;
+  z-index: 1001;
+}
 .main-wrap {
   padding-left: @menuWitdh;
   transition: padding-left @menuDuration;
@@ -25,10 +29,13 @@
   }
 }
 .content-body-wrap {
+  // calc(100vh - 300px) 写在 less 里会编译成 -200vh
+  // 需要写成 calc(~"100vh - 300px")
+  min-height: calc(~"100vh - 300px");
   .content-body-main {
-    min-width: 840px;
-    max-width: 1000px;
-    width: 70%;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
     margin-top: 20px;
     margin-bottom: 20px;
   }
