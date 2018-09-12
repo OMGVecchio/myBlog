@@ -3,7 +3,7 @@
 const path = require('path')
 const glob = require('glob')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin")
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
 
 module.exports = {
   webpack(config) {

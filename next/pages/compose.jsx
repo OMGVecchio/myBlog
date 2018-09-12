@@ -19,7 +19,7 @@ import { fetchList } from 'store/action/tag'
 import style from 'static/styles/pages/compose.less'
 
 const AceEditor = dynamic(import('components/editor/ace'), { ssr: false })
-const CodeMirrorEditor = dynamic(import('components/editor/code-mirror'), { ssr: false })
+const CodeMirrorEditor = dynamic(import('components/editor/codemirror'), { ssr: false })
 const MODE_CREATE = 1
 const MODE_MODIFY = 2
 
