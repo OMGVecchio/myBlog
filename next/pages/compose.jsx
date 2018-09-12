@@ -1,25 +1,25 @@
 import { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import Head from 'next/head'
-import dynamic from 'next/dynamic'
+import { Radio, Upload, Switch, Input, Button, Row, Col } from 'antd'
 import classNames from 'classnames'
 
-import { Radio, Upload, Switch, Input, Button, Row, Col } from 'antd'
+import Head from 'next/head'
+import dynamic from 'next/dynamic'
 
-import Layout from 'components/layout'
-import Markdown from 'components/article/markdown'
-import TagGroup from 'components/compose/tag-group'
+import Layout from '~/layout'
+import Markdown from '~/article/markdown'
+import TagGroup from '~/compose/tag-group'
 
-import xhr from 'utils/fetch'
-import fullScreen from 'utils/full-screen'
+import xhr from '_/fetch'
+import fullScreen from '_/full-screen'
 
-import { fetchDetail } from 'store/action/article'
-import { fetchList } from 'store/action/tag'
+import { fetchDetail } from '#/action/article'
+import { fetchList } from '#/action/tag'
 
-import style from 'static/styles/pages/compose.less'
+import style from '@/styles/pages/compose.less'
 
-const AceEditor = dynamic(import('components/editor/ace'), { ssr: false })
-const CodeMirrorEditor = dynamic(import('components/editor/codemirror'), { ssr: false })
+const AceEditor = dynamic(import('~/editor/ace'), { ssr: false })
+const CodeMirrorEditor = dynamic(import('~/editor/codemirror'), { ssr: false })
 const MODE_CREATE = 1
 const MODE_MODIFY = 2
 

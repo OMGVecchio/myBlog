@@ -1,17 +1,16 @@
 import React from 'react'
 import { Provider } from 'react-redux'
+import { message } from 'antd'
+
 import App, { Container } from 'next/app'
 import Router from 'next/router'
 import withRedux from 'next-redux-wrapper'
 import withReduxSaga from 'next-redux-saga'
 
-import { message } from 'antd'
+import createStore from '#'
+import { showProgress, hideProgress } from '#/action/common'
 
-import createStore from 'store'
-
-import { showProgress, hideProgress } from 'store/action/common'
-
-import { getToken } from 'utils/token'
+import { getToken } from '_/token'
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {

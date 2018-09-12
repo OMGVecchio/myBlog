@@ -1,7 +1,8 @@
 import React from 'react'
+
 import Document, { Head, Main, NextScript } from 'next/document'
 
-import globalStyle from 'static/styles/global.less'
+import globalStyle from '@/styles/global.less'
 
 export default class MyDocument extends Document {
   render() {

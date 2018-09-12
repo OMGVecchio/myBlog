@@ -1,5 +1,4 @@
 import { Fragment, PureComponent } from 'react'
-
 import { Tag, AutoComplete, Tooltip } from 'antd'
 
 class TagGroup extends PureComponent {

@@ -1,10 +1,10 @@
 import { Fragment } from 'react'
-import Head from 'next/head'
+import { Icon } from 'antd'
 import classnames from 'classnames'
 
-import { Icon } from 'antd'
+import Head from 'next/head'
 
-import style from 'static/styles/components/base/backtop.less'
+import style from '@/styles/components/base/backtop.less'
 
 const goTop = () => {
   window.scrollTo(0, 0)

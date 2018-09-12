@@ -1,15 +1,15 @@
 import { Fragment } from 'react'
+import { Button, message } from 'antd'
+
 import Head from 'next/head'
 import Router from 'next/router'
 
-import { Button, message } from 'antd'
+import BInput from '~/base/input'
 
-import xhr from 'utils/fetch'
-import { setToken } from 'utils/token'
+import xhr from '_/fetch'
+import { setToken } from '_/token'
 
-import BInput from 'components/base/input'
-
-import style from 'static/styles/pages/login.less'
+import style from '@/styles/pages/login.less'
 
 const LoginModal = () => {
   const getUsername = (username) => {

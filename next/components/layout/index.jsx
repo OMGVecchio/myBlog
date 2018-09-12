@@ -1,20 +1,21 @@
 import { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import Head from 'next/head'
-import Router from 'next/router'
 import classNames from 'classnames'
 
-import types from 'store/action/common'
+import Head from 'next/head'
+import Router from 'next/router'
 
-import Header from 'components/common/header'
-import Footer from 'components/common/footer'
-import Menu from 'components/common/aside'
-import BackTop from 'components/base/backtop'
-import LinearProgress from 'components/base/linearprogress'
+import types from '#/action/common'
 
-import { isServer } from 'utils'
+import Header from '~/common/header'
+import Footer from '~/common/footer'
+import Menu from '~/common/aside'
+import BackTop from '~/base/backtop'
+import LinearProgress from '~/base/linearprogress'
 
-import layoutStyle from 'static/styles/components/layout/index.less'
+import { isServer } from '_'
+
+import layoutStyle from '@/styles/components/layout/index.less'
 
 /**
  * 本来是 stateless 组件的

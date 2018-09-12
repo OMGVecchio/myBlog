@@ -1,11 +1,11 @@
 import { Fragment, PureComponent } from 'react'
-import Head from 'next/head'
-
 import { Input, Button } from 'antd'
 
-import EmojiWrap from 'components/article/emoji'
+import Head from 'next/head'
 
-import style from 'static/styles/components/article/comment.less'
+import EmojiWrap from '~/article/emoji'
+
+import style from '@/styles/components/article/comment.less'
 
 const { TextArea } = Input
 

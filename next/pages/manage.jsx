@@ -1,17 +1,17 @@
 import { PureComponent } from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
 import { connect } from 'react-redux'
-
 import { Table, Button, Tag } from 'antd'
 
-import { fetchList, removeArticle, onlineArticle } from 'store/action/article'
+import Head from 'next/head'
+import Link from 'next/link'
 
-import Layout from 'components/layout'
+import Layout from '~/layout'
 
-import { format } from 'utils/moment'
+import { fetchList, removeArticle, onlineArticle } from '#/action/article'
 
-import style from 'static/styles/pages/manage.less'
+import { format } from '_/moment'
+
+import style from '@/styles/pages/manage.less'
 
 class Manage extends PureComponent {
   static defaultProps = {

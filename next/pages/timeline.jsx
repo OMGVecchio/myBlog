@@ -1,21 +1,21 @@
 import { PureComponent, Fragment } from 'react'
 import { connect } from 'react-redux'
+import { Anchor, Row, Col } from 'antd'
 
 import Head from 'next/head'
 
-import { fetchList } from 'store/action/article'
+import Layout from '~/layout'
+import TimelineCard from '~/card/timeline'
 
-import { Anchor, Row, Col } from 'antd'
+import { fetchList } from '#/action/article'
 
-import Layout from 'components/layout'
-import TimelineCard from 'components/card/timeline'
+import { filterArticleList } from '_'
+import Moment from '_/moment'
 
-import Moment from 'utils/moment'
-import { filterArticleList } from 'utils'
-
-import style from 'static/styles/pages/timeline.less'
+import style from '@/styles/pages/timeline.less'
 
 const { Link } = Anchor
+
 class Timeline extends PureComponent {
   static defaultProps = {
     articleList: []

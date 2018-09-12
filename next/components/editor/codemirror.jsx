@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
-import Head from 'next/head'
-
 import CodeMirrorEditor from 'react-codemirror'
+
+import Head from 'next/head'
 
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/mode/markdown/markdown'

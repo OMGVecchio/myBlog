@@ -1,17 +1,16 @@
 import { connect } from 'react-redux'
-import Head from 'next/head'
+import { Icon, Input } from 'antd'
 import classNames from 'classnames'
 
+import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
 
-import { Icon, Input } from 'antd'
+import types from '#/action/common'
 
-import types from 'store/action/common'
+import isServer from '_'
 
-import isServer from 'utils'
-
-import style from 'static/styles/components/common/header.less'
+import style from '@/styles/components/common/header.less'
 
 const search = (kw) => {
   const { pathname, query } = Router

@@ -1,8 +1,9 @@
 import React, { Fragment, PureComponent } from 'react'
 import Markdown from 'react-markdown'
+
 import Head from 'next/head'
 
-import style from 'static/styles/components/article/markdown.less'
+import style from '@/styles/components/article/markdown.less'
 
 class MarkdownWrap extends PureComponent {
   render() {

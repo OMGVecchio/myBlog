@@ -5,6 +5,8 @@ const glob = require('glob')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
 
+const { resolve } = path
+
 module.exports = {
   webpack(config) {
     config.module.rules.push({
@@ -23,7 +25,7 @@ module.exports = {
         {
           loader: 'less-loader',
           options: {
-            includePaths: ['static/styles', 'node_modules']
+            includePaths: [resolve(__dirname, 'static/styles'), resolve(__dirname, '../node_modules')]
               .map(d => path.join(__dirname, d))
               .map(g => glob.sync(g))
               .reduce((a, c) => a.concat(c), [])

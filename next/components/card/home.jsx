@@ -1,10 +1,11 @@
 import { Fragment } from 'react'
+
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { format } from 'utils/moment'
+import { format } from '_/moment'
 
-import style from 'static/styles/components/card/home.less'
+import style from '@/styles/components/card/home.less'
 
 import CardLayout from './layout'
 

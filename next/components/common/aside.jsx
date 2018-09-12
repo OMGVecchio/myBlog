@@ -1,13 +1,13 @@
 import { Fragment } from 'react'
 import { connect } from 'react-redux'
+import { Avatar, Icon, List, Row, Col } from 'antd'
 import classNames from 'classnames'
+
 import Link from 'next/link'
 
-import { Avatar, Icon, List, Row, Col } from 'antd'
+import types from '#/action/common'
 
-import types from 'store/action/common'
-
-import style from 'static/styles/components/common/aside.less'
+import style from '@/styles/components/common/aside.less'
 
 const Aside = ({
   dispatch,

@@ -1,22 +1,22 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
+import { Modal, Button, message } from 'antd'
+
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 
-import { Modal, Button, message } from 'antd'
+import Layout from '~/layout'
+import Markdown from '~/article/markdown'
+import CommentBox from '~/article/comment'
+import CommentList from '~/article/comment-list'
 
-import Layout from 'components/layout'
-import Markdown from 'components/article/markdown'
-import CommentBox from 'components/article/comment'
-import CommentList from 'components/article/comment-list'
+import { fetchDetail, fetchComment } from '#/action/article'
 
-import { fetchDetail, fetchComment } from 'store/action/article'
+import xhr from '_/fetch'
+import { format } from '_/moment'
+import { setCookie, getCookie } from '_/cookie'
 
-import xhr from 'utils/fetch'
-import { format } from 'utils/moment'
-import { setCookie, getCookie } from 'utils/cookie'
-
-import style from 'static/styles/pages/article.less'
+import style from '@/styles/pages/article.less'
 
 // 因为涉及到 cookie 的操作，服务端渲染会有一定问题，暂时停止该组件的服务端渲染，并用更好的提示代替 loading 效果
 const BaseInput = dynamic(import('components/base/input'), { ssr: false })

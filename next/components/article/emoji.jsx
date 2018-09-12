@@ -1,9 +1,10 @@
 import { Fragment } from 'react'
+
 import Head from 'next/head'
 
-import Emoji from 'utils/emoji'
+import Emoji from '_/emoji'
 
-import style from 'static/styles/components/article/emoji.less'
+import style from '@/styles/components/article/emoji.less'
 
 const { list, map } = Emoji
 
