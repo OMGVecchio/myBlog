@@ -3,7 +3,9 @@ const actionTypes = {
   CLOSE_ASIDE: 'common/close_aside',
   SHOW_HEADER_SHADOW: 'common/show_header_shadow',
   HIDE_HEADER_SHADOW: 'common/hide_header_shadow',
-  SWITCH_MENU_ITEM: 'common/switch_menu_item'
+  SWITCH_MENU_ITEM: 'common/switch_menu_item',
+  SHOW_PROGRESS: 'common/show_progress',
+  HIDE_PROGRESS: 'common/hide_progress'
 }
 
 export default actionTypes
@@ -27,4 +29,12 @@ export const hideHeaderShadow = () => ({
 export const switchMenuItem = pathname => ({
   type: actionTypes.SWITCH_MENU_ITEM,
   pathname
+})
+
+export const showProgress = () => ({
+  type: actionTypes.SHOW_PROGRESS
+})
+
+export const hideProgress = () => ({
+  type: actionTypes.HIDE_PROGRESS
 })

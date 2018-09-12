@@ -1,5 +1,5 @@
-import { Fragment } from 'react'
 import { connect } from 'react-redux'
+import Head from 'next/head'
 import classNames from 'classnames'
 
 import Link from 'next/link'
@@ -31,27 +31,27 @@ const Header = ({
     })
   }
   return (
-    <Fragment>
-      <style dangerouslySetInnerHTML={{ __html: style }} />
-      <header className={classNames('main-header', { 'show-shadow': isLongScroll })}>
-        <div>
-          <Icon className="header-icon header-close-icon" type="menu-unfold" onClick={openMenu} />
-        </div>
-        <div>
-          { isLongScroll && <h4 className="header-title">{title}</h4> }
-        </div>
-        <div>
-          <Input.Search
-            defaultValue={isServer ? '' : Router.query.kw}
-            className="header-search-wrap"
-            onSearch={search}
-          />
-          <Link href="/login">
-            <Icon className="header-icon header-login-icon" type="login" />
-          </Link>
-        </div>
-      </header>
-    </Fragment>
+    <header className={classNames('main-header', { 'show-shadow': isLongScroll })}>
+      <Head>
+        <style dangerouslySetInnerHTML={{ __html: style }} />
+      </Head>
+      <div>
+        <Icon className="header-icon header-close-icon" type="menu-unfold" onClick={openMenu} />
+      </div>
+      <div>
+        { isLongScroll && <h4 className="header-title">{title}</h4> }
+      </div>
+      <div>
+        <Input.Search
+          defaultValue={isServer ? '' : Router.query.kw}
+          className="header-search-wrap"
+          onSearch={search}
+        />
+        <Link href="/login">
+          <Icon className="header-icon header-login-icon" type="login" />
+        </Link>
+      </div>
+    </header>
   )
 }
 

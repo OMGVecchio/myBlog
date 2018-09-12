@@ -2,6 +2,8 @@
 
 const path = require('path')
 const glob = require('glob')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin")
 
 module.exports = {
   webpack(config) {
@@ -29,6 +31,23 @@ module.exports = {
         }
       ]
     })
+    if (process.env.NODE_ENV_ANALYZER === 'smplugin') {
+      const smp = new SpeedMeasurePlugin()
+      return smp.wrap(config)
+    }
+    if (process.env.NODE_ENV_ANALYZER === 'baplugin') {
+      config.plugins.push(new BundleAnalyzerPlugin({
+        analyzerMode: 'server',
+        analyzerHost: '127.0.0.1',
+        analyzerPort: 8888,
+        reportFilename: 'report.html',
+        defaultSizes: 'parsed',
+        openAnalyzer: true,
+        generateStatsFile: false,
+        statsFilename: 'stats.json',
+        logLevel: 'info'
+      }))
+    }
     return config
   }
 }

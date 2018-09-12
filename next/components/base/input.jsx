@@ -41,7 +41,7 @@ class Input extends PureComponent {
     return (
       <Fragment>
         <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} key="b-input-style" />
+          <style dangerouslySetInnerHTML={{ __html: style }} key="style-input" />
         </Head>
         <div
           className={classnames('_b-input', className, { block, 'is-filled': !this.checkEmpty(this.state.value) })}

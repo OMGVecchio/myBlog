@@ -19,10 +19,12 @@
           "store": "./store",
           "#": "./store",
           "components": "./components",
+          "~": "./components",
           "static": "./static",
           "@": "./static",
           "utils": "./utils",
-          "_": "./utils"
+          "_": "./utils",
+          "hoc": "./hoc"
         }
       }
     ]

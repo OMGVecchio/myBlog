@@ -4,7 +4,8 @@ import types from 'store/action/common'
 const defaultState = Immutable.fromJS({
   asideIsOpen: true,
   isLongScroll: false,
-  pathname: ''
+  pathname: '',
+  globalProgress: false
 })
 
 export default (initState = defaultState, action) => {
@@ -19,6 +20,10 @@ export default (initState = defaultState, action) => {
       return initState.set('isLongScroll', false)
     case types.SWITCH_MENU_ITEM:
       return initState.set('pathname', action.pathname)
+    case types.SHOW_PROGRESS:
+      return initState.set('globalProgress', true)
+    case types.HIDE_PROGRESS:
+      return initState.set('globalProgress', false)
     default:
       return initState
   }
