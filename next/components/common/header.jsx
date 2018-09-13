@@ -40,11 +40,12 @@ const Header = ({
       <div>
         { isLongScroll && <h4 className="header-title">{title}</h4> }
       </div>
-      <div>
+      <div className="header-opt">
         <Input.Search
           defaultValue={isServer ? '' : Router.query.kw}
           className="header-search-wrap"
           onSearch={search}
+          style={{ width: '210px' }}
         />
         <Link href="/login">
           <Icon className="header-icon header-login-icon" type="login" />

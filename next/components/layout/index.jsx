@@ -17,6 +17,8 @@ import { isServer } from '_'
 
 import layoutStyle from '@/styles/components/layout/index.less'
 
+const SCROLL_TAG = 165;
+
 /**
  * 本来是 stateless 组件的
  * 但是我想在 body 上绑 scroll 事件，需要在销毁时解除绑定的事件
@@ -50,7 +52,7 @@ class Layout extends PureComponent {
     // TODO 滑动需要做优化
     const { isLongScroll, dispatch } = this.props
     const { scrollTop } = e.target.scrollingElement
-    if (scrollTop > 220) {
+    if (scrollTop > SCROLL_TAG) {
       if (!isLongScroll) {
         dispatch({ type: types.SHOW_HEADER_SHADOW })
       }
@@ -74,7 +76,7 @@ class Layout extends PureComponent {
   }
   isLongScroll = () => {
     const scrollTop = this.fetchScrollTop()
-    if (scrollTop > 220) {
+    if (scrollTop > SCROLL_TAG) {
       return true
     }
     return false
