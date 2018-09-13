@@ -35,7 +35,12 @@ class Manage extends PureComponent {
     title: '文章名',
     dataIndex: 'title',
     align: 'center',
-    width: '200px'
+    width: '200px',
+    render: (title, record) => (
+      <Link href={`/article?articleId=${record.id}`}>
+        <span className="article-title">{title}</span>
+      </Link>
+    )
   }, {
     title: '标签',
     dataIndex: 'tags',

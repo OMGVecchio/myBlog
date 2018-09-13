@@ -125,8 +125,8 @@ class Compose extends PureComponent {
     } = this.state
     const { dispatch, articleId } = this.props
     const url = this.state.mode === MODE_CREATE
-      ? '/api/article'
-      : `/api/article/${articleId}`
+      ? '/api/auth/article'
+      : `/api/auth/article/${articleId}`
     await xhr.post(url, {
       title,
       cover,
@@ -213,7 +213,7 @@ class Compose extends PureComponent {
             <Upload
               name="file"
               showUploadList={false}
-              action="/api/upload/illustrati"
+              action="/api/auth/upload/illustrati"
               onChange={this.insertImage}
             >
               <Button>
@@ -223,7 +223,7 @@ class Compose extends PureComponent {
             <Upload
               name="cover"
               showUploadList={false}
-              action="/api/upload/cover"
+              action="/api/auth/upload/cover"
               onChange={this.setCover}
             >
               <Button>

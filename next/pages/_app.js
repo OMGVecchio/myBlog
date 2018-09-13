@@ -21,6 +21,7 @@ class MyApp extends App {
     super(props)
     const { store } = props
     const { dispatch } = store
+    // 后续可在转场时添加特效
     Router.onRouteChangeStart = () => {
       dispatch(showProgress())
     }

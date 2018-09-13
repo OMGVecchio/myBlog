@@ -1,19 +1,19 @@
 import 'isomorphic-fetch'
 
-import { isServer, isObject, getUrlQuery } from 'utils'
-import { getToken } from 'utils/token'
+import { isServer, isObject, getUrlQuery } from '_'
+import { getToken } from '_/token'
 
 const config = require('../../config')
 
 const prefix = `http://${isServer ? '127.0.0.1' : config.host}:${config.port}`
-const fetchOpt = {
+
+const getDefaultOpt = () => ({
   cache: 'no-cache',
   credentials: 'same-origin',
   mode: 'cors',
   redirect: 'follow',
   referrer: 'no-referrer'
-}
-
+})
 const getUrl = (url, needPrefix = true) => {
   if (needPrefix) {
     return `${prefix}${url}`
@@ -21,6 +21,7 @@ const getUrl = (url, needPrefix = true) => {
   return url
 }
 // 组装 fetch 参数
+// 此种赋值方式会有一定问题，例如 extra 中的 headers 会完全覆盖掉默认的 headers，有些默认的是不应该被覆盖的，反之亦然
 const getOpt = (optObj, extraObj = {}) => {
   let obj = optObj
   let extra = extraObj
@@ -30,7 +31,15 @@ const getOpt = (optObj, extraObj = {}) => {
   if (!isObject(extraObj)) {
     extra = {}
   }
-  return Object.assign(obj, fetchOpt, extra)
+  const newOpt = Object.assign(getDefaultOpt(), obj, extra)
+  // 非服务端时，给所有请求添加 token 字段
+  if (!isServer) {
+    if (!newOpt.headers) {
+      newOpt.headers = {}
+    }
+    newOpt.headers['access-token'] = getToken()
+  }
+  return newOpt
 }
 
 const xhr = {
@@ -38,10 +47,6 @@ const xhr = {
     const query = `?${getUrlQuery(data)}`
     return fetch(`${getUrl(url)}${query}`, getOpt({
       method: 'GET'
-      // error
-      // headers: {
-      //   'access-token': getToken()
-      // }
     }, extra)).then(res => res.json())
   },
   post(url, data = {}, extra) {

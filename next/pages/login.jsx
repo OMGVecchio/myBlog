@@ -44,8 +44,24 @@ const LoginModal = () => {
       </Head>
       <div className="login-page">
         <div className="layout-wrap">
-          <img className="welcome-img xm-img" src="/static/imgs/xm/xm-1.png" alt="小埋-welcome" />
-          <img className="welcome-img kn-img" src="/static/imgs/kn/kn-1.png" alt="康娜-welcome" />
+          <img
+            className="welcome-img xm-img"
+            src="/static/imgs/xm/xm-1.png"
+            title="主页"
+            alt="小埋"
+            role="button"
+            tabIndex={-1}
+            onClick={() => Router.push('/index')}
+          />
+          <img
+            className="welcome-img kn-img"
+            src="/static/imgs/kn/kn-1.png"
+            title="返回"
+            alt="康娜"
+            role="button"
+            tabIndex={-2}
+            onClick={() => Router.back()}
+          />
           <div className="login-wrap">
             <BInput
               type="text"

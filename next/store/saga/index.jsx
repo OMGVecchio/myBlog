@@ -58,7 +58,7 @@ function* fetchComment({ articleId }) {
 }
 
 function* removeArticle({ articleId }) {
-  const dataResolve = yield xhr.del(`/api/article/${articleId}`)
+  const dataResolve = yield xhr.del(`/api/auth/article/${articleId}`)
   const { success } = dataResolve
   if (success) {
     yield put(removeArticleDone(articleId))
@@ -68,7 +68,7 @@ function* removeArticle({ articleId }) {
 function* onlineArticle({ articleId, online }) {
   // on:上线  off:下线
   const tag = online ? 'on' : 'off'
-  const dataResolve = yield xhr.put(`/api/article/${articleId}`, { online: tag })
+  const dataResolve = yield xhr.put(`/api/auth/article/${articleId}`, { online: tag })
   const { success } = dataResolve
   if (success) {
     yield put(onlineArticleDone(articleId, online))

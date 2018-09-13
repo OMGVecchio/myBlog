@@ -23,10 +23,10 @@ const saveImage = async (ctx, imgTag) => {
   ctx.apiSuccess(filename)
 }
 
-Router.post('/api/upload/illustrati', uploader.single('file'), async (ctx) => {
+Router.post('/api/auth/upload/illustrati', uploader.single('file'), async (ctx) => {
   await saveImage(ctx, 'illustrati')
 })
 
-Router.post('/api/upload/cover', uploader.single('cover'), async (ctx) => {
+Router.post('/api/auth/upload/cover', uploader.single('cover'), async (ctx) => {
   await saveImage(ctx, 'cover')
 })
