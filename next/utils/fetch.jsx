@@ -5,7 +5,7 @@ import { getToken } from '_/token'
 
 const config = require('../../config')
 
-const prefix = `http://${isServer ? '127.0.0.1' : config.host}:${config.port}`
+const prefix = isServer ? `http://127.0.0.1:${config.port}` : `//${config.host}:${config.port}`
 
 const getDefaultOpt = () => ({
   cache: 'no-cache',
