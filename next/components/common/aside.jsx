@@ -119,7 +119,7 @@ const Aside = ({
       <style dangerouslySetInnerHTML={{ __html: style }} />
       <div className={classNames('aside-menu', { close: !asideIsOpen })}>
         <div className="menu-header">
-          <Avatar className="avatar-cover" size="large" src="http://rms.zhubajie.com/resource/redirect?key=mobile%2Fdefault%2F%E5%A4%B4%E5%83%8F17.jpg%2Forigine%2F1990662d-d67a-4f85-92bf-73be1dd6d334&s.w=240&s.h=240" />
+          <Avatar className="avatar-cover" size="large" src="//rms.zhubajie.com/resource/redirect?key=mobile%2Fdefault%2F%E5%A4%B4%E5%83%8F17.jpg%2Forigine%2F1990662d-d67a-4f85-92bf-73be1dd6d334&s.w=240&s.h=240" />
           <div className="description text-overflow">
             {briefTip}
           </div>
