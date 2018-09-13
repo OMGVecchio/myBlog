@@ -24,6 +24,7 @@
   "dependencies": {
     "antd": "^3.6.2",
     "axios": "^0.17.1",
+    "babel-plugin-inline-import": "^3.0.0",
     "classnames": "^2.2.6",
     "cross-env": "^5.1.6",
     "glob": "^7.1.2",

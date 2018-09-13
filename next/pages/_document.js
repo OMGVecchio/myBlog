@@ -6,15 +6,21 @@ import globalStyle from '@/styles/global.less'
 
 export default class MyDocument extends Document {
   render() {
+    const { __NEXT_DATA__ } = this.props
+    const { buildId } = __NEXT_DATA__
+    const resourceTag = `?buildId=${buildId}`
     return (
       <html lang="en-US">
         <Head>
-          <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+          <script src="/lib/adview_pic_cpc_cpm_cpa_guanggao_gg_ads_300x250.js" />
+          <title>页面加载中~~~</title>
           <meta charSet="utf-8" />
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+          <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
           <style dangerouslySetInnerHTML={{ __html: globalStyle }} />
-          <title>页面加载中~~~</title>
-          <script src="/lib/adview_pic_cpc_cpm_cpa_guanggao_gg_ads_300x250.js" />
+          <link rel="stylesheet" href={`static/styles/css/antd.min.css${resourceTag}`} />
+          <link rel="stylesheet" href={`static/styles/css/normalize.css${resourceTag}`} />
+          <link rel="stylesheet" href={`static/styles/css/codemirror.css${resourceTag}`} />
         </Head>
         <body>
           <Main />

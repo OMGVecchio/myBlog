@@ -27,6 +27,11 @@
           "hoc": "./hoc"
         }
       }
+    ], [
+      "inline-import",
+      {
+        "extensions": [".css"]
+      }
     ]
   ]
 }

@@ -6,7 +6,7 @@ import Head from 'next/head'
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/mode/markdown/markdown'
 
-import style from 'static/styles/components/editor/codemirror.less';
+import style from '@/styles/components/editor/codemirror.less'
 
 const CodeMirror = ({
   value,
