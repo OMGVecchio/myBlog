@@ -9,46 +9,76 @@ import types from '#/action/common'
 
 import style from '@/styles/components/common/aside.less'
 
+const briefTip = 'UI丑到爆我是知道的，功能简陋我也是知道的，交互贼差我又没关注有啥办法，优化中'
+const menuData = [{
+  label: '主页',
+  url: '/index',
+  icon: 'home'
+}, {
+  label: '时间轴',
+  url: '/timeline',
+  icon: 'filter'
+}, {
+  label: '标签',
+  url: '/tag',
+  icon: 'tag-o'
+}, {
+  label: '撰文',
+  url: '/compose',
+  icon: 'edit'
+}, {
+  label: '文章管理',
+  url: '/manage',
+  icon: 'setting'
+}, {
+  label: '试炼场',
+  url: '/trials',
+  icon: 'tool'
+}, {
+  label: '相册',
+  url: '/album',
+  icon: 'picture'
+}]
+const linkData = [{
+  id: 0,
+  label: 'gayhub',
+  url: 'https://github.com/OMGVecchio',
+  icon: 'github'
+}, {
+  id: 1,
+  label: 'weibo',
+  url: 'https://weibo.com/u/3300075617',
+  icon: 'weibo'
+}, {
+  id: 2,
+  label: 'facebook',
+  url: 'https://www.facebook.com/lulu.vecchio',
+  icon: 'facebook'
+}, {
+  id: 3,
+  label: 'twitter',
+  url: 'https://twitter.com/vecchio1993',
+  icon: 'twitter'
+}]
+// 给当前路由对应的导航加上选中样式
+const fetchMenuStatus = (pathname, url) => {
+  const pn = pathname === '/' ? '/index' : pathname
+  if (pn === url) {
+    return 'is-active'
+  }
+  return ''
+}
+
 const Aside = ({
   dispatch,
   asideIsOpen,
   pathname
 }) => {
   const close = () => dispatch({ type: types.CLOSE_ASIDE })
-  const briefTip = 'UI丑到爆我是知道的，功能简陋我也是知道的，交互贼差我又没关注有啥办法，优化中'
-  const menuData = [{
-    label: '主页',
-    url: '/index',
-    icon: 'home'
-  }, {
-    label: '时间轴',
-    url: '/timeline',
-    icon: 'filter'
-  }, {
-    label: '标签',
-    url: '/tag',
-    icon: 'tag-o'
-  }, {
-    label: '撰文',
-    url: '/compose',
-    icon: 'edit'
-  }, {
-    label: '文章管理',
-    url: '/manage',
-    icon: 'setting'
-  }, {
-    label: '试炼场',
-    url: '/trials',
-    icon: 'tool'
-  }, {
-    label: '相册',
-    url: '/album',
-    icon: 'picture'
-  }]
   const renderMenu = (item) => {
     const { label, url, icon } = item
     return (
-      <List.Item className={pathname === url && 'is-active'}>
+      <List.Item className={fetchMenuStatus(pathname, url)}>
         <Link href={url}>
           <a className="menu-item-wrap">
             <Row className="menu-item" style={{ width: '100%' }}>
@@ -65,27 +95,6 @@ const Aside = ({
     )
   }
   const renderLink = () => {
-    const linkData = [{
-      id: 0,
-      label: 'gayhub',
-      url: 'https://github.com/OMGVecchio',
-      icon: 'github'
-    }, {
-      id: 1,
-      label: 'weibo',
-      url: 'https://weibo.com/u/3300075617',
-      icon: 'weibo'
-    }, {
-      id: 2,
-      label: 'facebook',
-      url: 'https://www.facebook.com/lulu.vecchio',
-      icon: 'facebook'
-    }, {
-      id: 3,
-      label: 'twitter',
-      url: 'https://twitter.com/vecchio1993',
-      icon: 'twitter'
-    }]
     const linkItems = linkData.map((item) => {
       const {
         id,
@@ -102,9 +111,7 @@ const Aside = ({
       )
     })
     return (
-      <Row>
-        { linkItems }
-      </Row>
+      <Row>{ linkItems }</Row>
     )
   }
   return (

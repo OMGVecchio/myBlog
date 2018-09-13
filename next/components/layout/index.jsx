@@ -14,6 +14,7 @@ import BackTop from '~/base/backtop'
 import LinearProgress from '~/base/linearprogress'
 
 import { isServer } from '_'
+import { getToken } from '_/token'
 
 import layoutStyle from '@/styles/components/layout/index.less'
 
@@ -30,6 +31,19 @@ class Layout extends PureComponent {
     title: '',
     className: '',
     showTitle: true
+  }
+  constructor(props) {
+    super(props)
+    // 在跳转一个新页面前，检测该页面权限
+    // 本来想在 _app.js 的 getInitialProps 中执行的，但那时候获取的 Router.pathname 好像是跳转前未重新实例化的路由
+    if (typeof window !== 'undefined') {
+      const protectedPathes = ['/compose', '/manage']
+      if (protectedPathes.indexOf(Router.pathname) !== -1) {
+        if (!getToken()) {
+          Router.replace('/login')
+        }
+      }
+    }
   }
   componentDidMount() {
     // 记录滚动的初始状态

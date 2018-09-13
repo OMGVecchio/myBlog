@@ -34,7 +34,7 @@ const Header = ({
       <Head>
         <style dangerouslySetInnerHTML={{ __html: style }} />
       </Head>
-      <div>
+      <div className="header-close">
         <Icon className="header-icon header-close-icon" type="menu-unfold" onClick={openMenu} />
       </div>
       <div>
