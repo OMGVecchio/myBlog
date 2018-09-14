@@ -41,6 +41,7 @@ class Compose extends PureComponent {
   state = {
     editorType: 1,
     isFullScreen: false,
+    showPreview: false,
     title: '',
     cover: '',
     article: '',
@@ -93,15 +94,13 @@ class Compose extends PureComponent {
       })
     }
   }
-  setTitle = (e) => {
-    this.setState({ title: e.target.value })
-  }
-  setDesc = (e) => {
-    this.setState({ desc: e.target.value })
-  }
-  setTag = (tags) => {
-    this.setState({ tags })
-  }
+  // 设置文章标题
+  setTitle = e => this.setState({ title: e.target.value })
+  // 设置文章描述
+  setDesc = e => this.setState({ desc: e.target.value })
+  // 设置文章标签
+  setTag = tags => this.setState({ tags })
+  // 设置文章封面
   setCover = (res) => {
     const { file = {} } = res
     const { response = {} } = file
@@ -111,10 +110,28 @@ class Compose extends PureComponent {
       cover: imageUrl
     })
   }
+  // 设置文章主题内容
+  setContent = article => this.setState({ article })
+  // 设置编辑器种类
+  setEditorType = e => this.setState({ editorType: e.target.value })
+  // 设置全屏模式
+  setFullScreen = (isFullScreen) => {
+    if (isFullScreen) {
+      fullScreen.openFull()
+    } else {
+      fullScreen.closeFull()
+    }
+    this.setState({
+      isFullScreen
+    })
+  }
+  // 设置是否显示预览
+  setPreview = showPreview => this.setState({ showPreview })
   // 存储编辑器的 ref
   refHOC = {
     ref: null
   }
+  // 保存文章
   save = async () => {
     const {
       title,
@@ -136,22 +153,6 @@ class Compose extends PureComponent {
     })
     await dispatch(fetchList(true))
     await dispatch(fetchDetail(articleId))
-  }
-  changeValue = (article) => {
-    this.setState({ article })
-  }
-  changeEditorType = (e) => {
-    this.setState({ editorType: e.target.value })
-  }
-  changeFullScreen = (isFullScreen) => {
-    if (isFullScreen) {
-      fullScreen.openFull()
-    } else {
-      fullScreen.closeFull()
-    }
-    this.setState({
-      isFullScreen
-    })
   }
   // 在编辑器中插入图片
   insertImage = (res) => {
@@ -189,7 +190,8 @@ class Compose extends PureComponent {
     const {
       editorType,
       article,
-      isFullScreen
+      isFullScreen,
+      showPreview
     } = this.state
     const {
       articleId,
@@ -202,7 +204,7 @@ class Compose extends PureComponent {
         </Head>
         <div className={classNames('compose-panel-wrap', { 'full-screen': isFullScreen })}>
           <div className="compose-opt-group">
-            <Radio.Group value={editorType} onChange={this.changeEditorType}>
+            <Radio.Group value={editorType} onChange={this.setEditorType}>
               <Radio.Button value={1}>
                 CodeMirror
               </Radio.Button>
@@ -216,9 +218,7 @@ class Compose extends PureComponent {
               action="/api/auth/upload/illustrati"
               onChange={this.insertImage}
             >
-              <Button>
-                插入图片
-              </Button>
+              <Button>插入图片</Button>
             </Upload>
             <Upload
               name="cover"
@@ -226,11 +226,10 @@ class Compose extends PureComponent {
               action="/api/auth/upload/cover"
               onChange={this.setCover}
             >
-              <Button>
-                插入封面
-              </Button>
+              <Button>插入封面</Button>
             </Upload>
-            <Switch className="switch-fullscreen" defaultChecked={isFullScreen} onChange={this.changeFullScreen} />
+            <Switch className="switch-btn" defaultChecked={isFullScreen} onChange={this.setFullScreen} />
+            <Switch className="switch-btn" defaultChecked={showPreview} onChange={this.setPreview} />
             <Button className="fr" onClick={() => this.save()}>
               保存
             </Button>
@@ -255,41 +254,43 @@ class Compose extends PureComponent {
               autosize={{ minRows: 1, maxRows: 2 }}
             />
           </div>
-          <Row className="compose-write-group">
-            <Col className="compose-write-panel" span={12}>
+          <div className={classNames('compose-write-group clearfix', { 'show-preview': showPreview })}>
+            <div className="compose-panel fl compose-write-panel">
               {
-                editorType === 1
-                  ? (
-                    <CodeMirrorEditor
-                      key={articleId && articleDetail[articleId]}
-                      refHOC={this.refHOC}
-                      value={article}
-                      defaultValue={article}
-                      opts={{
-                        options: {
-                          mode: 'markdown',
-                          lineNumbers: true
-                        }
-                      }}
-                      onChange={this.changeValue}
-                    />
-                  )
-                  : (
-                    <AceEditor
-                      key={articleId && articleDetail[articleId]}
-                      refHOC={this.refHOC}
-                      value={article}
-                      defaultValue={article}
-                      onChange={this.changeValue}
-                      lan="markdown"
-                    />
-                  )
+                editorType === 1 ? (
+                  <CodeMirrorEditor
+                    key={articleId && articleDetail[articleId]}
+                    refHOC={this.refHOC}
+                    value={article}
+                    defaultValue={article}
+                    opts={{
+                      options: {
+                        mode: 'markdown',
+                        lineNumbers: true
+                      }
+                    }}
+                    onChange={this.setContent}
+                  />
+                ) : (
+                  <AceEditor
+                    key={articleId && articleDetail[articleId]}
+                    refHOC={this.refHOC}
+                    value={article}
+                    defaultValue={article}
+                    onChange={this.setContent}
+                    lan="markdown"
+                  />
+                )
               }
-            </Col>
-            <Col className="compose-result-panel" span={12}>
-              <Markdown source={article} />
-            </Col>
-          </Row>
+            </div>
+            {
+              showPreview && (
+                <div className="compose-panel fl compose-result-panel">
+                  <Markdown source={article} />
+                </div>
+              )
+            }
+          </div>
         </div>
       </Layout>
     )
