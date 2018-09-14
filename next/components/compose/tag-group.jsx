@@ -1,58 +1,56 @@
 import { Fragment, PureComponent } from 'react'
 import { Tag, AutoComplete, Tooltip } from 'antd'
 
+import Head from 'next/head'
+
+import style from '@/styles/components/compose/tag-group.less'
+
+// Tag 颜色集
+const colors = [
+  'magenta', 'red', 'volcano', 'orange', 'gold',
+  'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple'
+]
+
 class TagGroup extends PureComponent {
   static defaultProps = {
     onChange: () => {},
-    tagList: [],
-    defaultValue: [],
-    value: []
-  }
-  state = {
-    tags: [],
-    inputValue: ''
-  }
-  componentWillMount() {
-    this.setState({ tags: this.props.defaultValue })
-  }
-  componentWillReceiveProps(props) {
-    this.setState({ tags: props.value })
+    tagSource: [],
+    defaultValue: []
   }
   handleClose = (removedTag) => {
-    const tags = this.state.tags.filter(tag => tag !== removedTag)
-    this.setState({ tags })
+    const tags = this.props.defaultValue.filter(tag => tag !== removedTag)
     this.props.onChange(tags)
   }
-  handleInputChange = (inputValue) => {
-    this.setState({ inputValue })
-  }
-  handleInputConfirm = () => {
-    const { state } = this
-    const { inputValue } = state
-    let { tags } = state
-    if (inputValue && tags.indexOf(inputValue) === -1) {
-      tags = [...tags, inputValue]
+  handleInputConfirm = (value) => {
+    let tags = this.props.defaultValue
+    if (value && tags.indexOf(value) === -1) {
+      tags = [...tags, value]
     }
-    this.setState({
-      tags,
-      inputValue: ''
-    })
     this.props.onChange(tags)
   }
+  randomColor = () => colors[Math.ceil(Math.random() * 10)]
   render() {
-    const { tags, inputValue } = this.state
-    const tagFilters = this.props.tagList.map(item => ({
+    const tags = this.props.defaultValue
+    const tagFilters = this.props.tagSource.map(item => ({
       value: item,
       text: item
     }))
     return (
       <Fragment>
+        <Head>
+          <style dangerouslySetInnerHTML={{ __html: style }} key="tag-group" />
+        </Head>
         <div className="tag-group">
           {tags.map((tag) => {
-            const isLongTag = tag.length > 20
+            const isLongTag = tag.length > 10
             const tagElem = (
-              <Tag key={tag} closable="true" afterClose={() => this.handleClose(tag)}>
-                {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+              <Tag
+                color={this.randomColor()}
+                key={tag}
+                closable="true"
+                afterClose={() => this.handleClose(tag)}
+              >
+                {isLongTag ? `${tag.slice(0, 10)}...` : tag}
               </Tag>
             )
             return isLongTag ? <Tooltip title={tag} key={tag}>{tagElem}</Tooltip> : tagElem
@@ -64,18 +62,14 @@ class TagGroup extends PureComponent {
               type="text"
               size="small"
               style={{ width: 100 }}
-              value={inputValue}
-              onChange={this.handleInputChange}
-              onBlur={this.handleInputConfirm}
+              filterOption={(input, option) => {
+                const { key } = option
+                return new RegExp(`${input}`).test(key)
+              }}
+              onSelect={value => this.handleInputConfirm(value)}
+              onBlur={value => this.handleInputConfirm(value)}
             />)}
         </div>
-        <style jsx>{`
-          .tag-group {
-            margin-left: 5px;
-            display: inline-block;
-          }
-        `}
-        </style>
       </Fragment>
     )
   }

@@ -242,8 +242,8 @@ class Compose extends PureComponent {
               onChange={this.setTitle}
             />
             <TagGroup
-              value={this.state.tags}
-              tagList={this.props.tagList}
+              defaultValue={this.state.tags}
+              tagSource={this.props.tagList}
               onChange={this.setTag}
             />
             <Input.TextArea

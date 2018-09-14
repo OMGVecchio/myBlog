@@ -13,6 +13,11 @@ import { format } from '_/moment'
 
 import style from '@/styles/pages/manage.less'
 
+const colors = [
+  'magenta', 'red', 'volcano', 'orange', 'gold',
+  'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple'
+]
+
 class Manage extends PureComponent {
   static defaultProps = {
     articleList: []
@@ -24,11 +29,7 @@ class Manage extends PureComponent {
     dispatch(fetchList())
     return { kw }
   }
-  randomColor = () => this.colors[Math.ceil(Math.random() * 10)]
-  colors = [
-    'magenta', 'red', 'volcano', 'orange', 'gold',
-    'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple'
-  ]
+  randomColor = () => colors[Math.ceil(Math.random() * 10)]
   removeArticle = id => this.props.dispatch(removeArticle(id))
   switchOnline = (id, online) => this.props.dispatch(onlineArticle(id, online))
   columns = [{
