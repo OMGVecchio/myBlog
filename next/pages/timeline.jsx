@@ -31,6 +31,11 @@ class Timeline extends PureComponent {
     const signTag = { year: '', month: '' }
     const cardList = []
     const total = cardData.length
+    cardData.sort((prev, next) => {
+      const { createTime: prevTime } = prev
+      const { createTime: nextTime } = next
+      return prevTime < nextTime
+    })
     cardData.forEach((item, index) => {
       // 因为按照日期去取的，所以才这样子去分也行吧
       let hasSameSign = true

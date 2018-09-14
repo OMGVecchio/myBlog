@@ -231,7 +231,7 @@ class Compose extends PureComponent {
               </Button>
             </Upload>
             <Switch className="switch-fullscreen" defaultChecked={isFullScreen} onChange={this.changeFullScreen} />
-            <Button className="fr" onClick={this.save}>
+            <Button className="fr" onClick={() => this.save()}>
               保存
             </Button>
           </div>

@@ -11,6 +11,7 @@
     "测试标签3": true,
     "JavaScript": true,
     "Vue": true,
-    "性能": true
+    "性能": true,
+    "Http": true
   }
 }
