@@ -1,6 +1,6 @@
 import { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { Radio, Upload, Switch, Input, Button, Row, Col } from 'antd'
+import { Radio, Switch, Input, Button } from 'antd'
 import classNames from 'classnames'
 
 import Head from 'next/head'
@@ -9,10 +9,10 @@ import dynamic from 'next/dynamic'
 import Layout from '~/layout'
 import Markdown from '~/article/markdown'
 import TagGroup from '~/compose/tag-group'
+import Upload from '~/compose/uploader'
 
 import xhr from '_/fetch'
 import fullScreen from '_/full-screen'
-import { getToken } from '_/token'
 
 import { fetchDetail } from '#/action/article'
 import { fetchList } from '#/action/tag'
@@ -194,7 +194,6 @@ class Compose extends PureComponent {
       articleId,
       articleDetail
     } = this.props
-    const header = { 'access-token': getToken() }
     return (
       <Layout className="compose-page">
         <Head>
@@ -215,7 +214,6 @@ class Compose extends PureComponent {
               showUploadList={false}
               action="/api/auth/upload/illustrati"
               onChange={this.insertImage}
-              headers={header}
             >
               <Button>插入图片</Button>
             </Upload>
@@ -224,7 +222,6 @@ class Compose extends PureComponent {
               showUploadList={false}
               action="/api/auth/upload/cover"
               onChange={this.setCover}
-              headers={header}
             >
               <Button>插入封面</Button>
             </Upload>
