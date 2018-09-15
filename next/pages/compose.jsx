@@ -12,6 +12,7 @@ import TagGroup from '~/compose/tag-group'
 
 import xhr from '_/fetch'
 import fullScreen from '_/full-screen'
+import { getToken } from '_/token'
 
 import { fetchDetail } from '#/action/article'
 import { fetchList } from '#/action/tag'
@@ -106,9 +107,7 @@ class Compose extends PureComponent {
     const { response = {} } = file
     const { data = '' } = response
     const imageUrl = `/images/cover/${data}`
-    this.setState({
-      cover: imageUrl
-    })
+    this.setState({ cover: imageUrl })
   }
   // 设置文章主题内容
   setContent = article => this.setState({ article })
@@ -128,9 +127,7 @@ class Compose extends PureComponent {
   // 设置是否显示预览
   setPreview = showPreview => this.setState({ showPreview })
   // 存储编辑器的 ref
-  refHOC = {
-    ref: null
-  }
+  refHOC = { ref: null }
   // 保存文章
   save = async () => {
     const {
@@ -197,6 +194,7 @@ class Compose extends PureComponent {
       articleId,
       articleDetail
     } = this.props
+    const header = { 'access-token': getToken() }
     return (
       <Layout className="compose-page">
         <Head>
@@ -217,6 +215,7 @@ class Compose extends PureComponent {
               showUploadList={false}
               action="/api/auth/upload/illustrati"
               onChange={this.insertImage}
+              headers={header}
             >
               <Button>插入图片</Button>
             </Upload>
@@ -225,6 +224,7 @@ class Compose extends PureComponent {
               showUploadList={false}
               action="/api/auth/upload/cover"
               onChange={this.setCover}
+              headers={header}
             >
               <Button>插入封面</Button>
             </Upload>

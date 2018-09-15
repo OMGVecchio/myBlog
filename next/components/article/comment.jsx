@@ -50,7 +50,7 @@ class CommentBox extends PureComponent {
       <Fragment>
         <div className="component-comment">
           <Head>
-            <style dangerouslySetInnerHTML={{ __html: style }} key="style-markdown" />
+            <style dangerouslySetInnerHTML={{ __html: style }} key="style-comment" />
           </Head>
           {/* 评论暂时就走简洁风，不用 ACE 这些了吧 */}
           <TextArea
