@@ -27,6 +27,17 @@
           "hoc": "./hoc"
         }
       }
+    ], [
+      "inline-import",
+      {
+        "extensions": [".css"]
+      }
+    ], [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": false
+      }
     ]
   ]
 }

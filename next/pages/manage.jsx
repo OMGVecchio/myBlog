@@ -1,17 +1,22 @@
 import { PureComponent } from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
 import { connect } from 'react-redux'
-
 import { Table, Button, Tag } from 'antd'
 
-import { fetchList, removeArticle, onlineArticle } from 'store/action/article'
+import Head from 'next/head'
+import Link from 'next/link'
 
-import Layout from 'components/layout'
+import Layout from '~/layout'
 
-import { format } from 'utils/moment'
+import { fetchList, removeArticle, onlineArticle } from '#/action/article'
 
-import style from 'static/styles/pages/manage.less'
+import { format } from '_/moment'
+
+import style from '@/styles/pages/manage.less'
+
+const colors = [
+  'magenta', 'red', 'volcano', 'orange', 'gold',
+  'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple'
+]
 
 class Manage extends PureComponent {
   static defaultProps = {
@@ -24,18 +29,19 @@ class Manage extends PureComponent {
     dispatch(fetchList())
     return { kw }
   }
-  randomColor = () => this.colors[Math.ceil(Math.random() * 10)]
-  colors = [
-    'magenta', 'red', 'volcano', 'orange', 'gold',
-    'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple'
-  ]
+  randomColor = () => colors[Math.ceil(Math.random() * 10)]
   removeArticle = id => this.props.dispatch(removeArticle(id))
   switchOnline = (id, online) => this.props.dispatch(onlineArticle(id, online))
   columns = [{
     title: '文章名',
     dataIndex: 'title',
     align: 'center',
-    width: '200px'
+    width: '200px',
+    render: (title, record) => (
+      <Link href={`/article?articleId=${record.id}`}>
+        <span className="article-title">{title}</span>
+      </Link>
+    )
   }, {
     title: '标签',
     dataIndex: 'tags',

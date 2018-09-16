@@ -1,14 +1,13 @@
 import { PureComponent, Fragment } from 'react'
 import { connect } from 'react-redux'
-
-import { fetchList } from 'store/action/article'
-
 import { Row, Col } from 'antd'
 
-import { filterArticleList } from 'utils'
+import { fetchList } from '#/action/article'
 
-import Layout from 'components/layout'
-import TagCard from 'components/card/tag'
+import { filterArticleList } from '_'
+
+import Layout from '~/layout'
+import TagCard from '~/card/tag'
 
 class Tag extends PureComponent {
   static defaultProps = {

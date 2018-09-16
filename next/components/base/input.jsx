@@ -1,9 +1,9 @@
 import { Fragment, PureComponent } from 'react'
-import Head from 'next/head'
-
 import classnames from 'classnames'
 
-import style from 'static/styles/components/base/input.less'
+import Head from 'next/head'
+
+import style from '@/styles/components/base/input.less'
 
 class Input extends PureComponent {
   static defaultProps = {

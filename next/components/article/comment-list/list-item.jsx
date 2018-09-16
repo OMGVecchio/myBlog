@@ -1,6 +1,6 @@
 import { Row, Button, Col, Avatar } from 'antd'
 
-import { format } from 'utils/moment'
+import { format } from '_/moment'
 
 const CommentListItem = ({
   children,

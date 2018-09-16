@@ -8,6 +8,7 @@
     padding: 20px;
     margin-top: -165px;
     height: 100%;
+    // 全屏下的样式
     &.full-screen {
       position: fixed;
       top: 0;
@@ -33,7 +34,7 @@
     }
   }
   .compose-opt-group {
-    .switch-fullscreen {
+    .switch-btn {
       margin-left: 5px;
     }
   }
@@ -51,15 +52,22 @@
     right: 0;
     bottom: 0;
     border-radius: @borderRadius;
-    .compose-write-panel {
+    // 显示预览后的样式
+    &.show-preview {
+      .compose-panel {
+        width: 50%;
+      }
+    }
+    .compose-panel {
+      width: 100%;
       height: 100%;
       border: 1px solid #cfcfcf;
+    }
+    .compose-write-panel {
       overflow: hidden;
       border-bottom-left-radius: @borderRadius;
     }
     .compose-result-panel {
-      height: 100%;
-      border: 1px solid #cfcfcf;
       background-color: #ffffff;
       overflow: scroll;
       border-bottom-right-radius: @borderRadius;

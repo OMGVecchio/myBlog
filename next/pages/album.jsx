@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import Layout from 'components/layout'
+import Layout from '~/layout'
 
 const Album = () => (
   <Layout title="相册">

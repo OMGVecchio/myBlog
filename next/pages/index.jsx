@@ -1,14 +1,13 @@
 import { PureComponent, Fragment } from 'react'
 import { connect } from 'react-redux'
-
 import { List } from 'antd'
 
-import { fetchList } from 'store/action/article'
+import { fetchList } from '#/action/article'
 
-import { filterArticleList } from 'utils'
+import { filterArticleList } from '_'
 
-import Layout from 'components/layout'
-import HomeCard from 'components/card/home'
+import Layout from '~/layout'
+import HomeCard from '~/card/home'
 
 class Index extends PureComponent {
   static defaultProps = {

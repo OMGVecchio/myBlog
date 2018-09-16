@@ -1,17 +1,16 @@
 import { connect } from 'react-redux'
-import Head from 'next/head'
+import { Icon, Input } from 'antd'
 import classNames from 'classnames'
 
+import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
 
-import { Icon, Input } from 'antd'
+import types from '#/action/common'
 
-import types from 'store/action/common'
+import isServer from '_'
 
-import isServer from 'utils'
-
-import style from 'static/styles/components/common/header.less'
+import style from '@/styles/components/common/header.less'
 
 const search = (kw) => {
   const { pathname, query } = Router
@@ -35,17 +34,18 @@ const Header = ({
       <Head>
         <style dangerouslySetInnerHTML={{ __html: style }} />
       </Head>
-      <div>
+      <div className="header-close">
         <Icon className="header-icon header-close-icon" type="menu-unfold" onClick={openMenu} />
       </div>
       <div>
         { isLongScroll && <h4 className="header-title">{title}</h4> }
       </div>
-      <div>
+      <div className="header-opt">
         <Input.Search
           defaultValue={isServer ? '' : Router.query.kw}
           className="header-search-wrap"
           onSearch={search}
+          style={{ width: '210px' }}
         />
         <Link href="/login">
           <Icon className="header-icon header-login-icon" type="login" />

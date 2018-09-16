@@ -1,12 +1,12 @@
 import { Fragment } from 'react'
+import { Card } from 'antd'
+
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { Card } from 'antd'
+import { format } from '_/moment'
 
-import { format } from 'utils/moment'
-
-import style from 'static/styles/components/card/timeline.less'
+import style from '@/styles/components/card/timeline.less'
 
 import CardLayout from './layout'
 

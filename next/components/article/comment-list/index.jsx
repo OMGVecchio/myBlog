@@ -1,8 +1,9 @@
 import { Fragment } from 'react'
-import Head from 'next/head'
 import classnames from 'classnames'
 
-import style from 'static/styles/components/article/comment-list.less'
+import Head from 'next/head'
+
+import style from '@/styles/components/article/comment-list.less'
 
 import CommentListItem from './list-item'
 

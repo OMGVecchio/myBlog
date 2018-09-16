@@ -1,9 +1,8 @@
 import { PureComponent } from 'react'
-
 import { Modal, Form, Icon, Input, message } from 'antd'
 
-import xhr from 'utils/fetch'
-import { setToken } from 'utils/token'
+import xhr from '_/fetch'
+import { setToken } from '_/token'
 
 const FormItem = Form.Item
 

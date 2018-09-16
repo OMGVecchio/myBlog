@@ -1,5 +1,9 @@
 'use strict'
 
+/**
+ * 绑定 Redis 实例
+ */
+
 const Redis = require('ioredis')
 const { out } = require('../../utils')
 

@@ -1,11 +1,11 @@
 import { Fragment, PureComponent } from 'react'
-import Head from 'next/head'
-
 import { Input, Button } from 'antd'
 
-import EmojiWrap from 'components/article/emoji'
+import Head from 'next/head'
 
-import style from 'static/styles/components/article/comment.less'
+import EmojiWrap from '~/article/emoji'
+
+import style from '@/styles/components/article/comment.less'
 
 const { TextArea } = Input
 
@@ -50,7 +50,7 @@ class CommentBox extends PureComponent {
       <Fragment>
         <div className="component-comment">
           <Head>
-            <style dangerouslySetInnerHTML={{ __html: style }} key="style-markdown" />
+            <style dangerouslySetInnerHTML={{ __html: style }} key="style-comment" />
           </Head>
           {/* 评论暂时就走简洁风，不用 ACE 这些了吧 */}
           <TextArea

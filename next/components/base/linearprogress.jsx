@@ -1,9 +1,9 @@
 import { Fragment, PureComponent } from 'react'
-import Head from 'next/head'
-
 import classnames from 'classnames'
 
-import style from 'static/styles/components/base/linearprogress.less'
+import Head from 'next/head'
+
+import style from '@/styles/components/base/linearprogress.less'
 
 class LinearProgress extends PureComponent {
   static defaultProps = {

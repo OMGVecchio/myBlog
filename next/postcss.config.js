@@ -1,8 +1,11 @@
 'use strict'
 
+const easyImport = require('postcss-easy-import')
+const autoprefixer = require('autoprefixer')
+
 module.exports = {
   plugins: [
-    require('postcss-easy-import')({ prefix: '_' }),
-    require('autoprefixer')({})
+    easyImport({ prefix: '_' }),
+    autoprefixer({})
   ]
 }

@@ -1,20 +1,24 @@
 import { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import Head from 'next/head'
-import Router from 'next/router'
 import classNames from 'classnames'
 
-import types from 'store/action/common'
+import Head from 'next/head'
+import Router from 'next/router'
 
-import Header from 'components/common/header'
-import Footer from 'components/common/footer'
-import Menu from 'components/common/aside'
-import BackTop from 'components/base/backtop'
-import LinearProgress from 'components/base/linearprogress'
+import types from '#/action/common'
 
-import { isServer } from 'utils'
+import Header from '~/common/header'
+import Footer from '~/common/footer'
+import Menu from '~/common/aside'
+import BackTop from '~/base/backtop'
+import LinearProgress from '~/base/linearprogress'
 
-import layoutStyle from 'static/styles/components/layout/index.less'
+import { isServer } from '_'
+import { getToken } from '_/token'
+
+import layoutStyle from '@/styles/components/layout/index.less'
+
+const SCROLL_TAG = 165;
 
 /**
  * 本来是 stateless 组件的
@@ -27,6 +31,19 @@ class Layout extends PureComponent {
     title: '',
     className: '',
     showTitle: true
+  }
+  constructor(props) {
+    super(props)
+    // 在跳转一个新页面前，检测该页面权限
+    // 本来想在 _app.js 的 getInitialProps 中执行的，但那时候获取的 Router.pathname 好像是跳转前未重新实例化的路由
+    if (typeof window !== 'undefined') {
+      const protectedPathes = ['/compose', '/manage']
+      if (protectedPathes.indexOf(Router.pathname) !== -1) {
+        if (!getToken()) {
+          Router.replace('/login')
+        }
+      }
+    }
   }
   componentDidMount() {
     // 记录滚动的初始状态
@@ -49,7 +66,7 @@ class Layout extends PureComponent {
     // TODO 滑动需要做优化
     const { isLongScroll, dispatch } = this.props
     const { scrollTop } = e.target.scrollingElement
-    if (scrollTop > 220) {
+    if (scrollTop > SCROLL_TAG) {
       if (!isLongScroll) {
         dispatch({ type: types.SHOW_HEADER_SHADOW })
       }
@@ -73,7 +90,7 @@ class Layout extends PureComponent {
   }
   isLongScroll = () => {
     const scrollTop = this.fetchScrollTop()
-    if (scrollTop > 220) {
+    if (scrollTop > SCROLL_TAG) {
       return true
     }
     return false

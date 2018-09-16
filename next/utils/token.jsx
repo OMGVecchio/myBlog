@@ -7,7 +7,7 @@ export const setToken = (token) => {
 }
 export const getToken = () => {
   if (!isServer) {
-    return localStorage.getItem('token')
+    return localStorage.getItem('token') || ''
   }
   return ''
 }

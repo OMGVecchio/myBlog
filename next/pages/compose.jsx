@@ -1,25 +1,26 @@
 import { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import Head from 'next/head'
-import dynamic from 'next/dynamic'
+import { Radio, Switch, Input, Button } from 'antd'
 import classNames from 'classnames'
 
-import { Radio, Upload, Switch, Input, Button, Row, Col } from 'antd'
+import Head from 'next/head'
+import dynamic from 'next/dynamic'
 
-import Layout from 'components/layout'
-import Markdown from 'components/article/markdown'
-import TagGroup from 'components/compose/tag-group'
+import Layout from '~/layout'
+import Markdown from '~/article/markdown'
+import TagGroup from '~/compose/tag-group'
+import Upload from '~/compose/uploader'
 
-import xhr from 'utils/fetch'
-import fullScreen from 'utils/full-screen'
+import xhr from '_/fetch'
+import fullScreen from '_/full-screen'
 
-import { fetchDetail } from 'store/action/article'
-import { fetchList } from 'store/action/tag'
+import { fetchDetail } from '#/action/article'
+import { fetchList } from '#/action/tag'
 
-import style from 'static/styles/pages/compose.less'
+import style from '@/styles/pages/compose.less'
 
-const AceEditor = dynamic(import('components/editor/ace'), { ssr: false })
-const CodeMirrorEditor = dynamic(import('components/editor/code-mirror'), { ssr: false })
+const AceEditor = dynamic(import('~/editor/ace'), { ssr: false })
+const CodeMirrorEditor = dynamic(import('~/editor/codemirror'), { ssr: false })
 const MODE_CREATE = 1
 const MODE_MODIFY = 2
 
@@ -41,6 +42,7 @@ class Compose extends PureComponent {
   state = {
     editorType: 1,
     isFullScreen: false,
+    showPreview: false,
     title: '',
     cover: '',
     article: '',
@@ -93,28 +95,39 @@ class Compose extends PureComponent {
       })
     }
   }
-  setTitle = (e) => {
-    this.setState({ title: e.target.value })
-  }
-  setDesc = (e) => {
-    this.setState({ desc: e.target.value })
-  }
-  setTag = (tags) => {
-    this.setState({ tags })
-  }
+  // 设置文章标题
+  setTitle = e => this.setState({ title: e.target.value })
+  // 设置文章描述
+  setDesc = e => this.setState({ desc: e.target.value })
+  // 设置文章标签
+  setTag = tags => this.setState({ tags })
+  // 设置文章封面
   setCover = (res) => {
     const { file = {} } = res
     const { response = {} } = file
     const { data = '' } = response
-    const imageUrl = `/images/cover/${data}`
+    this.setState({ cover: data })
+  }
+  // 设置文章主题内容
+  setContent = article => this.setState({ article })
+  // 设置编辑器种类
+  setEditorType = e => this.setState({ editorType: e.target.value })
+  // 设置全屏模式
+  setFullScreen = (isFullScreen) => {
+    if (isFullScreen) {
+      fullScreen.openFull()
+    } else {
+      fullScreen.closeFull()
+    }
     this.setState({
-      cover: imageUrl
+      isFullScreen
     })
   }
+  // 设置是否显示预览
+  setPreview = showPreview => this.setState({ showPreview })
   // 存储编辑器的 ref
-  refHOC = {
-    ref: null
-  }
+  refHOC = { ref: null }
+  // 保存文章
   save = async () => {
     const {
       title,
@@ -125,8 +138,8 @@ class Compose extends PureComponent {
     } = this.state
     const { dispatch, articleId } = this.props
     const url = this.state.mode === MODE_CREATE
-      ? '/api/article'
-      : `/api/article/${articleId}`
+      ? '/api/auth/article'
+      : `/api/auth/article/${articleId}`
     await xhr.post(url, {
       title,
       cover,
@@ -137,28 +150,11 @@ class Compose extends PureComponent {
     await dispatch(fetchList(true))
     await dispatch(fetchDetail(articleId))
   }
-  changeValue = (article) => {
-    this.setState({ article })
-  }
-  changeEditorType = (e) => {
-    this.setState({ editorType: e.target.value })
-  }
-  changeFullScreen = (isFullScreen) => {
-    if (isFullScreen) {
-      fullScreen.openFull()
-    } else {
-      fullScreen.closeFull()
-    }
-    this.setState({
-      isFullScreen
-    })
-  }
   // 在编辑器中插入图片
   insertImage = (res) => {
     const { file = {} } = res
     const { response = {} } = file
     const { data = '' } = response
-    const imageUrl = `/images/illustrati/${data}`
     if (data) {
       const { ref } = this.refHOC
       window.qa = ref
@@ -180,7 +176,7 @@ class Compose extends PureComponent {
         cursorRow = cursor.row
         cursorColumn = cursor.column
       }
-      const insertDoc = `${cursorColumn !== 0 ? '\n' : ''}![](${imageUrl})\n`
+      const insertDoc = `${cursorColumn !== 0 ? '\n' : ''}![](${data})\n`
       insertValue.call(ref, insertDoc)
       focusLine.call(ref, cursorRow + 1, 0)
     }
@@ -189,7 +185,8 @@ class Compose extends PureComponent {
     const {
       editorType,
       article,
-      isFullScreen
+      isFullScreen,
+      showPreview
     } = this.state
     const {
       articleId,
@@ -202,7 +199,7 @@ class Compose extends PureComponent {
         </Head>
         <div className={classNames('compose-panel-wrap', { 'full-screen': isFullScreen })}>
           <div className="compose-opt-group">
-            <Radio.Group value={editorType} onChange={this.changeEditorType}>
+            <Radio.Group value={editorType} onChange={this.setEditorType}>
               <Radio.Button value={1}>
                 CodeMirror
               </Radio.Button>
@@ -213,25 +210,22 @@ class Compose extends PureComponent {
             <Upload
               name="file"
               showUploadList={false}
-              action="/api/upload/illustrati"
+              action="/api/auth/upload/illustrati"
               onChange={this.insertImage}
             >
-              <Button>
-                插入图片
-              </Button>
+              <Button>插入图片</Button>
             </Upload>
             <Upload
               name="cover"
               showUploadList={false}
-              action="/api/upload/cover"
+              action="/api/auth/upload/cover"
               onChange={this.setCover}
             >
-              <Button>
-                插入封面
-              </Button>
+              <Button>插入封面</Button>
             </Upload>
-            <Switch className="switch-fullscreen" defaultChecked={isFullScreen} onChange={this.changeFullScreen} />
-            <Button className="fr" onClick={this.save}>
+            <Switch className="switch-btn" defaultChecked={isFullScreen} onChange={this.setFullScreen} />
+            <Switch className="switch-btn" defaultChecked={showPreview} onChange={this.setPreview} />
+            <Button className="fr" onClick={() => this.save()}>
               保存
             </Button>
           </div>
@@ -243,8 +237,8 @@ class Compose extends PureComponent {
               onChange={this.setTitle}
             />
             <TagGroup
-              value={this.state.tags}
-              tagList={this.props.tagList}
+              defaultValue={this.state.tags}
+              tagSource={this.props.tagList}
               onChange={this.setTag}
             />
             <Input.TextArea
@@ -255,41 +249,43 @@ class Compose extends PureComponent {
               autosize={{ minRows: 1, maxRows: 2 }}
             />
           </div>
-          <Row className="compose-write-group">
-            <Col className="compose-write-panel" span={12}>
+          <div className={classNames('compose-write-group clearfix', { 'show-preview': showPreview })}>
+            <div className="compose-panel fl compose-write-panel">
               {
-                editorType === 1
-                  ? (
-                    <CodeMirrorEditor
-                      key={articleId && articleDetail[articleId]}
-                      refHOC={this.refHOC}
-                      value={article}
-                      defaultValue={article}
-                      opts={{
-                        options: {
-                          mode: 'markdown',
-                          lineNumbers: true
-                        }
-                      }}
-                      onChange={this.changeValue}
-                    />
-                  )
-                  : (
-                    <AceEditor
-                      key={articleId && articleDetail[articleId]}
-                      refHOC={this.refHOC}
-                      value={article}
-                      defaultValue={article}
-                      onChange={this.changeValue}
-                      lan="markdown"
-                    />
-                  )
+                editorType === 1 ? (
+                  <CodeMirrorEditor
+                    key={articleId && articleDetail[articleId]}
+                    refHOC={this.refHOC}
+                    value={article}
+                    defaultValue={article}
+                    opts={{
+                      options: {
+                        mode: 'markdown',
+                        lineNumbers: true
+                      }
+                    }}
+                    onChange={this.setContent}
+                  />
+                ) : (
+                  <AceEditor
+                    key={articleId && articleDetail[articleId]}
+                    refHOC={this.refHOC}
+                    value={article}
+                    defaultValue={article}
+                    onChange={this.setContent}
+                    lan="markdown"
+                  />
+                )
               }
-            </Col>
-            <Col className="compose-result-panel" span={12}>
-              <Markdown source={article} />
-            </Col>
-          </Row>
+            </div>
+            {
+              showPreview && (
+                <div className="compose-panel fl compose-result-panel">
+                  <Markdown source={article} />
+                </div>
+              )
+            }
+          </div>
         </div>
       </Layout>
     )
