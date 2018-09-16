@@ -106,8 +106,7 @@ class Compose extends PureComponent {
     const { file = {} } = res
     const { response = {} } = file
     const { data = '' } = response
-    const imageUrl = `/images/cover/${data}`
-    this.setState({ cover: imageUrl })
+    this.setState({ cover: data })
   }
   // 设置文章主题内容
   setContent = article => this.setState({ article })
@@ -156,7 +155,6 @@ class Compose extends PureComponent {
     const { file = {} } = res
     const { response = {} } = file
     const { data = '' } = response
-    const imageUrl = `/images/illustrati/${data}`
     if (data) {
       const { ref } = this.refHOC
       window.qa = ref
@@ -178,7 +176,7 @@ class Compose extends PureComponent {
         cursorRow = cursor.row
         cursorColumn = cursor.column
       }
-      const insertDoc = `${cursorColumn !== 0 ? '\n' : ''}![](${imageUrl})\n`
+      const insertDoc = `${cursorColumn !== 0 ? '\n' : ''}![](${data})\n`
       insertValue.call(ref, insertDoc)
       focusLine.call(ref, cursorRow + 1, 0)
     }

@@ -18,5 +18,11 @@ module.exports = {
   user: {
     'vecchio': '314159'
   },
-  jwtSecret: 'vecchio'
+  jwtSecret: 'vecchio',
+
+  // 七牛云配置
+  accessKey: '',
+  secretKey: '',
+  bucket: 'blog',
+  qiniuDomain: 'pf3vjoxwm.bkt.clouddn.com'
 }

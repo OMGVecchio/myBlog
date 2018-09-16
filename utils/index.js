@@ -6,7 +6,8 @@ const mapKey = [
   'dbs',
   'db',
   'crypto',
-  'out'
+  'out',
+  'qiniu'
 ]
 const utils = {}
 const load = require
