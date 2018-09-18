@@ -11,7 +11,7 @@ const uploader = multer()
 const writeFile = util.promisify(fs.writeFile)
 const imagesPath = resolve(__dirname, '../static/images/')
 
-const saveImage = async (ctx, imgTag, useQiniu = true) => {
+const saveImage = async (ctx, imgTag, useQiniu = false) => {
   const { file } = ctx.req
   const { buffer, originalname } = file
   const filename = originalname.replace(/\./ig, `_${Date.now()}.`)
