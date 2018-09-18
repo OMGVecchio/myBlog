@@ -1,6 +1,6 @@
 import { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { Radio, Switch, Input, Button } from 'antd'
+import { Radio, Switch, Input, Button, message } from 'antd'
 import classNames from 'classnames'
 
 import Head from 'next/head'
@@ -74,6 +74,16 @@ class Compose extends PureComponent {
   //     })
   //   }
   // }
+  componentDidMount() {
+    this.autoSaveTimer = setInterval(async () => {
+      // 后面需要严格区分新增和修改模式，有差异，暂且只对修改做响应
+      // 后面可以单独存一个草稿库
+      if (this.state.mode === MODE_MODIFY) {
+        await this.save()
+        message.success('自动保存成功')
+      }
+    }, 1000 * 60)
+  }
   componentWillReceiveProps(props) {
     const { articleId, articleDetail } = props
     const detail = articleDetail[articleId]
@@ -94,6 +104,9 @@ class Compose extends PureComponent {
         mode: MODE_MODIFY
       })
     }
+  }
+  componentWillUnmount() {
+    clearInterval(this.autoSaveTimer)
   }
   // 设置文章标题
   setTitle = e => this.setState({ title: e.target.value })
@@ -127,6 +140,7 @@ class Compose extends PureComponent {
   setPreview = showPreview => this.setState({ showPreview })
   // 存储编辑器的 ref
   refHOC = { ref: null }
+  autoSaveTimer = null
   // 保存文章
   save = async () => {
     const {
