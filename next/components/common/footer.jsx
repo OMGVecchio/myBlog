@@ -5,7 +5,10 @@ const Footer = () => (
   <Fragment>
     <div className="main-footer text-center">
       <Icon type="copyright" />
-      2018 Vecchio. All rights reserved.
+      &nbsp;
+      2018 Vecchio All rights reserved.
+      &nbsp;
+      渝ICP备18012936号
     </div>
     <style jsx>{`
       .main-footer {
