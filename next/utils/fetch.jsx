@@ -1,12 +1,17 @@
+import Router from 'next/router'
+
+import { message } from 'antd'
+
 import 'isomorphic-fetch'
 
 import { isServer, isObject, getUrlQuery } from '_'
-import { getToken } from '_/token'
+import { getToken, removeToken } from '_/token'
 
 const config = require('../../config')
-
+// 请求接口的地址前缀
 const prefix = isServer ? `http://127.0.0.1:${config.port}` : ''
 
+// fetch 基础配置
 const getDefaultOpt = () => ({
   cache: 'no-cache',
   credentials: 'same-origin',
@@ -14,6 +19,7 @@ const getDefaultOpt = () => ({
   redirect: 'follow',
   referrer: 'no-referrer'
 })
+// 获取请求接口的完整地址
 const getUrl = (url, needPrefix = true) => {
   if (needPrefix) {
     return `${prefix}${url}`
@@ -41,37 +47,54 @@ const getOpt = (optObj, extraObj = {}) => {
   }
   return newOpt
 }
+// 请求回调函数
+const resolveData = res => res.json()
+const resolveStatus = (response) => {
+  if (response.code === 403 && !isServer) {
+    removeToken()
+    Router.push('/login')
+  }
+  if (response.code === 500 && !isServer) {
+    message.error(response.data)
+  }
+  return response
+}
+
+// restful 请求方式
+const get = (url, data = {}, extra) => {
+  const query = `?${getUrlQuery(data)}`
+  return fetch(`${getUrl(url)}${query}`, getOpt({
+    method: 'GET'
+  }, extra)).then(resolveData).then(resolveStatus)
+}
+
+const post = (url, data = {}, extra) => fetch(getUrl(url), getOpt({
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8',
+    'access-token': getToken()
+  },
+  body: JSON.stringify(data)
+}, extra)).then(resolveData).then(resolveStatus)
+
+const del = (url, data = {}, extra) => {
+  const query = `?${getUrlQuery(data)}`
+  return fetch(`${getUrl(url)}${query}`, getOpt({
+    method: 'DELETE'
+  }, extra)).then(resolveData).then(resolveStatus)
+}
+
+const put = (url, data = {}, extra) => {
+  const query = `?${getUrlQuery(data)}`
+  return fetch(`${getUrl(url)}${query}`, getOpt({
+    method: 'put'
+  }, extra)).then(resolveData).then(resolveStatus)
+}
 
 const xhr = {
-  get(url, data = {}, extra) {
-    const query = `?${getUrlQuery(data)}`
-    return fetch(`${getUrl(url)}${query}`, getOpt({
-      method: 'GET'
-    }, extra)).then(res => res.json())
-  },
-  post(url, data = {}, extra) {
-    return fetch(getUrl(url), getOpt({
-      method: 'POST',
-      headers: {
-        // 'Content-Type': 'application/x-www-form-urlencoded'
-        'Content-Type': 'application/json;charset=UTF-8',
-        'access-token': getToken()
-      },
-      body: JSON.stringify(data)
-    }, extra)).then(res => res.json())
-  },
-  del(url, data = {}, extra) {
-    const query = `?${getUrlQuery(data)}`
-    return fetch(`${getUrl(url)}${query}`, getOpt({
-      method: 'DELETE'
-    }, extra)).then(res => res.json())
-  },
-  put(url, data = {}, extra) {
-    const query = `?${getUrlQuery(data)}`
-    return fetch(`${getUrl(url)}${query}`, getOpt({
-      method: 'put'
-    }, extra)).then(res => res.json())
-  }
+  get, post, del, put
 }
 
 export default xhr
+
+export { get, post, del, put }

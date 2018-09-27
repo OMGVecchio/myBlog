@@ -6,6 +6,8 @@ const Next = require('next')
 
 const config = require('./config')
 const filters = require('./filters')
+const { out } = require('./utils')
+const { error } = out
 
 const next = Next({
   dev: process.env.NODE_ENV !== 'production',
@@ -17,11 +19,13 @@ class KOA {
     this.app = application
     this.app.router = router
     this.router = router
+    this.app.config = config
     this.config = config
   }
   start() {
     this.bindGlobal()
     this.addFilters()
+    this.attachEvent()
     this.app.listen(this.config.port)
   }
   bindGlobal() {
@@ -32,6 +36,11 @@ class KOA {
   }
   addFilters() {
     filters(this.app)
+  }
+  attachEvent() {
+    this.app.on('error', err => {
+      error('服务器异常', err)
+    })
   }
 }
 
