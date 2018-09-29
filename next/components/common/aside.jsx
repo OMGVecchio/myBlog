@@ -9,35 +9,43 @@ import types from '#/action/common'
 
 import style from '@/styles/components/common/aside.less'
 
-const briefTip = 'UI丑到爆我是知道的，功能简陋我也是知道的，交互贼差我又没关注有啥办法，优化中'
+const name = 'Vecchio阿加西'
+const briefTip = '前端鶸'
 const menuData = [{
   label: '主页',
   url: '/index',
-  icon: 'home'
+  icon: 'home',
+  color: 'purple'
 }, {
   label: '时间轴',
   url: '/timeline',
-  icon: 'filter'
+  icon: 'filter',
+  color: 'purple'
 }, {
   label: '标签',
   url: '/tag',
-  icon: 'tag-o'
+  icon: 'tag-o',
+  color: 'purple'
 }, {
   label: '撰文',
   url: '/compose',
-  icon: 'edit'
+  icon: 'edit',
+  color: 'purple'
 }, {
   label: '文章管理',
   url: '/manage',
-  icon: 'setting'
+  icon: 'setting',
+  color: 'purple'
 }, {
   label: '试炼场',
   url: '/trials',
-  icon: 'tool'
+  icon: 'tool',
+  color: 'purple'
 }, {
   label: '相册',
   url: '/album',
-  icon: 'picture'
+  icon: 'picture',
+  color: 'purple'
 }]
 const linkData = [{
   id: 0,
@@ -76,12 +84,17 @@ const Aside = ({
 }) => {
   const close = () => dispatch({ type: types.CLOSE_ASIDE })
   const renderMenu = (item) => {
-    const { label, url, icon } = item
+    const {
+      label,
+      url,
+      icon,
+      color
+    } = item
     return (
       <List.Item className={fetchMenuStatus(pathname, url)}>
         <Link href={url}>
-          <a className="menu-item-wrap">
-            <Row className="menu-item" style={{ width: '100%' }}>
+          <a className={classNames('menu-item-wrap', color)}>
+            <Row className="menu-item">
               <Col span={3} offset={2}>
                 <Icon className="menu-item-icon" type={icon} />
               </Col>
@@ -120,9 +133,8 @@ const Aside = ({
       <div className={classNames('aside-menu', { close: !asideIsOpen })}>
         <div className="menu-header">
           <Avatar className="avatar-cover" size="large" src="//rms.zhubajie.com/resource/redirect?key=mobile%2Fdefault%2F%E5%A4%B4%E5%83%8F17.jpg%2Forigine%2F1990662d-d67a-4f85-92bf-73be1dd6d334&s.w=240&s.h=240" />
-          <div className="description text-overflow">
-            {briefTip}
-          </div>
+          <div className="name text-center text-overflow">{name}</div>
+          <div className="description text-center text-overflow">{briefTip}</div>
           <Icon className="aside-close-btn" type="menu-fold" onClick={() => close(dispatch)} />
         </div>
         <div>

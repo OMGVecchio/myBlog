@@ -139,7 +139,11 @@ class Compose extends PureComponent {
       desc
     })
     if (result.code === 200) {
-      message.success('文章新建成功')
+      if (this.state.mode === MODE_CREATE) {
+        message.success('文章新建成功')
+      } else {
+        message.success('文章修改成功')
+      }
       await dispatch(fetchList(true))
       await dispatch(fetchDetail(articleId))
     }
@@ -206,6 +210,7 @@ class Compose extends PureComponent {
               showUploadList={false}
               action="/api/auth/upload/illustrati"
               onChange={this.insertImage}
+              onSuccess={() => message.success('图片上传成功')}
             >
               <Button>插入图片</Button>
             </Upload>
@@ -214,6 +219,7 @@ class Compose extends PureComponent {
               showUploadList={false}
               action="/api/auth/upload/cover"
               onChange={this.setCover}
+              onSuccess={() => message.success('封面上传成功')}
             >
               <Button>插入封面</Button>
             </Upload>

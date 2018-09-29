@@ -36,15 +36,20 @@
     height: @headerHeight;
     padding: 40px;
     background-color: @headColor;
+    color: #fff;
+    letter-spacing: 1px;
+    .name {
+      margin-top: 15px;
+      font-size: 18px;
+    }
     .description {
-      margin-top: 10px;
-      height: 65px;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
+      margin-top: 15px;
+      // height: 65px;
+      // display: -webkit-box;
+      // -webkit-box-orient: vertical;
+      // -webkit-line-clamp: 3;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: #fff;
     }
   }
   .avatar-cover {
@@ -55,11 +60,13 @@
     transform: translateX(-50%);
   }
   .menu-items {
+    letter-spacing: 2px;
     .menu-item-wrap {
       display: block;
       width: 100%;
       height: 100%;
-      color: #000000;
+      color: #9e9e9e;
+
     }
     .is-active {
       background-color: @headColor;
