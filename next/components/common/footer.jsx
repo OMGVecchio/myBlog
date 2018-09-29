@@ -1,8 +1,15 @@
 import { Fragment } from 'react'
 import { Icon } from 'antd'
 
+import Head from 'next/head'
+
+import styles from '@/styles/components/common/footer.less'
+
 const Footer = () => (
   <Fragment>
+    <Head>
+      <style dangerouslySetInnerHTML={{ __html: styles }} />
+    </Head>
     <div className="main-footer text-center">
       <Icon type="copyright" />
       &nbsp;
@@ -10,15 +17,6 @@ const Footer = () => (
       &nbsp;
       渝ICP备18012936号
     </div>
-    <style jsx>{`
-      .main-footer {
-        min-height: 70px;
-        line-height: 70px;
-        background-color: #4054B2;
-        color: #fff;
-      }
-    `}
-    </style>
   </Fragment>
 )
 

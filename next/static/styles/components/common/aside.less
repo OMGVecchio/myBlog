@@ -1,6 +1,8 @@
 @headerHeight: 230px;
 @width: 240px;
 @duration: 0.5s;
+@headColor: #99e1e5;
+@bodyColor: #f7f7f5;
 
 .aside-menu {
   position: fixed;
@@ -10,7 +12,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  background-color: #fff;
+  background-color: @bodyColor;
   transition: left @duration;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0,0.12);
   &.close {
@@ -33,7 +35,7 @@
   .menu-header {
     height: @headerHeight;
     padding: 40px;
-    background-color: rgba(63, 81, 181, 0.8);
+    background-color: @headColor;
     .description {
       margin-top: 10px;
       height: 65px;
@@ -60,7 +62,7 @@
       color: #000000;
     }
     .is-active {
-      background-color: rgba(63, 81, 181, 0.8);
+      background-color: @headColor;
       transition: background-color, color .2s;
       .menu-item-wrap {
         color: #ffffff;

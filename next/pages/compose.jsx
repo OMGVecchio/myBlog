@@ -51,29 +51,6 @@ class Compose extends PureComponent {
     // 撰写模式，分为 新增 和 修改
     mode: MODE_CREATE
   }
-  // redux-sage 并不能在 getInitialProps 时同步完成
-  // 在挂载前，子组件的 defaultValue 可以生效，但是 componentWillReceiveProps 不行(改成 value ?)
-  // componentWillMount() {
-  //   const { articleId, articleDetail } = this.props
-  //   const detail = articleDetail[articleId]
-  //   if (articleId && detail) {
-  //     const {
-  //       title,
-  //       cover,
-  //       article,
-  //       desc,
-  //       tags
-  //     } = detail
-  //     this.setState({
-  //       title,
-  //       cover,
-  //       article,
-  //       desc,
-  //       tags,
-  //       mode: MODE_MODIFY
-  //     })
-  //   }
-  // }
   componentDidMount() {
     this.autoSaveTimer = setInterval(async () => {
       // 后面需要严格区分新增和修改模式，有差异，暂且只对修改做响应
@@ -154,15 +131,18 @@ class Compose extends PureComponent {
     const url = this.state.mode === MODE_CREATE
       ? '/api/auth/article'
       : `/api/auth/article/${articleId}`
-    await xhr.post(url, {
+    const result = await xhr.post(url, {
       title,
       cover,
       article,
       tags,
       desc
     })
-    await dispatch(fetchList(true))
-    await dispatch(fetchDetail(articleId))
+    if (result.code === 200) {
+      message.success('文章新建成功')
+      await dispatch(fetchList(true))
+      await dispatch(fetchDetail(articleId))
+    }
   }
   // 在编辑器中插入图片
   insertImage = (res) => {
