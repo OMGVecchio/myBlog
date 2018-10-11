@@ -10,6 +10,7 @@ import types from '#/action/common'
 import Header from '~/common/header'
 import Footer from '~/common/footer'
 import Menu from '~/common/aside'
+import Pet from '~/common/pet'
 import BackTop from '~/base/backtop'
 import LinearProgress from '~/base/linearprogress'
 
@@ -113,6 +114,7 @@ class Layout extends PureComponent {
         </Head>
         <LinearProgress visible={this.props.globalProgress} className="global-router-progress" />
         <Menu />
+        <Pet />
         <div className={classNames('main-wrap', { 'menu-has-close': !asideIsOpen })}>
           <Header title={title} isLongScroll={isLongScroll} />
           <BackTop show={isLongScroll} />
