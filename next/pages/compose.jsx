@@ -1,6 +1,6 @@
 import { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { Radio, Switch, Input, Button } from 'antd'
+import { Radio, Switch, Input, Button, message } from 'antd'
 import classNames from 'classnames'
 
 import Head from 'next/head'
@@ -51,29 +51,16 @@ class Compose extends PureComponent {
     // 撰写模式，分为 新增 和 修改
     mode: MODE_CREATE
   }
-  // redux-sage 并不能在 getInitialProps 时同步完成
-  // 在挂载前，子组件的 defaultValue 可以生效，但是 componentWillReceiveProps 不行(改成 value ?)
-  // componentWillMount() {
-  //   const { articleId, articleDetail } = this.props
-  //   const detail = articleDetail[articleId]
-  //   if (articleId && detail) {
-  //     const {
-  //       title,
-  //       cover,
-  //       article,
-  //       desc,
-  //       tags
-  //     } = detail
-  //     this.setState({
-  //       title,
-  //       cover,
-  //       article,
-  //       desc,
-  //       tags,
-  //       mode: MODE_MODIFY
-  //     })
-  //   }
-  // }
+  componentDidMount() {
+    this.autoSaveTimer = setInterval(async () => {
+      // 后面需要严格区分新增和修改模式，有差异，暂且只对修改做响应
+      // 后面可以单独存一个草稿库
+      if (this.state.mode === MODE_MODIFY) {
+        await this.save()
+        message.success('自动保存成功')
+      }
+    }, 1000 * 60)
+  }
   componentWillReceiveProps(props) {
     const { articleId, articleDetail } = props
     const detail = articleDetail[articleId]
@@ -94,6 +81,9 @@ class Compose extends PureComponent {
         mode: MODE_MODIFY
       })
     }
+  }
+  componentWillUnmount() {
+    clearInterval(this.autoSaveTimer)
   }
   // 设置文章标题
   setTitle = e => this.setState({ title: e.target.value })
@@ -127,6 +117,7 @@ class Compose extends PureComponent {
   setPreview = showPreview => this.setState({ showPreview })
   // 存储编辑器的 ref
   refHOC = { ref: null }
+  autoSaveTimer = null
   // 保存文章
   save = async () => {
     const {
@@ -140,15 +131,22 @@ class Compose extends PureComponent {
     const url = this.state.mode === MODE_CREATE
       ? '/api/auth/article'
       : `/api/auth/article/${articleId}`
-    await xhr.post(url, {
+    const result = await xhr.post(url, {
       title,
       cover,
       article,
       tags,
       desc
     })
-    await dispatch(fetchList(true))
-    await dispatch(fetchDetail(articleId))
+    if (result.code === 200) {
+      if (this.state.mode === MODE_CREATE) {
+        message.success('文章新建成功')
+      } else {
+        message.success('文章修改成功')
+      }
+      await dispatch(fetchList(true))
+      await dispatch(fetchDetail(articleId))
+    }
   }
   // 在编辑器中插入图片
   insertImage = (res) => {
@@ -212,6 +210,7 @@ class Compose extends PureComponent {
               showUploadList={false}
               action="/api/auth/upload/illustrati"
               onChange={this.insertImage}
+              onSuccess={() => message.success('图片上传成功')}
             >
               <Button>插入图片</Button>
             </Upload>
@@ -220,6 +219,7 @@ class Compose extends PureComponent {
               showUploadList={false}
               action="/api/auth/upload/cover"
               onChange={this.setCover}
+              onSuccess={() => message.success('封面上传成功')}
             >
               <Button>插入封面</Button>
             </Upload>

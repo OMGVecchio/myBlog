@@ -1,6 +1,6 @@
 # 个人博客
 
-## [demo](https://vecchio.top) 因为服务器还未备案，通过 [http](http://vecchio.top) 方式访问会被拦截，但也可通过 [IP](http://118.31.47.224:3000) 访问
+## [demo](https://vecchio.top)
 
 ## 选型
 

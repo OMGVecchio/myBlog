@@ -1,26 +1,37 @@
 import {
-  // all,
-  // call,
-  // take,
   select,
   put,
   takeEvery
 } from 'redux-saga/effects'
-import xhr from 'utils/fetch'
+import { message } from 'antd'
+import { isServer } from '_'
 
-// import types from 'store/action/common'
+import xhr from '_/fetch'
+
 import articleTypes, {
   fillList,
   fillDetail,
   fillComment,
   removeArticleDone,
   onlineArticleDone
-} from 'store/action/article'
-import tagTypes, { fillList as fillTagList } from 'store/action/tag'
+} from '#/action/article'
+import tagTypes, { fillList as fillTagList } from '#/action/tag'
+
+const isFailed = (data, info) => {
+  if (data.code !== 200 && !isServer) {
+    const errorInfo = info || data.data
+    message.error(errorInfo)
+    return true
+  }
+  return false
+}
 
 function* fetchList() {
   const dataResolve = yield xhr.get('/api/article')
   const { data } = dataResolve
+  if (isFailed(dataResolve)) {
+    return
+  }
   yield put(fillList(data))
 }
 
@@ -37,6 +48,9 @@ function* fetchDetail({ articleId }) {
   }
   const dataResolve = yield xhr.get(`/api/article/${articleId}`)
   const { data } = dataResolve
+  if (isFailed(dataResolve)) {
+    return
+  }
   yield put(fillDetail(articleId, data))
 }
 
@@ -54,25 +68,30 @@ function* fetchComment({ articleId }) {
   // }
   const dataResolve = yield xhr.get(`/api/comment/${articleId}`)
   const { data } = dataResolve
+  if (isFailed(dataResolve)) {
+    return
+  }
   yield put(fillComment(articleId, data))
 }
 
 function* removeArticle({ articleId }) {
   const dataResolve = yield xhr.del(`/api/auth/article/${articleId}`)
-  const { success } = dataResolve
-  if (success) {
-    yield put(removeArticleDone(articleId))
+  const { data } = dataResolve
+  if (isFailed(dataResolve)) {
+    return
   }
+  yield put(removeArticleDone(articleId))
 }
 
 function* onlineArticle({ articleId, online }) {
   // on:上线  off:下线
   const tag = online ? 'on' : 'off'
   const dataResolve = yield xhr.put(`/api/auth/article/${articleId}`, { online: tag })
-  const { success } = dataResolve
-  if (success) {
-    yield put(onlineArticleDone(articleId, online))
+  const { data } = dataResolve
+  if (isFailed(dataResolve)) {
+    return
   }
+  yield put(onlineArticleDone(articleId, online))
 }
 
 function* fetchTagList({ clearCache = false }) {
@@ -90,6 +109,9 @@ function* fetchTagList({ clearCache = false }) {
   }
   const dataResolve = yield xhr.get('/api/tags')
   const { data } = dataResolve
+  if (isFailed(dataResolve)) {
+    return
+  }
   yield put(fillTagList(data))
 }
 

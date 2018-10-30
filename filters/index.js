@@ -3,7 +3,7 @@
 const { resolve } = require('path')
 const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
-const statics = require('koa-static')
+const statics = require('./lib/static')
 const apiUtil = require('./lib/api')
 const redis = require('./lib/redis')
 const auth = require('./lib/auth')
@@ -17,7 +17,7 @@ module.exports = (app) => {
   app
     .use(logger())
     .use(bodyParser())
-    .use(statics(resolve(__dirname, '../static')))
+    .use(statics)
     .use(apiUtil)
     .use(redis)
     .use(auth)
