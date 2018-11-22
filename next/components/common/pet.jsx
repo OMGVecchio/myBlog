@@ -11,6 +11,7 @@ class Pet extends PureComponent {
     // canvas.addEventListener('mousemove', (e) => {
     //   console.log(e)
     // })
+
     this.init(this.canvas)
     await this.fetchResource()
     this.renderCanvas()
@@ -99,13 +100,16 @@ class Pet extends PureComponent {
   render() {
     return (
       <Fragment>
-        <canvas width="600" height="800" id="pet" ref={(d) => { this.canvas = d }} />
+        {/* <canvas width="600" height="600" id="pet" ref={(d) => { this.canvas = d }} /> */}
+        <canvas width="0" height="0" id="pet" ref={(d) => { this.canvas = d }} />
         <style jsx>{`
           #pet {
             position: fixed;
             z-index: 10000;
-            width: 300px;
-            height: 400px;
+            // width: 300px;
+            // height: 300px;
+            width: 0;
+            height: 0;
           }
         `}
         </style>
