@@ -21,6 +21,7 @@ export default class MyDocument extends Document {
           <link rel="stylesheet" href={`static/styles/css/antd.min.css${resourceTag}`} />
           <link rel="stylesheet" href={`static/styles/css/normalize.css${resourceTag}`} />
           <link rel="stylesheet" href={`static/styles/css/codemirror.css${resourceTag}`} />
+          <link rel="stylesheet" href={`static/styles/css/highlight.js.css${resourceTag}`} />
         </Head>
         <body>
           <Main />
