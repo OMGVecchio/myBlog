@@ -8,7 +8,7 @@ const cardLayout = Card => ({
   desc
 }) => {
   const titleDefault = title || '暂无标题'
-  const coverDefault = cover || '//files.vladstudio.com/joy/cats/wall/vladstudio_cats_800x600_signed.jpg'
+  const coverDefault = cover || '/images/other/404.jpg'
   const descDefault = desc || '暂无描述'
   const props = {
     id,

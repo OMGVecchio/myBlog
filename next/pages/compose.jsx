@@ -1,6 +1,6 @@
 import { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { Radio, Switch, Input, Button, message } from 'antd'
+import { Radio, Switch, Input, Button, message, Tooltip } from 'antd'
 import classNames from 'classnames'
 
 import Head from 'next/head'
@@ -186,10 +186,7 @@ class Compose extends PureComponent {
       isFullScreen,
       showPreview
     } = this.state
-    const {
-      articleId,
-      articleDetail
-    } = this.props
+    const { articleId, articleDetail } = this.props
     return (
       <Layout className="compose-page">
         <Head>
@@ -223,8 +220,12 @@ class Compose extends PureComponent {
             >
               <Button>插入封面</Button>
             </Upload>
-            <Switch className="switch-btn" defaultChecked={isFullScreen} onChange={this.setFullScreen} />
-            <Switch className="switch-btn" defaultChecked={showPreview} onChange={this.setPreview} />
+            <Tooltip title="是否全屏">
+              <Switch className="switch-btn" defaultChecked={isFullScreen} onChange={this.setFullScreen} />
+            </Tooltip>
+            <Tooltip title="是否开启预览">
+              <Switch className="switch-btn" defaultChecked={showPreview} onChange={this.setPreview} />
+            </Tooltip>
             <Button className="fr" onClick={() => this.save()}>
               保存
             </Button>
