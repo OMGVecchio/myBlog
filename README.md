@@ -78,3 +78,11 @@ const mapStateToProps = (state) => {
 + `styled-jsx` 设置为 `<style jsx global>` 后不会带上 `scoped id`，但是该 `style` 下全部样式均为全局，或者 [`styled-jsx` 设置为 `<style jsx>`，具体不需要加上 `scoped id` 的元素加上 `:global` 标识](https://github.com/zeit/styled-jsx#one-off-global-selectors)
 
 + `antd` 的样式文件太大，暂时不知道如何自动化做按需加载。如果把所有的样式文件放在 document 中，按照当前的做法，我会把样式代码全内联到文档中，这样就无法在浏览器端做 `antd.min.css` 文件的缓存。考虑了几种方式：直接在 `link` 中外链 `antd.min.css` 的地址，但这样无法加时间戳，对后续的维护有一定问题，解决的方法其实也有，继承 `_document` 的主类，并获取 `buildId` 等关键指针加在资源地址中，但这样就代码同步性而言确实太不灵活了；第二种方案是可否提取一个公共组件，里面存放需要缓存的资源代码，但为了避免服务端渲染时每次都优先加在完这个组件，需要对这个组件做 `dynamic` 异步加载，此时就需要考虑延迟渲染的一些问题，需要额外操作弥补
+
+### 服务端路由
+
+为了展现更为优美的路由，例如：`/article?articleId=d4cc9350-a43c-11e8-aa26-efc93289f4d5` 变为 `/article/d4cc9350-a43c-11e8-aa26-efc93289f4d5`
+
++ 我们在 next 中跳转时，`<Link href="/article?articleId=X" as="/article/articleId">` 添加一个 as 属性即可
+
++ 但是第一次服务端渲染时，如果是 `/article/articleId`，渲染出来的 next 页面为 404，所以我们需要修改 nginx 或 node 端的特定路由，增加额外处理方式。本例是修改 handleRequest 的参数，需要注意的是 handleRequest 是处理所有 next 资源请求的入口方法，支持三个参数 (req, res, parsedUrl)，其中 parserdUrl 是形如 `{ pathname, query }` 的对象，如果不传 parsedUrl，自动注入 req 里的相关 变量；然后在 next 中执行 run(req, res, parsedUrl)，针对不同的请求类型 next 会有不同的处理函数，document 的请求会分配到 renderToHtml(req, res, path, query)【也可调用 next 实例的 render(req, res, path, query)】

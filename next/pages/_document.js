@@ -18,10 +18,10 @@ export default class MyDocument extends Document {
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
           <style dangerouslySetInnerHTML={{ __html: globalStyle }} />
-          <link rel="stylesheet" href={`static/styles/css/antd.min.css${resourceTag}`} />
-          <link rel="stylesheet" href={`static/styles/css/normalize.css${resourceTag}`} />
-          <link rel="stylesheet" href={`static/styles/css/codemirror.css${resourceTag}`} />
-          <link rel="stylesheet" href={`static/styles/css/highlight.js.css${resourceTag}`} />
+          <link rel="stylesheet" href={`/static/styles/css/antd.min.css${resourceTag}`} />
+          <link rel="stylesheet" href={`/static/styles/css/normalize.css${resourceTag}`} />
+          <link rel="stylesheet" href={`/static/styles/css/codemirror.css${resourceTag}`} />
+          <link rel="stylesheet" href={`/static/styles/css/highlight.js.css${resourceTag}`} />
         </Head>
         <body>
           <Main />

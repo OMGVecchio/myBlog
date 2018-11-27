@@ -1,3 +1,5 @@
+// 暂时没用
+
 import { Fragment, PureComponent } from 'react'
 
 const itachiUrl = '/static/imgs/itachi/single.png'

@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 const cardLayout = Card => ({
   id,
   title,
@@ -15,7 +17,13 @@ const cardLayout = Card => ({
     cover: coverDefault,
     desc: descDefault
   }
-  return <Card {...props} />
+  return (
+    <Link href={`/article?articleId=${id}`} as={`/article/${id}`}>
+      <div className="card-wrapper">
+        <Card {...props} />
+      </div>
+    </Link>
+  )
 }
 
 export default cardLayout
