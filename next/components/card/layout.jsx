@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 const cardLayout = Card => ({
   id,
   title,
@@ -6,7 +8,7 @@ const cardLayout = Card => ({
   desc
 }) => {
   const titleDefault = title || '暂无标题'
-  const coverDefault = cover || '//files.vladstudio.com/joy/cats/wall/vladstudio_cats_800x600_signed.jpg'
+  const coverDefault = cover || '/images/other/404.jpg'
   const descDefault = desc || '暂无描述'
   const props = {
     id,
@@ -15,7 +17,13 @@ const cardLayout = Card => ({
     cover: coverDefault,
     desc: descDefault
   }
-  return <Card {...props} />
+  return (
+    <Link href={`/article?articleId=${id}`} as={`/article/${id}`}>
+      <div className="card-wrapper">
+        <Card {...props} />
+      </div>
+    </Link>
+  )
 }
 
 export default cardLayout

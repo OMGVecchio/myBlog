@@ -78,25 +78,15 @@ class Manage extends PureComponent {
       const { id, online } = record
       return (
         <div className="operation-wrap">
-          <Link href={`/compose?articleId=${id}`}>
-            <Button
-              type="primary"
-              size="small"
-            >
+          <Link href={`/compose?articleId=${id}`} as={`/compose/${id}`}>
+            <Button type="primary" size="small" >
               修改
             </Button>
           </Link>
-          <Button
-            size="small"
-            onClick={() => this.switchOnline(id, !online)}
-          >
+          <Button size="small" onClick={() => this.switchOnline(id, !online)}>
             {online ? '下线' : '上线'}
           </Button>
-          <Button
-            type="danger"
-            size="small"
-            onClick={() => this.removeArticle(id)}
-          >
+          <Button type="danger" size="small" onClick={() => this.removeArticle(id)}>
             删除
           </Button>
         </div>
@@ -116,11 +106,7 @@ class Manage extends PureComponent {
       })
     }
     return (
-      <Layout
-        className="manage-page"
-        pageTitle="文章管理"
-        title="文章管理"
-      >
+      <Layout className="manage-page" pageTitle="文章管理" title="文章管理">
         <Head>
           <style dangerouslySetInnerHTML={{ __html: style }} />
         </Head>

@@ -1,3 +1,5 @@
+// 本来不想单独提出一个登录页的，暂时没用了
+
 import { PureComponent } from 'react'
 import { Modal, Form, Icon, Input, message } from 'antd'
 
@@ -6,7 +8,6 @@ import { setToken } from '_/token'
 
 const FormItem = Form.Item
 
-// 本来不想单独提出一个登录页的，暂时没用了
 class LoginModal extends PureComponent {
   state = {
     username: '',
