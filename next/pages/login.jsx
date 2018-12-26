@@ -5,6 +5,7 @@ import Head from 'next/head'
 import Router from 'next/router'
 
 import BInput from '~/base/input'
+import BValidator from '~/base/validator'
 
 import xhr from '_/fetch'
 import { setToken } from '_/token'
@@ -77,11 +78,8 @@ const LoginModal = () => {
               onChange={getPassword}
               block
             />
-            <BInput
-              type="text"
+            <BValidator
               className="input-body"
-              placeholder="后面加个验证码试试"
-              block
             />
             <Button
               onClick={loginSubmit}

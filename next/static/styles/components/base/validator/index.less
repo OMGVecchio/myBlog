@@ -1,0 +1,77 @@
+@initialCircle: 30px;
+@btnPadding: 5px;
+@transformCircle: 22px;
+@dot: 12px;
+
+._b-validator {
+  position: relative;
+  border: 1px solid #ccc;
+  ._b-validator-btn {
+    cursor: pointer;
+    &:hover {
+      ._b-validator-ring {
+        animation: circleScale .5s linear 0s infinite alternate;
+      }
+      ._b-validator-pointer {
+        display: none;
+      }
+      ._b-validator-text {
+        background-image: linear-gradient(0deg, #ffffff 0%,#f3f3f3 100%);
+      }
+      @keyframes circleScale {
+        0% {
+          height: @initialCircle;
+          width: @initialCircle;
+        }
+        100% {
+          height: @transformCircle;
+          width: @transformCircle;
+        }
+      }
+    }
+    ._b-validator-detector {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: @btnPadding;
+      height: @initialCircle + 2 * @btnPadding;
+      width: @initialCircle + 2 * @btnPadding;
+    }
+    ._b-validator-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: @initialCircle;
+      width: @initialCircle;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 1px #3873ff;
+      background-color: #c6d5f8;
+    }
+    ._b-validator-pointer {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 1px #3873ff;
+      background-color: #80a6fc;
+      background-image: linear-gradient(205deg, rgba(0,0,0,0) 50%,#c6d5f8 50%), linear-gradient(155deg, #c6d5f8 50%,rgba(0,0,0,0) 50%);
+    }
+    ._b-validator-dot {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: @dot;
+      width: @dot;
+      border-radius: 50%;
+      background-color: #3873ff;
+    }
+    ._b-validator-text {
+      padding: 0 40px;
+      outline: none;
+      line-height: @initialCircle + 2 * @btnPadding;
+      background-image: linear-gradient(180deg, #ffffff 0%,#f3f3f3 100%);
+    }
+  }
+}
