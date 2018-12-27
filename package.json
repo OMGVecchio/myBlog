@@ -51,7 +51,8 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-immutable": "^4.0.0",
     "redux-logger": "^3.0.6",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "sharp": "^0.21.1"
   },
   "devDependencies": {
     "autoprefixer": "^8.5.0",

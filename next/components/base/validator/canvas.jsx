@@ -7,18 +7,22 @@ import xhr from '_/fetch'
 
 import style from '@/styles/components/base/validator/canvas.less'
 
-const CANVAS_WIDTH = 326
-const CANVAS_HEIGHT = 160
+import {
+  canvasWidth,
+  canvasHeight,
+  sliceWidth
+} from '../../../../config/validator'
 
 class ValidatorCanvas extends PureComponent {
   static defaultProps = {
     close: () => {},
-    dataUrl: '/api/validator/getData'
+    dataUrl: '/api/validator/info'
   }
   state = {
     offsetX: 0
   }
-  componentDidMount() {
+  async componentDidMount() {
+    await this.fetchValidatorInfo()
     this.controlBar.addEventListener('mousedown', this.barEventDown)
     document.addEventListener('mouseup', this.barEventUp)
     document.addEventListener('mousemove', this.barEventMove)
@@ -46,15 +50,22 @@ class ValidatorCanvas extends PureComponent {
   controlBar = null
   barIsActive = false
   startMoveOffsetX = 0
+  fullBackground = null
+  slicePicture = null
   // 获取验证器数据
-  fetchValidatorData = () => {
-    xhr.get(this.props.dataUrl)
+  fetchValidatorInfo = async () => {
+    const info = await xhr.get(this.props.dataUrl)
+    if (info.success) {
+      const { data } = info
+      this.fullBackground = data.fullBackground
+      this.slicePicture = data.slice
+    }
   }
   // 更新滑动数据
   updateCanvas = () => {
     this.setState({ offsetX: 0 })
     this.initBgCanvas()
-    this.initSliderCanvas()
+    this.initSliceCanvas()
   }
   // 初始化 background canvas
   initBgCanvas = () => {
@@ -62,28 +73,32 @@ class ValidatorCanvas extends PureComponent {
     const { width, height } = bgCanvas
     const ctx = bgCanvas.getContext('2d')
     const bgImg = new Image()
-    bgImg.src = '/images/cover/wallhaven-851_1538201484272.jpg'
+    bgImg.src = this.fullBackground
     bgImg.onload = () => {
       ctx.drawImage(bgImg, 0, 0, width, height)
     }
   }
   // 初始化 slider canvas
-  initSliderCanvas = () => {
+  initSliceCanvas = () => {
     const sliderImg = new Image()
-    sliderImg.src = '/static/imgs/xm/xm-1.png'
+    sliderImg.src = this.slicePicture
     sliderImg.onload = () => {
       this.sliderImg = sliderImg
-      this.drawSliderCanvas()
+      this.drawSliceCanvas()
     }
   }
   // 绘制滑动调
-  drawSliderCanvas = () => {
+  drawSliceCanvas = () => {
     const { sliderCanvas, sliderCtx, sliderImg } = this
     const { width, height } = sliderCanvas
     const { naturalWidth, naturalHeight } = sliderImg
     const { offsetX } = this.state
+    const offsetY = (height - naturalHeight) / 2
     sliderCtx.clearRect(0, 0, width, height)
-    sliderCtx.drawImage(sliderImg, 0, 0, naturalWidth, naturalHeight, offsetX, 25, 80, 100)
+    sliderCtx.drawImage(
+      sliderImg, 0, 0, naturalWidth, naturalHeight,
+      offsetX, offsetY, sliceWidth, naturalHeight
+    )
   }
   // 滑动器点击事件
   barEventDown = (e) => {
@@ -102,11 +117,12 @@ class ValidatorCanvas extends PureComponent {
       if (offsetX < 0) {
         offsetX = 0
       }
-      if (offsetX > 276) {
-        offsetX = 276
+      const criticalVal = canvasWidth - sliceWidth
+      if (offsetX > criticalVal) {
+        offsetX = criticalVal
       }
       this.setState({ offsetX })
-      this.drawSliderCanvas()
+      this.drawSliceCanvas()
     }
   }
   render() {
@@ -119,8 +135,8 @@ class ValidatorCanvas extends PureComponent {
         <div className="_b-validator-box">
           <div className="_b-validator-control">
             <div className="_b-validator-canvas-wrap">
-              <canvas width={CANVAS_WIDTH} height={CANVAS_HEIGHT} className="_b-validator-canvas" ref={this.getBgCanvas} />
-              <canvas width={CANVAS_WIDTH} height={CANVAS_HEIGHT} className="_b-validator-canvas _b-validator-canvas-slider" ref={this.getCanvas} />
+              <canvas width={canvasWidth} height={canvasHeight} className="_b-validator-canvas" ref={this.getBgCanvas} />
+              <canvas width={canvasWidth} height={canvasHeight} className="_b-validator-canvas _b-validator-canvas-slider" ref={this.getCanvas} />
             </div>
             <div className="_b-validator-control-bar">
               <div className="_b-validator-control-btn" ref={this.getControlBar} style={{ transform: `translateX(${this.state.offsetX}px)` }}>

@@ -1,34 +1,20 @@
 'use strict'
 
 const load = require
+const { promisify } = require('util')
 const { resolve } = require('path')
-const fs = require('fs')
+const { stat, readdir } = require('fs')
 
-const fsStat = path => new Promise((res, rej) => {
-  fs.stat(path, (err, stat) => {
-    if (err) {
-      rej(err)
-    }
-    res(stat)
-  })
-})
-
-const fsReaddir = path => new Promise((res, rej) => {
-  fs.readdir(path, (err, stat) => {
-    if (err) {
-      rej(err)
-    }
-    res(stat)
-  })
-})
+const fsStat = promisify(stat)
+const fsReaddir = promisify(readdir)
 
 const traverse = async (path, cb) => {
   if (!path) {
     throw new Error('path is required at traverse')
   }
   try {
-    const stat = await fsStat(path)
-    if (stat.isFile()) {
+    const state = await fsStat(path)
+    if (state.isFile()) {
       if (cb) {
         cb(path)
       } else {

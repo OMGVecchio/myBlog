@@ -7,14 +7,24 @@ const mapKey = [
   'db',
   'crypto',
   'out',
-  'qiniu'
+  'qiniu',
+  'validator'
 ]
 const utils = {}
 const load = require
 
 mapKey.forEach((key) => {
-  const method = load(`./lib/${key}`)
-  utils[key] = method
+  let name
+  let path
+  if (typeof key === 'string') {
+    name = key
+    path = key
+  } else if (key instanceof Array){
+    name = key[0]
+    path = key[1]
+  }
+  const method = load(`./lib/${path}`)
+  utils[name] = method
 })
 
 module.exports = utils

@@ -2,7 +2,18 @@
   "apps": [{
     "name": "myBlog",
     "script": "./app.js",
-    "watch": true,
+    "watch": [
+      "config",
+      "filters",
+      "routes",
+      "utils"
+    ],
+    "ignore_watch": [
+      "dbs",
+      "next",
+      "node_module",
+      "static"
+    ],
     "env": {
       "NODE_ENV": "development"
     },
