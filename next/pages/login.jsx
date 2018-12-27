@@ -19,21 +19,40 @@ const LoginModal = () => {
   const getPassword = (password) => {
     this.password = password
   }
-  const loginSubmit = (e) => {
+  const loginSubmit = async (e) => {
     e.preventDefault()
-    const param = {
-      username: this.username,
-      password: this.password
+    const {
+      username,
+      password,
+      challenge,
+      token
+    } = this
+    if (!username) {
+      message.warn('请填写用户名')
+      return
     }
-    xhr.post('/api/login', { ...param }).then((data) => {
-      if (data.code === 201) {
-        setToken(data.data)
-        message.success('管理员登录成功')
-        Router.push('/')
-      } else {
-        message.error(data.data)
-      }
-    })
+    if (!password) {
+      message.warn('请填写密码')
+      return
+    }
+    if (!challenge || !token) {
+      message.warn('请进行图片验证')
+      return
+    }
+    const param = {
+      username,
+      password,
+      challenge,
+      token
+    }
+    const data = await xhr.post('/api/login', { ...param })
+    if (data.code === 201) {
+      setToken(data.data)
+      message.success('管理员登录成功')
+      Router.push('/')
+    } else {
+      message.error(data.data)
+    }
   }
   return (
     <Fragment>
@@ -80,6 +99,10 @@ const LoginModal = () => {
             />
             <BValidator
               className="input-body"
+              success={({ challenge, token }) => {
+                this.challenge = challenge
+                this.token = token
+              }}
             />
             <Button
               onClick={loginSubmit}

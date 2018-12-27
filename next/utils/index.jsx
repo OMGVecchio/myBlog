@@ -25,4 +25,6 @@ export const filterArticleList = (articleList, kw = '') => articleList.filter((a
   return true
 })
 
+export const noop = () => {}
+
 export default isServer

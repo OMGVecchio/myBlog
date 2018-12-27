@@ -2,10 +2,25 @@
 
 const jwt = require('jsonwebtoken')
 const config = require('../config')
+const { out } = require('../utils')
 
 Router.post('/api/login', async (ctx) => {
-  const { username, password } = ctx.request.body
+  const {
+    username,
+    password,
+    challenge,
+    token
+  } = ctx.request.body
   const { user } = config
+  try {
+    const realToken = await ctx.redis.get(challenge)
+    if (token !== realToken) {
+      ctx.apiError('图片验证码错误')
+    }
+  } catch (e) {
+    out.error('登录时图片验证码检测有误')
+    ctx.apiError('登录失败')
+  }
   if (user[username] && user[username] === password) {
     const token = await new Promise((resolve, reject) => {
       jwt.sign({

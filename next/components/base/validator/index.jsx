@@ -4,9 +4,14 @@ import classNames from 'classnames'
 import Head from 'next/head'
 import ValidatorCanvas from '~/base/validator/canvas'
 
+import { noop } from '_'
+
 import style from '@/styles/components/base/validator/index.less'
 
 class Validator extends PureComponent {
+  static defaultProps = {
+    success: noop
+  }
   state = {
     rotate: 0,
     showCanvas: false
@@ -84,6 +89,7 @@ class Validator extends PureComponent {
             this.state.showCanvas && (
               <ValidatorCanvas
                 close={() => this.setState({ showCanvas: false })}
+                success={this.props.success}
               />
             )
           }

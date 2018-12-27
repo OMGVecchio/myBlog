@@ -18,7 +18,7 @@ const {
 const readFileAsync = promisify(readFile)
 
 module.exports = {
-  async fullBackground() {
+  async fullBackground(offsetX = 0, offsetY = 0) {
     try {
       const imgBuffer = await readFileAsync(resolve(__dirname, './pictures/clock.jpg'))
       // 获取切割后的背景
@@ -27,24 +27,37 @@ module.exports = {
           <rect x="0" y="0" width="${sliceWidth}" height="${sliceHeight}" style="fill:rbg(0, 0, 0);opacity:0.6;"/>
         </svg>
       `)
-      const imgFormat = await sharp(imgBuffer).resize(canvasWidth, canvasHeight).overlayWith(roundedCorners, { cutout: false }).jpeg()
+      const imgFormat = await sharp(imgBuffer).resize(canvasWidth, canvasHeight).overlayWith(roundedCorners, {
+        left: parseInt(offsetX, 10) || 0,
+        top: parseInt(offsetY, 10) || 0,
+        cutout: false
+      }).jpeg()
       return imgFormat
     } catch(e) {
       out.error('验证码背景处理失败', e)
       return null
     }
   },
-  async slicePicture() {
+  async slicePicture(offsetX = 0, offsetY = 0) {
     try {
       const imgBuffer = await readFileAsync(resolve(__dirname, './pictures/clock.jpg'))
       // 获取被切割的模块
-      const top = (canvasHeight - sliceHeight) / 2
-      const left = (canvasWidth - sliceWidth) / 2
-      const imgFormat = await sharp(imgBuffer).resize(canvasWidth, canvasHeight).extract({ top, left, width: sliceWidth, height: sliceHeight}).jpeg()
+      const imgFormat = await sharp(imgBuffer).resize(canvasWidth, canvasHeight).extract({
+        left: parseInt(offsetX, 10) || 0,
+        top: parseInt(offsetY, 10) || 0,
+        width: sliceWidth,
+        height: sliceHeight
+      }).jpeg()
       return imgFormat
     } catch(e) {
       out.error('验证码滑动器处理失败', e)
       return null
     }
+  },
+  randomOffsetX() {
+    return (Math.random() * (canvasWidth - sliceWidth)).toFixed(5)
+  },
+  randomOffsetY() {
+    return (Math.random() * (canvasHeight - sliceHeight)).toFixed(5)
   }
 }
