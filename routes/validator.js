@@ -3,9 +3,10 @@
 const { v1 } = require('uuid')
 
 const { validator, out } = require('../utils')
+const { accuracy } = require('../config/validator')
 
-const ACCURACY = 3
 
+// 获取行为验证码初始参数
 Router.get('/api/validator/info', async (ctx) => {
   const challenge = v1()
   const offsetX = validator.randomOffsetX()
@@ -15,19 +16,20 @@ Router.get('/api/validator/info', async (ctx) => {
   const validatorInfo = {
     challenge,
     offsetY,
-    fullBackground: '/api/validator/fullBackground',
-    slice: '/api/validator/slice'
+    fullBackground: `/api/validator/fullBackground/${challenge}`,
+    slice: `/api/validator/slice/${challenge}`
   }
   ctx.apiSuccess(validatorInfo)
 })
 
+// 获取行为验证码 token
 Router.post('/api/validator/token', async (ctx) => {
   const { body } = ctx.request
   const { offset, challenge } = body
   try {
     const challengeInfo = await ctx.redis.get(challenge)
     const { offsetX } = JSON.parse(challengeInfo)
-    if (offsetX - offset < Math.abs(ACCURACY)) {
+    if (offsetX - offset < Math.abs(accuracy)) {
       const token = v1()
       await ctx.redis.set(challenge, token, 'EX', 60)
       ctx.apiSuccess(token)
@@ -40,9 +42,10 @@ Router.post('/api/validator/token', async (ctx) => {
   }
 })
 
-Router.get('/api/validator/fullBackground', async (ctx) => {
+// 获取行为验证码背景图
+Router.get('/api/validator/fullBackground/:challenge', async (ctx) => {
   try {
-    const { challenge } = ctx.query
+    const { challenge } = ctx.params
     const challengeInfo = await ctx.redis.get(challenge)
     const { offsetX, offsetY } = JSON.parse(challengeInfo)
     const fbg = await validator.fullBackground(offsetX, offsetY)
@@ -57,9 +60,10 @@ Router.get('/api/validator/fullBackground', async (ctx) => {
   }
 })
 
-Router.get('/api/validator/slice', async (ctx) => {
+// 获取行为验证码滑动图
+Router.get('/api/validator/slice/:challenge', async (ctx) => {
   try {
-    const { challenge } = ctx.query
+    const { challenge } = ctx.params
     const challengeInfo = await ctx.redis.get(challenge)
     const { offsetX, offsetY } = JSON.parse(challengeInfo)
     const slice = await validator.slicePicture(offsetX, offsetY)

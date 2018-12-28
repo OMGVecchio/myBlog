@@ -3,11 +3,12 @@
 // 暂时不做任何混淆，直接输出原图
 
 const { promisify } = require('util')
-const { resolve } = require('path')
+const { resolve, basename } = require('path')
 const { readFile } = require('fs')
 const sharp = require('sharp')
 
-const { out } = require('../out')
+const out = require('../out')
+const traverse = require('../traverse')
 const {
   canvasWidth,
   canvasHeight,
@@ -17,7 +18,11 @@ const {
 
 const readFileAsync = promisify(readFile)
 
+const allValidatorPictures = []
+traverse(resolve(__dirname, './pictures'), filePath => allValidatorPictures.push(filePath))
+
 module.exports = {
+  // 根据 x、y 偏移量以及划片大小生成验证码背景图
   async fullBackground(offsetX = 0, offsetY = 0) {
     try {
       const imgBuffer = await readFileAsync(resolve(__dirname, './pictures/clock.jpg'))
@@ -38,6 +43,7 @@ module.exports = {
       return null
     }
   },
+  // 根据 x、y 偏移量以及滑片大小生成验证码滑片图片
   async slicePicture(offsetX = 0, offsetY = 0) {
     try {
       const imgBuffer = await readFileAsync(resolve(__dirname, './pictures/clock.jpg'))
@@ -54,10 +60,12 @@ module.exports = {
       return null
     }
   },
+  // 在规定范围内获取随机偏移的 x
   randomOffsetX() {
-    return (Math.random() * (canvasWidth - sliceWidth)).toFixed(5)
+    return (sliceWidth + Math.random() * (canvasWidth - 2 * sliceWidth)).toFixed(5)
   },
+  // 在规定范围内获取随机偏移的 y
   randomOffsetY() {
-    return (Math.random() * (canvasHeight - sliceHeight)).toFixed(5)
+    return (sliceHeight + Math.random() * (canvasHeight - 2 * sliceHeight)).toFixed(5)
   }
 }

@@ -82,7 +82,7 @@ class ValidatorCanvas extends PureComponent {
     const { width, height } = bgCanvas
     const ctx = bgCanvas.getContext('2d')
     const bgImg = new Image()
-    bgImg.src = `${this.fullBackground}?challenge=${this.challenge}`
+    bgImg.src = this.fullBackground
     bgImg.onload = () => {
       ctx.drawImage(bgImg, 0, 0, width, height)
     }
@@ -90,7 +90,7 @@ class ValidatorCanvas extends PureComponent {
   // 初始化 slider canvas
   initSliceCanvas = () => {
     const sliderImg = new Image()
-    sliderImg.src = `${this.slicePicture}?challenge=${this.challenge}`
+    sliderImg.src = this.slicePicture
     sliderImg.onload = () => {
       this.sliderImg = sliderImg
       this.drawSliceCanvas()

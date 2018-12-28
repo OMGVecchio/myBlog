@@ -16,7 +16,7 @@ const traverse = async (path, cb) => {
     const state = await fsStat(path)
     if (state.isFile()) {
       if (cb) {
-        cb(path)
+        cb(path, state)
       } else {
         load(path)
       }
