@@ -61,6 +61,5 @@ typings/
 .DS_Store
 .next/
 # /dbs
-/static/images
+# /static/images
 # /config
-/config/
