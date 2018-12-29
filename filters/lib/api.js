@@ -19,7 +19,7 @@ module.exports = async (ctx, next) => {
     ctx.body = res
   }
 
-  ctx.apiError = (data = '接口异常', code = 500) => {
+  ctx.apiError = (data = '接口异常', code = 200) => {
     const res = {
       success: false,
       code,

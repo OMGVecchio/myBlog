@@ -13,19 +13,21 @@ const {
   canvasWidth,
   canvasHeight,
   sliceWidth,
-  sliceHeight
+  sliceHeight,
+  tipHeight
 } = require('../../../config/validator')
 
 const readFileAsync = promisify(readFile)
 
+// 缓存下所有可用的图片
 const allValidatorPictures = []
 traverse(resolve(__dirname, './pictures'), filePath => allValidatorPictures.push(filePath))
 
 module.exports = {
   // 根据 x、y 偏移量以及划片大小生成验证码背景图
-  async fullBackground(offsetX = 0, offsetY = 0) {
+  async fullBackground(picturePath, offsetX = 0, offsetY = 0) {
     try {
-      const imgBuffer = await readFileAsync(resolve(__dirname, './pictures/clock.jpg'))
+      const imgBuffer = await readFileAsync(picturePath)
       // 获取切割后的背景
       const roundedCorners = Buffer.from(`
         <svg>
@@ -44,9 +46,9 @@ module.exports = {
     }
   },
   // 根据 x、y 偏移量以及滑片大小生成验证码滑片图片
-  async slicePicture(offsetX = 0, offsetY = 0) {
+  async slicePicture(picturePath, offsetX = 0, offsetY = 0) {
     try {
-      const imgBuffer = await readFileAsync(resolve(__dirname, './pictures/clock.jpg'))
+      const imgBuffer = await readFileAsync(picturePath)
       // 获取被切割的模块
       const imgFormat = await sharp(imgBuffer).resize(canvasWidth, canvasHeight).extract({
         left: parseInt(offsetX, 10) || 0,
@@ -66,6 +68,12 @@ module.exports = {
   },
   // 在规定范围内获取随机偏移的 y
   randomOffsetY() {
-    return (sliceHeight + Math.random() * (canvasHeight - 2 * sliceHeight)).toFixed(5)
+    return (tipHeight + Math.random() * (canvasHeight - sliceHeight - 2 * tipHeight)).toFixed(5)
+  },
+  // 随机获取图片
+  randomPicture() {
+    const { length = 0 } = allValidatorPictures
+    const sort = Math.floor(length * Math.random())
+    return allValidatorPictures[sort]
   }
 }

@@ -54,7 +54,7 @@ const resolveStatus = (response) => {
     removeToken()
     Router.push('/login')
   }
-  if (response.code === 500 && !isServer) {
+  if (response.code === 200 && response.success === false && !isServer) {
     message.error(response.data)
   }
   return response

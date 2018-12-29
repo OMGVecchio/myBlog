@@ -14,7 +14,8 @@ class Validator extends PureComponent {
   }
   state = {
     rotate: 0,
-    showCanvas: false
+    showCanvas: false,
+    checkSuccess: false
   }
   componentDidMount() {
     // TODO 增加行为统计日志
@@ -60,6 +61,17 @@ class Validator extends PureComponent {
       y: circleCenter.y
     }
   }
+  showCanvas = () => {
+    if (this.state.checkSuccess) {
+      return
+    }
+    this.setState({ showCanvas: true })
+  }
+  // 行为验证成功后的处理
+  checkSuccess = (...params) => {
+    this.setState({ checkSuccess: true })
+    this.props.success(...params)
+  }
   detector = null
   detectorLocation = null
   render() {
@@ -80,16 +92,16 @@ class Validator extends PureComponent {
               className="_b-validator-text text-overflow text-center"
               role="button"
               tabIndex="0"
-              onClick={() => this.setState({ showCanvas: true })}
+              onClick={this.showCanvas}
             >
-              点击按钮进行认证
+              { this.state.checkSuccess ? '验证成功' : '点击按钮进行认证' }
             </div>
           </div>
           {
             this.state.showCanvas && (
               <ValidatorCanvas
                 close={() => this.setState({ showCanvas: false })}
-                success={this.props.success}
+                success={this.checkSuccess}
               />
             )
           }

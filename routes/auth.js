@@ -15,10 +15,11 @@ Router.post('/api/login', async (ctx) => {
   try {
     const realToken = await ctx.redis.get(challenge)
     if (token !== realToken) {
-      ctx.apiError('图片验证码错误')
+      return ctx.apiError('滑动验证码错误')
     }
+    await ctx.redis.del(challenge)
   } catch (e) {
-    out.error('登录时图片验证码检测有误')
+    out.error('登录时滑动验证码检测有误')
     ctx.apiError('登录失败')
   }
   if (user[username] && user[username] === password) {

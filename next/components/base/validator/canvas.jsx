@@ -1,5 +1,5 @@
 import { Fragment, PureComponent } from 'react'
-import { Icon } from 'antd'
+import { Icon, message } from 'antd'
 
 import Head from 'next/head'
 
@@ -56,7 +56,7 @@ class ValidatorCanvas extends PureComponent {
   canMoveSlider = true
   challenge = null
   offsetY = 0
-  // 获取验证器数据
+  // 获取行为验证各个参数
   fetchValidatorInfo = async () => {
     const info = await xhr.get(this.props.dataUrl)
     if (info.success) {
@@ -130,6 +130,7 @@ class ValidatorCanvas extends PureComponent {
           challenge: this.challenge,
           token: resData.data
         })
+        message.success('验证成功')
         this.props.close()
       } else {
         this.updateCanvas()
