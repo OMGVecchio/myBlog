@@ -5,10 +5,10 @@
  */
 
 const Redis = require('ioredis')
-const { out } = require('../../utils')
 
-const config = require('../../config')
-const { info, warn, error } = out
+const config = require('../../config/redis')
+const { info, error } = require('../../utils').out
+
 class RedisFactory {
   constructor(conf) {
     this.hasInited = false

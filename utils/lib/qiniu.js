@@ -2,16 +2,14 @@
 
 const qiniu = require('qiniu')
 
-const config = require('../../config')
-
 const {
   accessKey,
   secretKey,
   bucket,
   qiniuDomain
-} = config
-const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
+} = require('../../config/qiniu')
 
+const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
 const REDIS_TAG = 'qiniu-token'
 const TOKEN_LIFE = 3600
 
