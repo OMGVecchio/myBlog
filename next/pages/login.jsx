@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+import { connect } from 'react-redux'
 import { Button, message } from 'antd'
 
 import Head from 'next/head'
@@ -7,6 +8,7 @@ import Router from 'next/router'
 import BInput from '~/base/input'
 import BValidator from '~/base/validator'
 
+import { isServer } from '_'
 import xhr from '_/fetch'
 import { setToken } from '_/token'
 
@@ -53,6 +55,25 @@ const LoginModal = () => {
     } else {
       message.error(data.data)
     }
+  }
+  // 浏览器端渲染时，如果 query 中带 token，先检测 token 是否合法
+  // 合法时说明是第三方登录而来，直接进入首页；否则给予提示
+  const checkToken = async () => {
+    const { query } = Router
+    const { token = '' } = query
+    if (token) {
+      const data = await xhr.post('/api/token/check', { token })
+      if (data.success) {
+        setToken(token)
+        message.success('登录成功')
+        Router.push('/')
+      } else {
+        message.warn(data.data)
+      }
+    }
+  }
+  if (!isServer) {
+    checkToken()
   }
   return (
     <Fragment>
@@ -119,4 +140,4 @@ const LoginModal = () => {
   )
 }
 
-export default LoginModal
+export default connect(null)(LoginModal)

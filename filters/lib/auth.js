@@ -11,27 +11,23 @@ const { error } = out
 
 module.exports = async (ctx, next) => {
   const { headers } = ctx
-  const { user, jwtSecret } = config
+  const { jwtSecret } = config
   const token = headers['access-token']
   if (token) {
     try {
       const decode = jwt.verify(token, jwtSecret)
-      const { username, password, exp } = decode
-      // 账户密码匹配
-      if (user[username] && user[username] === password) {
-        // 登录过期
-        if (exp <= Date.now()) {
-          ctx.user = null
-          ctx.isExpire = true
-        } else {
-          ctx.user = {
-            username,
-            password
-          }
-          ctx.isLogin = true
-        }
-      } else {
+      const { username, isAdmin, exp } = decode
+      // 登录过期
+      if (exp <= Date.now()) {
         ctx.user = null
+        ctx.isExpire = true
+      } else {
+        ctx.user = {
+          username,
+          isAdmin
+        }
+        ctx.isAdmin = isAdmin
+        ctx.isLogin = true
       }
     } catch (err) {
       ctx.user = null

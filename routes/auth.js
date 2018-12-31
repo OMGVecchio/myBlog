@@ -6,7 +6,8 @@ const { stringify, parse } = require('querystring')
 const { v1 } = require('uuid')
 
 const config = require('../config')
-const { error } = require('../utils').out
+const { out, crypto } = require('../utils')
+const { error } = out
 const {
   loginUrl,
   tokenUrl,
@@ -16,6 +17,7 @@ const {
   scope
 } = require('../config/github')
 
+// 用户名密码登录
 Router.post('/api/login', async (ctx) => {
   const {
     username,
@@ -34,12 +36,12 @@ Router.post('/api/login', async (ctx) => {
     error('登录时滑动验证码检测有误')
     ctx.apiError('登录失败')
   }
-  if (user[username] && user[username] === password) {
+  if (user[username] && user[username].password === crypto.md5(password)) {
     const token = await new Promise((resolve, reject) => {
       jwt.sign({
         exp: Date.now() + 1000 * 60 * 60 * 24,
         username,
-        password
+        isAdmin: true
       }, config.jwtSecret, (err, token) => {
         if (err) {
           reject(err)
@@ -48,12 +50,13 @@ Router.post('/api/login', async (ctx) => {
         }
       })
     })
-    ctx.apiSuccess(token, 201)
+    ctx.apiSuccess(token)
   } else {
     ctx.apiError('账户名或密码错误')
   }
 })
 
+// Github 登录页
 Router.get('/api/login/github', async (ctx) => {
   const param = {
     client_id: clientId,
@@ -64,6 +67,7 @@ Router.get('/api/login/github', async (ctx) => {
   ctx.redirect(`${loginUrl}?${queryStr}`)
 })
 
+// Github 登录回调
 Router.get('/api/login/github/callback', async (ctx) => {
   const { code } = ctx.query
   const param = {
@@ -81,19 +85,44 @@ Router.get('/api/login/github/callback', async (ctx) => {
     }).then(res => res.text())
     const resJson = parse(resStr)
     if (!resStr) {
-      error('Github Token 授权令牌获取有误', e)
-      ctx.redirect('/login')
-      return
+      throw new Error('Github Token 授权令牌获取有误')
     }
     const userData = await fetch(`${userDataApiUrl}${resJson['access_token']}`).then(res => res.json())
     if (!userData) {
-      error('Github 获取用户数据失败', e)
-      ctx.redirect('/login')
-      return
+      throw new Error('Github 获取用户数据失败')
     }
-    ctx.apiSuccess(userData)
+    try {
+      const { id } = userData
+      const token = await new Promise((resolve, reject) => {
+        jwt.sign({
+          exp: Date.now() + 1000 * 60 * 60 * 24,
+          username: id,
+          isAdmin: false
+        }, config.jwtSecret, (err, token) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(token)
+          }
+        })
+      })
+      ctx.redirect(`/login?token=${token}`)
+    } catch (e) {
+      throw new Error('Github 登录回调成功，创建 Token 失败')
+    }
   } catch (e) {
-    error('Github Token 授权失败', e)
+    error('Github Token 授权过程失败', e)
     ctx.redirect('/login')
+  }
+})
+
+Router.post('/api/token/check', async (ctx) => {
+  const { token = '' } = ctx.request.body
+  try {
+    jwt.verify(token, config.jwtSecret)
+    ctx.apiSuccess('合法 Token')
+  } catch (e) {
+    error('Token 检测有误，非法数据')
+    ctx.apiError('非法 Token，请重新登录')
   }
 })
