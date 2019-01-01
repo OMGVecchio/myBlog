@@ -13,7 +13,6 @@ export default class MyDocument extends Document {
       <html lang="en-US">
         <Head>
           <script src="/lib/adview_pic_cpc_cpm_cpa_guanggao_gg_ads_300x250.js" />
-          <title>页面加载中~~~</title>
           <meta charSet="utf-8" />
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
