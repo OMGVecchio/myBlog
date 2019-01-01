@@ -1,38 +1,29 @@
 'use strict'
 
-const path = require('path')
-const glob = require('glob')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
 
-const { resolve } = path
+const withLessExcludeAntd = require('./next-css.config')
 
-module.exports = {
+const modifyVars = {}
+
+// prevents error when .less files are required by node
+if (typeof require !== 'undefined') {
+  require.extensions['.less'] = () => {}
+}
+
+module.exports = withLessExcludeAntd({
+  cssModules: true,
+  cssLoaderOptions: {
+    importLoaders: 1,
+    localIdentName: '[local]___[hash:base64:5]'
+  },
+  lessLoaderOptions: {
+    javascriptEnabled: true,
+    modifyVars
+  },
   webpack(config) {
-    config.module.rules.push({
-      test: /\.(css|less)/,
-      loader: 'emit-file-loader',
-      options: {
-        name: 'dist/[path][name].[ext]'
-      }
-    }, {
-      test: /\.css$/,
-      use: ['babel-loader', 'raw-loader', 'postcss-loader']
-    }, {
-      test: /\.less$/,
-      use: [
-        'babel-loader', 'raw-loader', 'postcss-loader',
-        {
-          loader: 'less-loader',
-          options: {
-            includePaths: [resolve(__dirname, 'static/styles'), resolve(__dirname, '../node_modules')]
-              .map(d => path.join(__dirname, d))
-              .map(g => glob.sync(g))
-              .reduce((a, c) => a.concat(c), [])
-          }
-        }
-      ]
-    })
+    config.resolve.extensions.push('.less')
     if (process.env.NODE_ENV_ANALYZER === 'smplugin') {
       const smp = new SpeedMeasurePlugin()
       return smp.wrap(config)
@@ -52,4 +43,4 @@ module.exports = {
     }
     return config
   }
-}
+})

@@ -1,13 +1,12 @@
-import { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Avatar, Icon, List, Row, Col } from 'antd'
-import classNames from 'classnames'
+import classnames from 'classnames'
 
 import Link from 'next/link'
 
 import types from '#/action/common'
 
-import style from '@/styles/components/common/aside.less'
+import style from '@/styles/components/common/aside'
 
 const name = 'Vecchio阿加西'
 const briefTip = '前端鶸'
@@ -72,7 +71,7 @@ const linkData = [{
 const fetchMenuStatus = (pathname, url) => {
   const pn = pathname === '/' ? '/index' : pathname
   if (pn === url) {
-    return 'is-active'
+    return style['is-active']
   }
   return ''
 }
@@ -93,10 +92,10 @@ const Aside = ({
     return (
       <List.Item className={fetchMenuStatus(pathname, url)}>
         <Link href={url}>
-          <a className={classNames('menu-item-wrap', color)}>
-            <Row className="menu-item">
+          <a className={classnames(style['menu-item-wrap'], color)}>
+            <Row className={style['menu-item']}>
               <Col span={3} offset={2}>
-                <Icon className="menu-item-icon" type={icon} />
+                <Icon className={style['menu-item-icon']} type={icon} />
               </Col>
               <Col span={19}>
                 {label}
@@ -117,7 +116,7 @@ const Aside = ({
       } = item
       return (
         <Col span={4} push={4} key={id}>
-          <a className={classNames('menu-link', label)} href={url} target="blank">
+          <a className={classnames(style['menu-link'], label)} href={url} target="blank">
             <Icon className="menu-link-icon" title={label} type={icon} />
           </a>
         </Col>
@@ -128,25 +127,22 @@ const Aside = ({
     )
   }
   return (
-    <Fragment>
-      <style dangerouslySetInnerHTML={{ __html: style }} />
-      <div className={classNames('aside-menu', { close: !asideIsOpen })}>
-        <div className="menu-header">
-          <Avatar className="avatar-cover" size="large" src="//rms.zhubajie.com/resource/redirect?key=mobile%2Fdefault%2F%E5%A4%B4%E5%83%8F17.jpg%2Forigine%2F1990662d-d67a-4f85-92bf-73be1dd6d334&s.w=240&s.h=240" />
-          <div className="name text-center text-overflow">{name}</div>
-          <div className="description text-center text-overflow">{briefTip}</div>
-          <Icon className="aside-close-btn" type="menu-fold" onClick={() => close(dispatch)} />
+    <div className={classnames(style['aside-menu'], { [style.close]: !asideIsOpen })}>
+      <div className={style['menu-header']}>
+        <Avatar className={style['avatar-cover']} size="large" src="//rms.zhubajie.com/resource/redirect?key=mobile%2Fdefault%2F%E5%A4%B4%E5%83%8F17.jpg%2Forigine%2F1990662d-d67a-4f85-92bf-73be1dd6d334&s.w=240&s.h=240" />
+        <div className={classnames(style.name, 'text-center', 'text-overflow')}>{name}</div>
+        <Icon className={style['aside-close-btn']} type="menu-fold" onClick={() => close(dispatch)} />
+        <div className={classnames(style.description, 'text-center', 'text-overflow')}>{briefTip}</div>
+      </div>
+      <div>
+        <div className={style['menu-items']}>
+          <List dataSource={menuData} renderItem={renderMenu} split={false} />
         </div>
-        <div>
-          <div className="menu-items">
-            <List dataSource={menuData} renderItem={renderMenu} split={false} />
-          </div>
-          <div className="link-items">
-            { renderLink() }
-          </div>
+        <div className={style['link-items']}>
+          { renderLink() }
         </div>
       </div>
-    </Fragment>
+    </div>
   )
 }
 

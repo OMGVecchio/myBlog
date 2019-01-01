@@ -1,6 +1,6 @@
 import { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import classNames from 'classnames'
+import classnames from 'classnames'
 
 import Head from 'next/head'
 import Router from 'next/router'
@@ -10,14 +10,13 @@ import types from '#/action/common'
 import Header from '~/common/header'
 import Footer from '~/common/footer'
 import Menu from '~/common/aside'
-import Pet from '~/common/pet'
 import BackTop from '~/base/backtop'
 import LinearProgress from '~/base/linearprogress'
 
 import { isServer } from '_'
 import { getToken } from '_/token'
 
-import layoutStyle from '@/styles/components/layout/index.less'
+import layoutStyle from '@/styles/components/layout/index'
 
 const SCROLL_TAG = 165;
 
@@ -110,23 +109,21 @@ class Layout extends PureComponent {
       <div className="global-wrap">
         <Head>
           <title>{pageTitle}</title>
-          <style dangerouslySetInnerHTML={{ __html: layoutStyle }} />
         </Head>
         <LinearProgress visible={this.props.globalProgress} className="global-router-progress" />
         <Menu />
-        <Pet />
-        <div className={classNames('main-wrap', { 'menu-has-close': !asideIsOpen })}>
+        <div className={classnames(layoutStyle['main-wrap'], { [layoutStyle['menu-has-close']]: !asideIsOpen })}>
           <Header title={title} isLongScroll={isLongScroll} />
           <BackTop show={isLongScroll} />
-          <div className="main-content">
-            <div className="content-header">
-              <h4 className="title">
+          <div className={layoutStyle['main-content']}>
+            <div className={layoutStyle['content-header']}>
+              <h4 className={layoutStyle.title}>
                 { showTitle && title }
               </h4>
             </div>
-            <div className="content-body-wrap">
-              <div className="content-body-main">
-                <div className={classNames({ [className]: !!className })}>
+            <div className={layoutStyle['content-body-wrap']}>
+              <div className={layoutStyle['content-body-main']}>
+                <div className={classnames({ [className]: !!className })}>
                   {children}
                 </div>
               </div>

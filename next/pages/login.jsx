@@ -12,7 +12,7 @@ import { isServer } from '_'
 import xhr from '_/fetch'
 import { setToken } from '_/token'
 
-import style from '@/styles/pages/login.less'
+import style from '@/styles/pages/login'
 
 const LoginModal = () => {
   const getUsername = (username) => {
@@ -81,12 +81,11 @@ const LoginModal = () => {
         <title>
           登录
         </title>
-        <style dangerouslySetInnerHTML={{ __html: style }} />
       </Head>
-      <div className="login-page">
-        <div className="layout-wrap">
+      <div className={style['login-page']}>
+        <div className={style['layout-wrap']}>
           <img
-            className="welcome-img xm-img"
+            className={`${style['welcome-img']} ${style['xm-img']}`}
             src="/static/imgs/xm/xm-1.png"
             title="主页"
             alt="小埋"
@@ -95,7 +94,7 @@ const LoginModal = () => {
             onClick={() => Router.push('/index')}
           />
           <img
-            className="welcome-img kn-img"
+            className={`${style['welcome-img']} ${style['kn-img']}`}
             src="/static/imgs/kn/kn-1.png"
             title="返回"
             alt="康娜"
@@ -103,23 +102,23 @@ const LoginModal = () => {
             tabIndex={-2}
             onClick={() => Router.back()}
           />
-          <div className="login-wrap">
+          <div className={style['login-wrap']}>
             <BInput
               type="text"
-              className="input-body"
+              className={style['input-body']}
               placeholder="用户名"
               onChange={getUsername}
               block
             />
             <BInput
               type="password"
-              className="input-body"
+              className={style['input-body']}
               placeholder="密码"
               onChange={getPassword}
               block
             />
             <BValidator
-              className="input-body"
+              className={style['input-body']}
               success={({ challenge, token }) => {
                 this.challenge = challenge
                 this.token = token
@@ -129,7 +128,7 @@ const LoginModal = () => {
               onClick={loginSubmit}
               type="primary"
               size="large"
-              className="submit-btn"
+              className={style['submit-btn']}
             >
               登录
             </Button>

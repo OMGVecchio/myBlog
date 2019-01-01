@@ -1,7 +1,6 @@
-import { Fragment, PureComponent } from 'react'
-import classNames from 'classnames'
+import { PureComponent } from 'react'
+import classnames from 'classnames'
 
-import Head from 'next/head'
 import ValidatorCanvas from '~/base/validator/canvas'
 
 import { noop } from '_'
@@ -76,37 +75,32 @@ class Validator extends PureComponent {
   detectorLocation = null
   render() {
     return (
-      <Fragment>
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} key="style-validator" />
-        </Head>
-        <div className={classNames('_b-validator', this.props.className || false)}>
-          <div className="_b-validator-btn">
-            <div className="_b-validator-detector" ref={this.getDetector}>
-              <div className="_b-validator-ring">
-                <div className="_b-validator-pointer" style={{ transform: `rotate(${this.state.rotate}deg)` }} />
-              </div>
-              <div className="_b-validator-dot" />
+      <div className={classnames(style['_b-validator'], this.props.className || false)}>
+        <div className={style['_b-validator-btn']}>
+          <div className={style['_b-validator-detector']} ref={this.getDetector}>
+            <div className={style['_b-validator-ring']}>
+              <div className={style['_b-validator-pointer']} style={{ transform: `rotate(${this.state.rotate}deg)` }} />
             </div>
-            <div
-              className="_b-validator-text text-overflow text-center"
-              role="button"
-              tabIndex="0"
-              onClick={this.showCanvas}
-            >
-              { this.state.checkSuccess ? '验证成功' : '点击按钮进行认证' }
-            </div>
+            <div className={style['_b-validator-dot']} />
           </div>
-          {
-            this.state.showCanvas && (
-              <ValidatorCanvas
-                close={() => this.setState({ showCanvas: false })}
-                success={this.checkSuccess}
-              />
-            )
-          }
+          <div
+            className={classnames(style['_b-validator-text'], 'text-overflow', 'text-center')}
+            role="button"
+            tabIndex="0"
+            onClick={this.showCanvas}
+          >
+            { this.state.checkSuccess ? '验证成功' : '点击按钮进行认证' }
+          </div>
         </div>
-      </Fragment>
+        {
+          this.state.showCanvas && (
+            <ValidatorCanvas
+              close={() => this.setState({ showCanvas: false })}
+              success={this.checkSuccess}
+            />
+          )
+        }
+      </div>
     )
   }
 }

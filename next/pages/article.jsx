@@ -16,7 +16,7 @@ import xhr from '_/fetch'
 import { format } from '_/moment'
 import { setCookie, getCookie } from '_/cookie'
 
-import style from '@/styles/pages/article.less'
+import style from '@/styles/pages/article'
 
 // 因为涉及到 cookie 的操作，服务端渲染会有一定问题，暂时停止该组件的服务端渲染，并用更好的提示代替 loading 效果
 const BaseInput = dynamic(import('components/base/input'), { ssr: false })
@@ -87,7 +87,7 @@ class Article extends PureComponent {
     const commentList = articleComment[articleId] || []
     return (
       <Layout
-        className="article-page"
+        className={style['article-page']}
         showTitle={false}
         title={title}
         pageTitle={title}
@@ -95,14 +95,14 @@ class Article extends PureComponent {
         <Head>
           <style dangerouslySetInnerHTML={{ __html: style }} />
         </Head>
-        <div className="article-content">
-          <h1 className="article-title">{title}</h1>
-          <p className="article-desc">{format(createTime)}</p>
+        <div className={style['article-content']}>
+          <h1 className={style['article-title']}>{title}</h1>
+          <p className={style['article-desc']}>{format(createTime)}</p>
           <Markdown source={article} />
         </div>
         {/* 这里会放前后页跳转的链接 */}
-        <div className="article-comment">
-          <div className="user-info">
+        <div className={style['article-comment']}>
+          <div className={style['user-info']}>
             <BaseInput
               placeholder="您的大名"
               onChange={this.setUserName}
@@ -115,9 +115,9 @@ class Article extends PureComponent {
               defaultValue={this.state.userblog}
             />
           </div>
-          <div className="comment-box">
+          <div className={style['comment-box']}>
             <CommentBox onChange={this.commentChange} />
-            <div className="comment-footer clearfix">
+            <div className={`${style['comment-footer']} clearfix`}>
               <Button
                 type="primary"
                 size="small"
@@ -129,7 +129,7 @@ class Article extends PureComponent {
             </div>
           </div>
           <CommentList
-            className="comment-list"
+            className={style['comment-list']}
             commentList={commentList}
             onReview={this.openModal}
           />

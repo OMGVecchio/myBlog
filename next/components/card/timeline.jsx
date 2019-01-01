@@ -1,39 +1,32 @@
-import { Fragment } from 'react'
-import { Card } from 'antd'
+import classnames from 'classnames'
 
-import Head from 'next/head'
+import { Card } from 'antd'
 
 import { format } from '_/moment'
 
-import style from '@/styles/components/card/timeline.less'
+import style from '@/styles/components/card/timeline'
 
 import CardLayout from './layout'
 
 const { Meta } = Card
 
 const timelineCard = ({
-  id,
   title,
   createTime,
   cover,
   desc
 }) => (
-  <Fragment key={`timelinecard-${id}`}>
-    <Head>
-      <style dangerouslySetInnerHTML={{ __html: style }} key="style-timeline" />
-    </Head>
-    <Card
-      className="timeline-card card-wrap"
-      hoverable
-      title={title}
-      cover={<img className="card-cover" src={cover} alt={title} />}
-      extra={<span>{format(createTime)}</span>}
-    >
-      <Meta
-        description={desc}
-      />
-    </Card>
-  </Fragment>
+  <Card
+    className={classnames(style['timeline-card'], style['card-wrap'])}
+    hoverable
+    title={title}
+    cover={<img className={style['card-cover']} src={cover} alt={title} />}
+    extra={<span>{format(createTime)}</span>}
+  >
+    <Meta
+      description={desc}
+    />
+  </Card>
 )
 
 export default CardLayout(timelineCard)

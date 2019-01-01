@@ -1,11 +1,10 @@
-import { Fragment, PureComponent } from 'react'
+import { PureComponent } from 'react'
 import { Input, Button } from 'antd'
-
-import Head from 'next/head'
+import classnames from 'classnames'
 
 import EmojiWrap from '~/article/emoji'
 
-import style from '@/styles/components/article/comment.less'
+import style from '@/styles/components/article/comment'
 
 const { TextArea } = Input
 
@@ -21,6 +20,7 @@ class CommentBox extends PureComponent {
     value: '',
     showEmoji: false
   }
+  getCommentDom = (commentDom) => { this.commentDom = commentDom }
   valueChange = (e) => {
     const { value } = e.target
     this.setState({ value })
@@ -29,7 +29,7 @@ class CommentBox extends PureComponent {
   selectEmoji = (code) => {
     // 不做 IE 这些的兼容了
     const { value } = this.state
-    const commentDom = document.querySelector('.J-comment-textarea')
+    const { commentDom } = this
     const { selectionStart, selectionEnd } = commentDom
     const preLength = value.length
     const preStr = value.slice(0, selectionStart)
@@ -47,48 +47,44 @@ class CommentBox extends PureComponent {
   }
   render() {
     return (
-      <Fragment>
-        <div className="component-comment">
-          <Head>
-            <style dangerouslySetInnerHTML={{ __html: style }} key="style-comment" />
-          </Head>
-          {/* 评论暂时就走简洁风，不用 ACE 这些了吧 */}
-          <TextArea
-            value={this.state.value}
-            rows={this.props.rows}
-            onChange={this.valueChange}
-            placeholder={this.props.placeholder}
-            className="J-comment-textarea"
-          />
-          <div className="comment-opt clearfix">
-            <Button
-              type="primary"
-              className="fr"
-              size="small"
-              title="也还没时间做呢"
-            >
-              预览
-            </Button>
-            <Button
-              onClick={this.toggleEmoji}
-              className="fr"
-              size="small"
-            >
-              Emoji
-            </Button>
-            <Button
-              className="fr"
-              size="small"
-              title="还没时间做呢"
-            >
-              插入图片
-            </Button>
-          </div>
-          { this.state.showEmoji && (
-            <EmojiWrap onSelect={this.selectEmoji} />
-          )}
+      <div className={style['component-comment']}>
+        {/* 评论暂时就走简洁风，不用 ACE 这些了吧 */}
+        <TextArea
+          value={this.state.value}
+          rows={this.props.rows}
+          onChange={this.valueChange}
+          placeholder={this.props.placeholder}
+          className={style['J-comment-textarea']}
+          ref={this.getCommentDom}
+        />
+        <div className={classnames(style['comment-opt'], 'clearfix')}>
+          <Button
+            type="primary"
+            className="fr"
+            size="small"
+            title="也还没时间做呢"
+          >
+            预览
+          </Button>
+          <Button
+            onClick={this.toggleEmoji}
+            className="fr"
+            size="small"
+          >
+            Emoji
+          </Button>
+          <Button
+            className="fr"
+            size="small"
+            title="还没时间做呢"
+          >
+            插入图片
+          </Button>
         </div>
-      </Fragment>
+        { this.state.showEmoji && (
+          <EmojiWrap onSelect={this.selectEmoji} />
+        )}
+      </div>
     )
   }
 }

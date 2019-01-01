@@ -1,7 +1,7 @@
 import { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Radio, Switch, Input, Button, message, Tooltip } from 'antd'
-import classNames from 'classnames'
+import classnames from 'classnames'
 
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
@@ -17,7 +17,7 @@ import fullScreen from '_/full-screen'
 import { fetchDetail } from '#/action/article'
 import { fetchList } from '#/action/tag'
 
-import style from '@/styles/pages/compose.less'
+import style from '@/styles/pages/compose'
 
 const AceEditor = dynamic(import('~/editor/ace'), { ssr: false })
 const CodeMirrorEditor = dynamic(import('~/editor/codemirror'), { ssr: false })
@@ -188,12 +188,9 @@ class Compose extends PureComponent {
     } = this.state
     const { articleId, articleDetail } = this.props
     return (
-      <Layout className="compose-page">
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} />
-        </Head>
-        <div className={classNames('compose-panel-wrap', { 'full-screen': isFullScreen })}>
-          <div className="compose-opt-group">
+      <Layout className={style['compose-page']}>
+        <div className={classnames(style['compose-panel-wrap'], { [style['full-screen']]: isFullScreen })}>
+          <div className={style['compose-opt-group']}>
             <Radio.Group value={editorType} onChange={this.setEditorType}>
               <Radio.Button value={1}>
                 CodeMirror
@@ -221,16 +218,16 @@ class Compose extends PureComponent {
               <Button>插入封面</Button>
             </Upload>
             <Tooltip title="是否全屏">
-              <Switch className="switch-btn" defaultChecked={isFullScreen} onChange={this.setFullScreen} />
+              <Switch className={style['switch-btn']} defaultChecked={isFullScreen} onChange={this.setFullScreen} />
             </Tooltip>
             <Tooltip title="是否开启预览">
-              <Switch className="switch-btn" defaultChecked={showPreview} onChange={this.setPreview} />
+              <Switch className={style['switch-btn']} defaultChecked={showPreview} onChange={this.setPreview} />
             </Tooltip>
             <Button className="fr" onClick={() => this.save()}>
               保存
             </Button>
           </div>
-          <div className="compose-extra-group">
+          <div className={style['compose-extra-group']}>
             <Input
               value={this.state.title}
               style={{ width: '170px' }}
@@ -244,14 +241,14 @@ class Compose extends PureComponent {
             />
             <Input.TextArea
               value={this.state.desc}
-              className="article-desc"
+              className={style['article-desc']}
               placeholder="文章简介"
               onChange={this.setDesc}
               autosize={{ minRows: 1, maxRows: 2 }}
             />
           </div>
-          <div className={classNames('compose-write-group clearfix', { 'show-preview': showPreview })}>
-            <div className="compose-panel fl compose-write-panel">
+          <div className={classnames(style['compose-write-group'], 'clearfix', { [style['show-preview']]: showPreview })}>
+            <div className={classnames(style['compose-panel'], style['compose-write-panel'], 'fl')}>
               {
                 editorType === 1 ? (
                   <CodeMirrorEditor
@@ -281,7 +278,7 @@ class Compose extends PureComponent {
             </div>
             {
               showPreview && (
-                <div className="compose-panel fl compose-result-panel">
+                <div className={classnames(style['compose-panel'], style['compose-result-panel'], 'fl')}>
                   <Markdown source={article} />
                 </div>
               )

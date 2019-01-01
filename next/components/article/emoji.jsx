@@ -1,10 +1,6 @@
-import { Fragment } from 'react'
-
-import Head from 'next/head'
-
 import Emoji from '_/emoji'
 
-import style from '@/styles/components/article/emoji.less'
+import style from '@/styles/components/article/emoji'
 
 const { list, map } = Emoji
 
@@ -18,7 +14,7 @@ const EmojiWrap = ({
       <span
         key={emoji}
         title={emoji}
-        className="emoji-item"
+        className={style['emoji-item']}
         role="button"
         tabIndex={index}
         onClick={() => onSelect(emojiCode)}
@@ -28,18 +24,13 @@ const EmojiWrap = ({
     )
   })
   return (
-    <Fragment>
-      <div className="component-emoji">
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} key="style-emoji" />
-        </Head>
-        {visible && (
-          <div className="emoji-wrap">
-            {composeEmojiList()}
-          </div>
-        )}
-      </div>
-    </Fragment>
+    <div className={style['component-emoji']}>
+      {visible && (
+        <div className={style['emoji-wrap']}>
+          {composeEmojiList()}
+        </div>
+      )}
+    </div>
   )
 }
 

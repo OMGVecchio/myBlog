@@ -1,12 +1,11 @@
 import { Fragment, PureComponent } from 'react'
 import { Icon, message } from 'antd'
-
-import Head from 'next/head'
+import classnames from 'classnames'
 
 import { noop } from '_'
 import xhr from '_/fetch'
 
-import style from '@/styles/components/base/validator/canvas.less'
+import style from '@/styles/components/base/validator/canvas'
 
 import {
   canvasWidth,
@@ -155,28 +154,25 @@ class ValidatorCanvas extends PureComponent {
   render() {
     return (
       <Fragment>
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} />
-        </Head>
-        <div className="_b-validator-box-mask" role="button" tabIndex={0} onClick={this.props.close} />
-        <div className="_b-validator-box">
-          <div className="_b-validator-control">
-            <div className="_b-validator-canvas-wrap">
-              <canvas width={canvasWidth} height={canvasHeight} className="_b-validator-canvas" ref={this.getBgCanvas} />
-              <canvas width={canvasWidth} height={canvasHeight} className="_b-validator-canvas _b-validator-canvas-slider" ref={this.getCanvas} />
+        <div className={style['_b-validator-box-mask']} role="button" tabIndex={0} onClick={this.props.close} />
+        <div className={style['_b-validator-box']}>
+          <div className={style['_b-validator-control']}>
+            <div className={style['_b-validator-canvas-wrap']}>
+              <canvas width={canvasWidth} height={canvasHeight} className={style['_b-validator-canvas']} ref={this.getBgCanvas} />
+              <canvas width={canvasWidth} height={canvasHeight} className={classnames(style['_b-validator-canvas'], style['_b-validator-canvas-slider'])} ref={this.getCanvas} />
             </div>
-            <div className="_b-validator-control-bar">
-              <div className="_b-validator-control-btn" ref={this.getControlBar} style={{ transform: `translateX(${this.state.offsetX}px)` }}>
+            <div className={style['_b-validator-control-bar']}>
+              <div className={style['_b-validator-control-btn']} ref={this.getControlBar} style={{ transform: `translateX(${this.state.offsetX}px)` }}>
                 <Icon type={this.state.offsetX === 0 ? 'lock' : 'unlock'} />
               </div>
               {
                 this.state.offsetX === 0 && (
-                  <p className="_b-validator-control-tip">拖动左边滑块完成上方拼图</p>
+                  <p className={style['_b-validator-control-tip']}>拖动左边滑块完成上方拼图</p>
                 )
               }
             </div>
           </div>
-          <div className="_b-validator-option">
+          <div className={style['_b-validator-option']}>
             <Icon type="close-circle" onClick={this.props.close} />
             <Icon type="reload" onClick={this.updateCanvas} />
           </div>

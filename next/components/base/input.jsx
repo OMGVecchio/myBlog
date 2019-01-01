@@ -1,9 +1,7 @@
-import { Fragment, PureComponent } from 'react'
+import { PureComponent } from 'react'
 import classnames from 'classnames'
 
-import Head from 'next/head'
-
-import style from '@/styles/components/base/input.less'
+import style from '@/styles/components/base/input'
 
 class Input extends PureComponent {
   static defaultProps = {
@@ -39,27 +37,22 @@ class Input extends PureComponent {
       width = ''
     } = this.props
     return (
-      <Fragment>
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} key="style-input" />
-        </Head>
-        <div
-          className={classnames('_b-input', className, { block, 'is-filled': !this.checkEmpty(this.state.value) })}
-          style={width ? { width: `${width}px` } : {}}
-        >
-          <div className="_b-input-box-wrap">
-            <input
-              value={this.state.value}
-              type={type}
-              onChange={this.valueChange}
-              className="_b-input-box"
-            />
-          </div>
-          <span className="_b-input-placeholder">
-            {placeholder}
-          </span>
+      <div
+        className={classnames(style['_b-input'], className, { block, [style['is-filled']]: !this.checkEmpty(this.state.value) })}
+        style={width ? { width: `${width}px` } : {}}
+      >
+        <div className={style['_b-input-box-wrap']}>
+          <input
+            value={this.state.value}
+            type={type}
+            onChange={this.valueChange}
+            className={style['_b-input-box']}
+          />
         </div>
-      </Fragment>
+        <span className={style['_b-input-placeholder']}>
+          {placeholder}
+        </span>
+      </div>
     )
   }
 }

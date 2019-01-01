@@ -12,7 +12,7 @@ import { fetchList } from '#/action/article'
 import { filterArticleList } from '_'
 import Moment from '_/moment'
 
-import style from '@/styles/pages/timeline.less'
+import style from '@/styles/pages/timeline'
 
 const { Link } = Anchor
 
@@ -69,7 +69,7 @@ class Timeline extends PureComponent {
           ))
         }
         cardList.push((
-          <h2 className="card-list-delimiter" id={`${signTag.year}-${signTag.month}`} key={`${signTag.year}-${signTag.month}`}>
+          <h2 className={style['card-list-delimiter']} id={`${signTag.year}-${signTag.month}`} key={`${signTag.year}-${signTag.month}`}>
             {signTag.year}年{signTag.month}月
           </h2>
         ))
@@ -127,7 +127,7 @@ class Timeline extends PureComponent {
       )
     })
     return (
-      <Anchor className="anchor-style-fix">
+      <Anchor className={style['anchor-style-fix']}>
         {anchorList}
       </Anchor>
     )

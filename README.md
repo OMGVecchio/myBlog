@@ -77,7 +77,9 @@ const mapStateToProps = (state) => {
 
 + `styled-jsx` 设置为 `<style jsx global>` 后不会带上 `scoped id`，但是该 `style` 下全部样式均为全局，或者 [`styled-jsx` 设置为 `<style jsx>`，具体不需要加上 `scoped id` 的元素加上 `:global` 标识](https://github.com/zeit/styled-jsx#one-off-global-selectors)
 
-+ `antd` 的样式文件太大，暂时不知道如何自动化做按需加载。如果把所有的样式文件放在 document 中，按照当前的做法，我会把样式代码全内联到文档中，这样就无法在浏览器端做 `antd.min.css` 文件的缓存。考虑了几种方式：直接在 `link` 中外链 `antd.min.css` 的地址，但这样无法加时间戳，对后续的维护有一定问题，解决的方法其实也有，继承 `_document` 的主类，并获取 `buildId` 等关键指针加在资源地址中，但这样就代码同步性而言确实太不灵活了；第二种方案是可否提取一个公共组件，里面存放需要缓存的资源代码，但为了避免服务端渲染时每次都优先加在完这个组件，需要对这个组件做 `dynamic` 异步加载，此时就需要考虑延迟渲染的一些问题，需要额外操作弥补
++ 参考 [官方](https://github.com/zeit/next.js/tree/canary/examples/with-ant-design-less)，[语雀](https://www.yuque.com/steven-kkr5g/aza/ig3x9w)
+
+<!-- + `antd` 的样式文件太大，暂时不知道如何自动化做按需加载。如果把所有的样式文件放在 document 中，按照当前的做法，我会把样式代码全内联到文档中，这样就无法在浏览器端做 `antd.min.css` 文件的缓存。考虑了几种方式：直接在 `link` 中外链 `antd.min.css` 的地址，但这样无法加时间戳，对后续的维护有一定问题，解决的方法其实也有，继承 `_document` 的主类，并获取 `buildId` 等关键指针加在资源地址中，但这样就代码同步性而言确实太不灵活了；第二种方案是可否提取一个公共组件，里面存放需要缓存的资源代码，但为了避免服务端渲染时每次都优先加在完这个组件，需要对这个组件做 `dynamic` 异步加载，此时就需要考虑延迟渲染的一些问题，需要额外操作弥补 -->
 
 ### 服务端路由
 

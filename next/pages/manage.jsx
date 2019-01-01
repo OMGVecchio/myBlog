@@ -2,7 +2,6 @@ import { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Table, Button, Tag } from 'antd'
 
-import Head from 'next/head'
 import Link from 'next/link'
 
 import Layout from '~/layout'
@@ -11,7 +10,7 @@ import { fetchList, removeArticle, onlineArticle } from '#/action/article'
 
 import { format } from '_/moment'
 
-import style from '@/styles/pages/manage.less'
+import style from '@/styles/pages/manage'
 
 const colors = [
   'magenta', 'red', 'volcano', 'orange', 'gold',
@@ -39,7 +38,7 @@ class Manage extends PureComponent {
     width: '200px',
     render: (title, record) => (
       <Link href={`/article?articleId=${record.id}`}>
-        <span className="article-title">{title}</span>
+        <span className={style['article-title']}>{title}</span>
       </Link>
     )
   }, {
@@ -77,7 +76,7 @@ class Manage extends PureComponent {
     render: (record) => {
       const { id, online } = record
       return (
-        <div className="operation-wrap">
+        <div className={style['operation-wrap']}>
           <Link href={`/compose?articleId=${id}`} as={`/compose/${id}`}>
             <Button type="primary" size="small" >
               修改
@@ -106,13 +105,10 @@ class Manage extends PureComponent {
       })
     }
     return (
-      <Layout className="manage-page" pageTitle="文章管理" title="文章管理">
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} />
-        </Head>
+      <Layout className={style['manage-page']} pageTitle="文章管理" title="文章管理">
         <div>
           <Table
-            className="article-table"
+            className={style['article-table']}
             bordered
             rowKey="id"
             dataSource={articleList}

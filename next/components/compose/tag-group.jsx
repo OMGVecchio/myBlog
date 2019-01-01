@@ -1,9 +1,7 @@
-import { Fragment, PureComponent } from 'react'
+import { PureComponent } from 'react'
 import { Tag, AutoComplete, Tooltip } from 'antd'
 
-import Head from 'next/head'
-
-import style from '@/styles/components/compose/tag-group.less'
+import style from '@/styles/components/compose/tag-group'
 
 // Tag 颜色集
 const colors = [
@@ -36,41 +34,36 @@ class TagGroup extends PureComponent {
       text: item
     }))
     return (
-      <Fragment>
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} key="tag-group" />
-        </Head>
-        <div className="tag-group">
-          {tags.map((tag) => {
-            const isLongTag = tag.length > 10
-            const tagElem = (
-              <Tag
-                color={this.randomColor()}
-                key={tag}
-                closable="true"
-                afterClose={() => this.handleClose(tag)}
-              >
-                {isLongTag ? `${tag.slice(0, 10)}...` : tag}
-              </Tag>
-            )
-            return isLongTag ? <Tooltip title={tag} key={tag}>{tagElem}</Tooltip> : tagElem
-          })}
-          {tags.length < 4 && (
-            <AutoComplete
-              placeholder="标签"
-              dataSource={tagFilters}
-              type="text"
-              size="small"
-              style={{ width: 100 }}
-              filterOption={(input, option) => {
-                const { key } = option
-                return new RegExp(`${input}`).test(key)
-              }}
-              onSelect={value => this.handleInputConfirm(value)}
-              onBlur={value => this.handleInputConfirm(value)}
-            />)}
-        </div>
-      </Fragment>
+      <div className={style['tag-group']}>
+        {tags.map((tag) => {
+          const isLongTag = tag.length > 10
+          const tagElem = (
+            <Tag
+              color={this.randomColor()}
+              key={tag}
+              closable="true"
+              afterClose={() => this.handleClose(tag)}
+            >
+              {isLongTag ? `${tag.slice(0, 10)}...` : tag}
+            </Tag>
+          )
+          return isLongTag ? <Tooltip title={tag} key={tag}>{tagElem}</Tooltip> : tagElem
+        })}
+        {tags.length < 4 && (
+          <AutoComplete
+            placeholder="标签"
+            dataSource={tagFilters}
+            type="text"
+            size="small"
+            style={{ width: 100 }}
+            filterOption={(input, option) => {
+              const { key } = option
+              return new RegExp(`${input}`).test(key)
+            }}
+            onSelect={value => this.handleInputConfirm(value)}
+            onBlur={value => this.handleInputConfirm(value)}
+          />)}
+      </div>
     )
   }
 }

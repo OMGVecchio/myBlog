@@ -2,6 +2,8 @@ import { Row, Button, Col, Avatar } from 'antd'
 
 import { format } from '_/moment'
 
+import style from '@/styles/components/article/comment-list'
+
 const CommentListItem = ({
   children,
   data,
@@ -30,15 +32,15 @@ const CommentListItem = ({
     return id
   }
   return (
-    <div className="component-comment-item" id={id}>
+    <div className={style['component-comment-item']} id={id}>
       <Row>
         <Col span={1}>
           <Avatar size="small" icon="user" />
         </Col>
         <Col span={22}>
-          <p className="comment-title">{getTitle()}</p>
-          <p className="comment-time">{format(createTime)}</p>
-          <p className="comment-body">{comment}</p>
+          <p className={style['comment-title']}>{getTitle()}</p>
+          <p className={style['comment-time']}>{format(createTime)}</p>
+          <p className={style['comment-body']}>{comment}</p>
         </Col>
         <Col span={1}>
           <Button type="primary" size="small" onClick={() => onReview(reviewId)}>
