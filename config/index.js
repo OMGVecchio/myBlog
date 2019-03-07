@@ -11,8 +11,8 @@ module.exports = {
   // auth 相关配置
   user: {
     vecchio: {
-      username: 'Vecchio',
-      password: 'e10adc3949ba59abbe56e057f20f883e'
+      nickname: 'Vecchio',
+      password: '1377662839d8bdfc2054660111b1a658'
     }
   },
   jwtSecret: 'vecchio'

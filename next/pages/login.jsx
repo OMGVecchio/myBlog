@@ -48,11 +48,12 @@ const LoginModal = () => {
       token
     }
     const data = await xhr.post('/api/login', { ...param })
-    if (data.code === 201) {
+    if (data.success) {
       setToken(data.data)
       message.success('管理员登录成功')
       Router.push('/')
     } else {
+      message.destroy()
       message.error(data.data)
     }
   }
