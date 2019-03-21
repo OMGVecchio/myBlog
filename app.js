@@ -3,10 +3,14 @@
 const Koa = require('koa')
 const router = require('koa-router')()
 const Next = require('next')
+const http = require('http')
+const socket = require('socket.io')
 
 const config = require('./config')
 const filters = require('./filters')
 const { out } = require('./utils')
+const socketHandler = require('./socket')
+
 const { error } = out
 
 const next = Next({
@@ -26,7 +30,33 @@ class KOA {
     this.bindGlobal()
     this.addFilters()
     this.attachEvent()
-    this.app.listen(this.config.port)
+    const server = http.createServer(this.app.callback())
+    const ioServer = socket(server)
+    server.listen(this.config.port)
+    socketHandler(ioServer)
+
+      const io = ioServer
+      io.on('connection', client => {
+
+        console.log('来了个新成员', client.id)
+
+        client.on('single-message', data => {
+          const { msg, to } = data
+          const param = {
+            msg,
+            from: client.id
+          }
+          io.sockets.sockets[to].emit('single-message', param)
+        })
+
+        client.on('disconnect', () => {
+          console.log('连接关闭了', client.id)
+        })
+
+        client.on('newMember', () => {
+          io.sockets.emit('refreshFriendList', Object.keys(io.sockets.sockets))
+        })
+      })
   }
   bindGlobal() {
     global.Router = this.router
@@ -44,8 +74,8 @@ class KOA {
   }
 }
 
-next.prepare().then(() => {
+// next.prepare().then(() => {
   const application = new Koa()
   const app = new KOA(application)
   app.start()
-})
+// })
