@@ -18,7 +18,7 @@ const {
 } = require('../config/github')
 
 // 用户名密码登录
-Router.post('/api/login', async (ctx) => {
+$router.post('/api/login', async (ctx) => {
   const {
     username,
     password,
@@ -57,7 +57,7 @@ Router.post('/api/login', async (ctx) => {
 })
 
 // Github 登录页
-Router.get('/api/login/github', async (ctx) => {
+$router.get('/api/login/github', async (ctx) => {
   const param = {
     client_id: clientId,
     scope,
@@ -68,7 +68,7 @@ Router.get('/api/login/github', async (ctx) => {
 })
 
 // Github 登录回调
-Router.get('/api/login/github/callback', async (ctx) => {
+$router.get('/api/login/github/callback', async (ctx) => {
   const { code } = ctx.query
   const param = {
     client_id: clientId,
@@ -116,7 +116,7 @@ Router.get('/api/login/github/callback', async (ctx) => {
   }
 })
 
-Router.post('/api/token/check', async (ctx) => {
+$router.post('/api/token/check', async (ctx) => {
   const { token = '' } = ctx.request.body
   try {
     jwt.verify(token, config.jwtSecret)

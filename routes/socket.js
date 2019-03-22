@@ -12,8 +12,9 @@ const writeFile = util.promisify(fs.writeFile)
 const imagesPath = resolve(__dirname, '../static/images/')
 
 const saveImage = async (ctx, imgTag, useQiniu = false) => {
-  const { file } = ctx.req
+  const { file, body } = ctx.req
   const { buffer, originalname } = file
+  const { to, from } = body
   const filename = originalname.replace(/\./ig, `_${Date.now()}.`)
   let imgUrl
   if (useQiniu) {
@@ -21,19 +22,24 @@ const saveImage = async (ctx, imgTag, useQiniu = false) => {
   } else {
     const filepath = resolve(imagesPath, imgTag, filename)
     try {
-      imgUrl = `/images/${imgTag}/${filename}`
+      imgUrl = `http://127.0.0.1:3000/images/${imgTag}/${filename}`
       await writeFile(filepath, buffer)
     } catch (err) {
       console.error('图片写入失败', err)
     }
   }
+  const toClient = $io.sockets.sockets[to]
+  if (toClient) {
+    const param = {
+      data: imgUrl,
+      isMedia: true,
+      from
+    }
+    toClient.emit('single-message', param)
+  }
   ctx.apiSuccess(imgUrl)
 }
 
-$router.post('/api/auth/upload/illustrati', uploader.single('file'), async (ctx) => {
-  await saveImage(ctx, 'illustrati')
-})
-
-$router.post('/api/auth/upload/cover', uploader.single('cover'), async (ctx) => {
-  await saveImage(ctx, 'cover')
+$router.post('/api/socket/msg/media', uploader.single('media'), async (ctx) => {
+  await saveImage(ctx, 'temp')
 })

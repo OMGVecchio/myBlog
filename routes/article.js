@@ -8,7 +8,7 @@ const ALDBKEY = 'list'
 const TAGDBKEY = 'map'
 
 // 新增文章
-Router.post('/api/auth/article', async (ctx) => {
+$router.post('/api/auth/article', async (ctx) => {
   const articleId = uuid.v1()
   const { body } = ctx.request
   const timestamp = Date.now()
@@ -48,7 +48,7 @@ Router.post('/api/auth/article', async (ctx) => {
 })
 
 // 修改文章
-Router.post('/api/auth/article/:articleId', async (ctx) => {
+$router.post('/api/auth/article/:articleId', async (ctx) => {
   const { articleId = '' } = ctx.params
   const { body } = ctx.request
   const timestamp = Date.now()
@@ -76,7 +76,7 @@ Router.post('/api/auth/article/:articleId', async (ctx) => {
 })
 
 // 获取文章列表
-Router.get('/api/article', async (ctx) => {
+$router.get('/api/article', async (ctx) => {
   try {
     const articles = await alDB.get(ALDBKEY).orderBy('lastModify', 'desc').value()
     ctx.apiSuccess(articles)
@@ -86,7 +86,7 @@ Router.get('/api/article', async (ctx) => {
 })
 
 // 获取文章详情
-Router.get('/api/article/:articleId', async (ctx) => {
+$router.get('/api/article/:articleId', async (ctx) => {
   const { articleId = '' } = ctx.params
   try {
     const articleObj = await alDB.get(ALDBKEY).find({id: articleId}).value()
@@ -99,7 +99,7 @@ Router.get('/api/article/:articleId', async (ctx) => {
 })
 
 // 删除文章
-Router.delete('/api/auth/article/:articleId', async (ctx) => {
+$router.delete('/api/auth/article/:articleId', async (ctx) => {
   const { articleId = '' } = ctx.params
   try {
     await alDB.get(ALDBKEY).remove({id: articleId}).write()
@@ -112,7 +112,7 @@ Router.delete('/api/auth/article/:articleId', async (ctx) => {
 })
 
 // 文章上下线
-Router.put('/api/auth/article/:articleId', async (ctx) => {
+$router.put('/api/auth/article/:articleId', async (ctx) => {
   const { articleId = '' } = ctx.params
   if (!articleId) {
     return apiError('缺少文章ID')

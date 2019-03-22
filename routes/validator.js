@@ -6,7 +6,7 @@ const { validator, out } = require('../utils')
 const { accuracy } = require('../config/validator')
 
 // 获取行为验证码初始参数
-Router.get('/api/validator/info', async (ctx) => {
+$router.get('/api/validator/info', async (ctx) => {
   const challenge = v1()
   const picture = validator.randomPicture()
   const offsetX = validator.randomOffsetX()
@@ -23,7 +23,7 @@ Router.get('/api/validator/info', async (ctx) => {
 })
 
 // 获取行为验证码 token
-Router.post('/api/validator/token', async (ctx) => {
+$router.post('/api/validator/token', async (ctx) => {
   const { body } = ctx.request
   const { offset, challenge } = body
   try {
@@ -43,7 +43,7 @@ Router.post('/api/validator/token', async (ctx) => {
 })
 
 // 获取行为验证码背景图
-Router.get('/api/validator/fullBackground/:challenge', async (ctx) => {
+$router.get('/api/validator/fullBackground/:challenge', async (ctx) => {
   try {
     const { challenge } = ctx.params
     const challengeInfo = await ctx.redis.get(challenge)
@@ -61,7 +61,7 @@ Router.get('/api/validator/fullBackground/:challenge', async (ctx) => {
 })
 
 // 获取行为验证码滑动图
-Router.get('/api/validator/slice/:challenge', async (ctx) => {
+$router.get('/api/validator/slice/:challenge', async (ctx) => {
   try {
     const { challenge } = ctx.params
     const challengeInfo = await ctx.redis.get(challenge)

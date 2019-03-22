@@ -6,7 +6,7 @@ const { db } = require('../utils')
 const { commentDB } = db
 
 // 新增评论
-Router.post('/api/comment/:articleId', async (ctx) => {
+$router.post('/api/comment/:articleId', async (ctx) => {
   const { articleId = '' } = ctx.params
   const {
     reviewId,
@@ -65,7 +65,7 @@ Router.post('/api/comment/:articleId', async (ctx) => {
 })
 
 // 获取评论
-Router.get('/api/comment/:articleId', async (ctx) => {
+$router.get('/api/comment/:articleId', async (ctx) => {
   const { articleId = '' } = ctx.params
   if (!articleId) {
     return ctx.apiError('缺少评论的文章ID')

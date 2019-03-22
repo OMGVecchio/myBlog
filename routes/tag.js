@@ -3,7 +3,7 @@
 const { db } = require('../utils')
 const { tagDB } = db
 
-Router.get('/api/tags', async (ctx) => {
+$router.get('/api/tags', async (ctx) => {
   try {
     const tags = await tagDB.get('map').value()
     ctx.apiSuccess(Object.keys(tags))

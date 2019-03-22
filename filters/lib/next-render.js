@@ -22,7 +22,7 @@ module.exports = async (ctx, next) => {
       await next()
     } else {
       // 其余资源直接走 next 输出
-      await nextHandle(ctx.req, ctx.res)
+      await $nextHandle(ctx.req, ctx.res)
     }
     ctx.respond = false
   }
