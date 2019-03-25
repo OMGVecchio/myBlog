@@ -14,7 +14,7 @@ const imagesPath = resolve(__dirname, '../static/images/')
 const saveImage = async (ctx, imgTag, useQiniu = false) => {
   const { file, body } = ctx.req
   const { buffer, originalname } = file
-  const { to, from } = body
+  const { to, from, mediaType } = body
   const filename = originalname.replace(/\./ig, `_${Date.now()}.`)
   let imgUrl
   if (useQiniu) {
@@ -25,14 +25,14 @@ const saveImage = async (ctx, imgTag, useQiniu = false) => {
       imgUrl = `http://127.0.0.1:3000/images/${imgTag}/${filename}`
       await writeFile(filepath, buffer)
     } catch (err) {
-      console.error('图片写入失败', err)
+      console.error('图片文件失败', err)
     }
   }
   const toClient = $io.sockets.sockets[to]
   if (toClient) {
     const param = {
       data: imgUrl,
-      isMedia: true,
+      mediaType,
       from
     }
     toClient.emit('single-message', param)
