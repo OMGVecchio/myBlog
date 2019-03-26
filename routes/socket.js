@@ -14,7 +14,7 @@ const imagesPath = resolve(__dirname, '../static/images/')
 const saveImage = async (ctx, imgTag, useQiniu = false) => {
   const { file, body } = ctx.req
   const { buffer, originalname } = file
-  const { to, from, mediaType } = body
+  const { to, from, mediaType, timestamp } = body
   const filename = originalname.replace(/\./ig, `_${Date.now()}.`)
   let imgUrl
   if (useQiniu) {
@@ -33,7 +33,8 @@ const saveImage = async (ctx, imgTag, useQiniu = false) => {
     const param = {
       data: imgUrl,
       mediaType,
-      from
+      from,
+      timestamp
     }
     toClient.emit('single-message', param)
   }

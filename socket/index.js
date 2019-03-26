@@ -15,11 +15,12 @@ module.exports = app => {
     info('来了个新成员', client.id)
 
     client.on('single-message', data => {
-      const { msg, to, mediaType } = data
+      const { msg, to, mediaType, timestamp } = data
       const param = {
         data: msg,
         mediaType,
-        from: client.id
+        from: client.id,
+        timestamp
       }
       const toClient = io.sockets.sockets[to];
       if (!toClient) {

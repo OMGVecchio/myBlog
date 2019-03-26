@@ -8,7 +8,8 @@ const mapKey = [
   'crypto',
   'out',
   'qiniu',
-  'validator'
+  'validator',
+  'fetch'
 ]
 const utils = {}
 const load = require
