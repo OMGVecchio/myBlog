@@ -62,6 +62,7 @@ class RedisFactory {
 }
 
 const redis = new RedisFactory(config)
+global.$redis = redis
 
 module.exports = async (ctx, next) => {
   ctx.redis = redis

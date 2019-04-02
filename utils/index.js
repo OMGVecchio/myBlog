@@ -9,7 +9,8 @@ const mapKey = [
   'out',
   'qiniu',
   'validator',
-  'fetch'
+  'fetch',
+  'wx'
 ]
 const utils = {}
 const load = require

@@ -6,6 +6,7 @@
       "config",
       "filters",
       "routes",
+      "socket",
       "utils"
     ],
     "ignore_watch": [

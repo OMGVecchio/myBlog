@@ -2,7 +2,9 @@
 
 const http = require('http')
 const socket = require('socket.io')
-const { info, warn, error } = require('../utils').out
+const { out, wx } = require('../utils')
+const { info, warn } = out
+const { checkUserInfo } = wx
 
 module.exports = app => {
   const server = http.createServer(app.callback())
@@ -12,29 +14,55 @@ module.exports = app => {
 
   io.on('connection', client => {
 
-    info('来了个新成员', client.id)
+    info(`${client.id} 已上线`)
 
-    client.on('single-message', data => {
-      const { msg, to, mediaType, timestamp } = data
+    client.on('message', data => {
+      const {
+        msg,
+        to,
+        mediaType,
+        timestamp,
+        avatar
+      } = data
       const param = {
         data: msg,
+        from: client.userInfo.openId,
         mediaType,
-        from: client.id,
-        timestamp
+        timestamp,
+        avatar
       }
-      const toClient = io.sockets.sockets[to];
-      if (!toClient) {
-        return
-      }
-      toClient.emit('single-message', param)
+      // 蠢办法，先不做缓存，直接遍历取吧
+      Object.keys(io.sockets.sockets).forEach(socketId => {
+        const currentClient = io.sockets.sockets[socketId]
+        if (currentClient.userInfo.openId === to) {
+          console.log(currentClient.userInfo.openId)
+          console.log(to)
+          currentClient.emit('message', param)
+        }
+      })
     })
 
     client.on('disconnect', () => {
-      console.warn('连接关闭了', client.id)
+      warn(`${client.id}已下线`)
+      io.sockets.emit('refreshFriendList', Object.keys(io.sockets.sockets))
     })
 
-    client.on('newMember', () => {
-      io.sockets.emit('refreshFriendList', Object.keys(io.sockets.sockets))
+    client.on('newMember', async (data = {}) => {
+      const { sessionId, userInfo, openId } = data
+      const sessionInfo = await $redis.get(sessionId)
+      const { session_key } = JSON.parse(sessionInfo)
+      const { rawData, signature } = userInfo
+      if (checkUserInfo(rawData, session_key, signature) === true) {
+        const userInfoJSON = JSON.parse(rawData)
+        userInfoJSON.openId = openId
+        client.userInfo = userInfoJSON
+      }
+      const allUserInfo = []
+      Object.keys(io.sockets.sockets).forEach(socketId => {
+        const { userInfo } = io.sockets.sockets[socketId]
+        allUserInfo.push(userInfo)
+      })
+      io.sockets.emit('refreshFriendList', allUserInfo)
     })
   })
 }
