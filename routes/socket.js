@@ -9,27 +9,27 @@ const { qiniu } = require('../utils')
 
 const uploader = multer()
 const writeFile = util.promisify(fs.writeFile)
-const imagesPath = resolve(__dirname, '../static/images/')
+const imagesPath = resolve(__dirname, '../static')
 
-const saveImage = async (ctx, imgTag, useQiniu = false) => {
+const saveFile = async (ctx, fileDir, useQiniu = false) => {
   const { file, body } = ctx.req
   const { buffer, originalname } = file
   const { to, from, mediaType, timestamp, avatar } = body
   const filename = originalname.replace(/\./ig, `_${Date.now()}.`)
-  let imgUrl
+  let fileUrl
   if (useQiniu) {
-    imgUrl = await qiniu.upload(ctx, filename, buffer)
+    fileUrl = await qiniu.upload(ctx, filename, buffer)
   } else {
-    const filepath = resolve(imagesPath, imgTag, filename)
+    const filepath = resolve(imagesPath, fileDir, filename)
     try {
-      imgUrl = `http://172.31.10.104:3000/images/${imgTag}/${filename}`
+      fileUrl = `/${fileDir}/${filename}`
       await writeFile(filepath, buffer)
     } catch (err) {
       console.error('图片文件失败', err)
     }
   }
   const param = {
-    data: imgUrl,
+    data: fileUrl,
     mediaType,
     from,
     timestamp,
@@ -42,9 +42,9 @@ const saveImage = async (ctx, imgTag, useQiniu = false) => {
       currentClient.emit('message', param)
     }
   })
-  ctx.apiSuccess(imgUrl)
+  ctx.apiSuccess(fileUrl)
 }
 
 $router.post('/api/socket/msg/media', uploader.single('media'), async (ctx) => {
-  await saveImage(ctx, 'temp')
+  await saveFile(ctx, 'temp')
 })
