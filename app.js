@@ -50,8 +50,8 @@ class KOA {
   }
 }
 
-// next.prepare().then(() => {
+next.prepare().then(() => {
   const application = new Koa()
   const app = new KOA(application)
   app.start()
-// })
+})

@@ -26,6 +26,7 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js" />
         </body>
       </html>
     )

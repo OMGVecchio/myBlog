@@ -27,6 +27,7 @@
   },
   "globals": {
     "__NEXT_DATA__": true,
-    "adblockWorkWell": true
+    "adblockWorkWell": true,
+    "firebase": true
   }
 }
