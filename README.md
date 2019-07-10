@@ -86,3 +86,11 @@ const mapStateToProps = (state) => {
 + 我们在 next 中跳转时，`<Link href="/article?articleId=X" as="/article/articleId">` 添加一个 as 属性即可
 
 + 但是第一次服务端渲染时，如果是 `/article/articleId`，渲染出来的 next 页面为 404，所以我们需要修改 nginx 或 node 端的特定路由，增加额外处理方式。本例是修改 handleRequest 的参数，需要注意的是 handleRequest 是处理所有 next 资源请求的入口方法，支持三个参数 (req, res, parsedUrl)，其中 parserdUrl 是形如 `{ pathname, query }` 的对象，如果不传 parsedUrl，自动注入 req 里的相关 变量；然后在 next 中执行 run(req, res, parsedUrl)，针对不同的请求类型 next 会有不同的处理函数，document 的请求会分配到 renderToHtml(req, res, path, query)【也可调用 next 实例的 render(req, res, path, query)】
+
+### TODO: 9月底前
+
++ 添加项目 precommit 及 github-hook 等完成自动化部署
++ React 版本更新，及部分旧代码的更换
++ 数据由文件存储过渡到数据库
++ 完成用户模块
++ 适当考虑登录注册功能
