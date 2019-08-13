@@ -87,6 +87,24 @@ const mapStateToProps = (state) => {
 
 + 但是第一次服务端渲染时，如果是 `/article/articleId`，渲染出来的 next 页面为 404，所以我们需要修改 nginx 或 node 端的特定路由，增加额外处理方式。本例是修改 handleRequest 的参数，需要注意的是 handleRequest 是处理所有 next 资源请求的入口方法，支持三个参数 (req, res, parsedUrl)，其中 parserdUrl 是形如 `{ pathname, query }` 的对象，如果不传 parsedUrl，自动注入 req 里的相关 变量；然后在 next 中执行 run(req, res, parsedUrl)，针对不同的请求类型 next 会有不同的处理函数，document 的请求会分配到 renderToHtml(req, res, path, query)【也可调用 next 实例的 render(req, res, path, query)】
 
+### nginx 配置
++ 本系统同时启动 http 及 ws 端口服务，为了支持 wss，nginx 配置完 https 后额外增加属性项
+```nginx.conf
+# 如果请求头中有 Upgrade，就直接设置到响应头中，并把 Connection 设置为 upgrade，否则把 Connection 设置为 close
+map $http_upgrade $connection_upgrade {
+  default upgrade;
+  '' close;
+}
+server {
+  xxxxx
+  location / {
+    xxxxx
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+  }
+}
+```
+
 ### TODO: 9月底前
 
 + 添加项目 precommit 及 github-hook 等完成自动化部署
