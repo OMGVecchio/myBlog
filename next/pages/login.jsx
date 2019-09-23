@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Button, message } from 'antd'
+import { Button, Icon, message } from 'antd'
 
 import Head from 'next/head'
 import Router from 'next/router'
@@ -29,6 +29,7 @@ const LoginModal = () => {
       challenge,
       token
     } = this
+    message.destroy()
     if (!username) {
       message.warn('请填写用户名')
       return
@@ -134,6 +135,11 @@ const LoginModal = () => {
             >
               登录
             </Button>
+            <p className="login-ways">
+              <a href="/api/login/github">
+                <Icon title="gayhub" type="github" className="gayhub" />
+              </a>
+            </p>
           </div>
         </div>
       </div>

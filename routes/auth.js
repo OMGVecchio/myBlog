@@ -31,7 +31,6 @@ $router.post('/api/login', async (ctx) => {
     if (token !== realToken) {
       return ctx.apiError('滑动验证码错误')
     }
-    await ctx.redis.del(challenge)
   } catch (e) {
     error('登录时滑动验证码检测有误')
     ctx.apiError('登录失败')
@@ -50,6 +49,7 @@ $router.post('/api/login', async (ctx) => {
         }
       })
     })
+    ctx.redis.del(challenge)
     ctx.apiSuccess(token)
   } else {
     ctx.apiError('账户名或密码错误')

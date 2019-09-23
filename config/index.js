@@ -12,7 +12,7 @@ module.exports = {
   user: {
     vecchio: {
       nickname: 'Vecchio',
-      password: '1377662839d8bdfc2054660111b1a658'
+      password: 'e10adc3949ba59abbe56e057f20f883e'
     }
   },
   jwtSecret: 'vecchio'

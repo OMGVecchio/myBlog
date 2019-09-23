@@ -13,17 +13,17 @@ class Validator extends PureComponent {
     success: noop
   }
   state = {
-    rotate: 0,
-    showCanvas: false,
-    checkSuccess: false
+    pointerRotateDegree: 0,
+    canShowCanvas: false,
+    hasCheckSuccess: false
   }
   componentDidMount() {
     // TODO 增加行为统计日志
     this.initDetectorLocation()
-    document.addEventListener('mousemove', this.pointerMonitor)
+    this.addPointerMonitor()
   }
   componentWillUnmount() {
-    document.removeEventListener('mousemove', this.pointerMonitor)
+    this.removePointerMonitor()
   }
   // 获取监测器对象
   getDetector = (ref) => { this.detector = ref }
@@ -35,12 +35,16 @@ class Validator extends PureComponent {
     }
     return realRadian / (Math.PI / 180)
   }
+  // 绑定旋转指针侦测事件
+  addPointerMonitor = () => document.addEventListener('mousemove', this.pointerMonitor)
+  // 解绑旋转指针侦测事件
+  removePointerMonitor = () => document.removeEventListener('mousemove', this.pointerMonitor)
   // 旋转指针侦测事件
   pointerMonitor = (e) => {
     const { x, y } = e
     const { x: circleX, y: circleY } = this.detectorLocation
     const degree = this.getDegree(Math.atan2(y - circleY, x - circleX))
-    this.setState({ rotate: degree })
+    this.setState({ pointerRotateDegree: degree })
   }
   // 计算圆心坐标
   calculateCircleCenter = (x, y, width, height) => ({
@@ -62,29 +66,40 @@ class Validator extends PureComponent {
     }
   }
   showCanvas = () => {
-    if (this.state.checkSuccess) {
+    if (this.state.hasCheckSuccess) {
       return
     }
-    this.setState({ showCanvas: true })
+    this.setState({ canShowCanvas: true })
   }
+  hideCanvas = () => this.setState({ canShowCanvas: false })
   // 行为验证成功后的处理
   checkSuccess = (...params) => {
-    this.setState({ checkSuccess: true })
+    this.removePointerMonitor()
+    this.setState({ hasCheckSuccess: true })
     this.props.success(...params)
   }
   detector = null
   detectorLocation = null
   render() {
+    const {
+      pointerRotateDegree,
+      hasCheckSuccess,
+      canShowCanvas
+    } = this.state
     return (
       <Fragment>
         <Head>
           <style dangerouslySetInnerHTML={{ __html: style }} key="style-validator" />
         </Head>
         <div className={classNames('_b-validator', this.props.className || false)}>
-          <div className="_b-validator-btn">
+          <div className={classNames('_b-validator-btn', { success: hasCheckSuccess || canShowCanvas })}>
             <div className="_b-validator-detector" ref={this.getDetector}>
               <div className="_b-validator-ring">
-                <div className="_b-validator-pointer" style={{ transform: `rotate(${this.state.rotate}deg)` }} />
+                {
+                  hasCheckSuccess || canShowCanvas || (
+                    <div className="_b-validator-pointer" style={{ transform: `rotate(${pointerRotateDegree}deg)` }} />
+                  )
+                }
               </div>
               <div className="_b-validator-dot" />
             </div>
@@ -94,13 +109,13 @@ class Validator extends PureComponent {
               tabIndex="0"
               onClick={this.showCanvas}
             >
-              { this.state.checkSuccess ? '验证成功' : '点击按钮进行认证' }
+              { hasCheckSuccess ? '验证成功' : '点击按钮进行认证' }
             </div>
           </div>
           {
-            this.state.showCanvas && (
+            canShowCanvas && (
               <ValidatorCanvas
-                close={() => this.setState({ showCanvas: false })}
+                close={this.hideCanvas}
                 success={this.checkSuccess}
               />
             )

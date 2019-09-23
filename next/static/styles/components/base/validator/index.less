@@ -8,6 +8,11 @@
   border: 1px solid #ccc;
   ._b-validator-btn {
     cursor: pointer;
+    &.success {
+      ._b-validator-ring {
+        animation: circleScale .5s linear 0s infinite alternate;
+      }
+    }
     &:hover {
       ._b-validator-ring {
         animation: circleScale .5s linear 0s infinite alternate;
