@@ -71,6 +71,8 @@ const mapStateToProps = (state) => {
 
 在一个动态加载的组件中引用了一个内联的 `style`，但是无法正常显示出来。当在全局的 `global` 样式文件中引入该样式文件，可以正常访问。是因为动态加载的缘故么？
 
++ 做文章时间戳排序时，直接 Array.sort() 或者依靠 Object 的 key 值，最新修改的文章总是会排在最前面
+
 ### ANTD
 
 + `styled-jsx` 设置 `scoped` 后会在编译的元素的 `className` 里多带上一个 `styled-id`，但是当 `className` 加在一个引进的第三方的组件上时，编译出来的第三方组件的 `className` 上并不会带上 `styled-id`，但是 `css` 里的样式却对应着 styled-id

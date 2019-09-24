@@ -26,18 +26,32 @@ class Timeline extends PureComponent {
     await store.dispatch(fetchList())
     return { kw }
   }
-  setCardList = (cardData = []) => {
+  setCardList = (cardDataList = []) => {
     let cardDataCache = null
-    const signTag = { year: '', month: '' }
+    const signTag = {
+      year: '',
+      month: ''
+    }
     const cardList = []
-    const total = cardData.length
-    cardData.sort((prev, next) => {
-      const { createTime: prevTime } = prev
-      const { createTime: nextTime } = next
-      return prevTime < nextTime
+    const total = cardDataList.length
+
+    const cardDataMap = {}
+    cardDataList.forEach((item) => {
+      const { createTime } = item
+      // TODO：不删减时间戳的排序，修改过后的文章会排在最前面
+      cardDataMap[createTime.toString().slice(0, 10)] = item
     })
+    const cardData = Object.keys(cardDataMap).map(timestamp => cardDataMap[timestamp]).reverse()
+
+    // TODO：以下的排序，修改过后的文章会排在最前面
+    // const cardData = cardDataList
+    // cardData.sort((prev, next) => {
+    //   const { createTime: prevTime } = prev
+    //   const { createTime: nextTime } = next
+    //   return prevTime < nextTime
+    // })
     cardData.forEach((item, index) => {
-      // 因为按照日期去取的，所以才这样子去分也行吧
+      // 因为按照日期去取的，所以才这样子区分也行吧
       let hasSameSign = true
       const { createTime } = item
       const date = new Moment(createTime)
@@ -59,6 +73,7 @@ class Timeline extends PureComponent {
         } else if (this.anchorMap[signTag.year].indexOf(signTag.month) === -1) {
           this.anchorMap[signTag.year].push(signTag.month)
         }
+        // 如果之前有缓存的单个数据，优先输出
         if (cardDataCache) {
           cardList.push((
             <Row gutter={20} key={cardDataCache.id}>
@@ -74,6 +89,7 @@ class Timeline extends PureComponent {
           </h2>
         ))
         if (total === index + 1) {
+          // 如果是最后一个，直接输出
           cardList.push((
             <Row gutter={20} key={item.id}>
               <Col span={12}>
@@ -82,6 +98,7 @@ class Timeline extends PureComponent {
             </Row>
           ))
         } else {
+          // 若不是最后一个，缓存起来
           cardDataCache = item
         }
       } else if (!cardDataCache) {
@@ -93,8 +110,9 @@ class Timeline extends PureComponent {
               </Col>
             </Row>
           ))
+        } else {
+          cardDataCache = item
         }
-        cardDataCache = item
       } else {
         cardList.push((
           <Row gutter={20} key={cardDataCache.id}>

@@ -53,10 +53,12 @@ p {
 
 .anchor-style-fix.ant-anchor-wrapper {
   position: fixed;
+  z-index: 1;
   top: 315px;
-  margin-left: 960px;
+  right: 40px;
+  // margin-left: 960px;
   // right: 10px;
-  background-color: transparent;
+  // background-color: transparent;
   padding-left: 0;
   .ant-anchor {
     padding-left: 0;
@@ -64,10 +66,14 @@ p {
   .ant-anchor-ink {
     display: none;
   }
+  .ant-anchor-link {
+    padding: 8px;
+  }
   .ant-anchor-link-active {
     border-left: 5px solid #2196f3;
     background-color: #00bcd4;
     position: relative;
+    border-left: 0;
     .ant-anchor-link-title {
       color: #ffffff;
     }

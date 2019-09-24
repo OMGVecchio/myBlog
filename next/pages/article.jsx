@@ -83,7 +83,12 @@ class Article extends PureComponent {
   }
   render() {
     const { articleId, articleDetail, articleComment } = this.props
-    const { article, title, createTime } = articleDetail[articleId] || {}
+    const {
+      article,
+      title,
+      createTime,
+      lastModify
+    } = articleDetail[articleId] || {}
     const commentList = articleComment[articleId] || []
     return (
       <Layout
@@ -97,7 +102,16 @@ class Article extends PureComponent {
         </Head>
         <div className="article-content">
           <h1 className="article-title">{title}</h1>
-          <p className="article-desc">{format(createTime)}</p>
+          <p className="article-desc">
+            <span>
+              发表于：{format(createTime)}
+            </span>
+            {
+              (createTime !== lastModify) && (
+                <span className="article-last-upadte">最新修改：{format(lastModify)}</span>
+              )
+            }
+          </p>
           <Markdown source={article} />
         </div>
         {/* 这里会放前后页跳转的链接 */}
