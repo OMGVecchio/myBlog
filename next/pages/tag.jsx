@@ -1,6 +1,6 @@
 import { PureComponent, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Row, Col } from 'antd'
+import { Row, Col, Tag } from 'antd'
 
 import { fetchList } from '#/action/article'
 
@@ -9,7 +9,9 @@ import { filterArticleList } from '_'
 import Layout from '~/layout'
 import TagCard from '~/card/tag'
 
-class Tag extends PureComponent {
+const allTagName = '全部'
+
+class ArticleByTagPage extends PureComponent {
   static defaultProps = {
     articleList: []
   }
@@ -19,17 +21,28 @@ class Tag extends PureComponent {
     await store.dispatch(fetchList())
     return { kw }
   }
+  constructor(props) {
+    super(props)
+    const { articleList } = this.props
+    this.state = {
+      articleList,
+      filterTag: allTagName
+    }
+    this.allTags = []
+  }
   showCardList = (cardData = []) => {
     const cardList = []
     const cardMap = {
       default: []
     }
+    const allTags = []
     cardData.forEach((item) => {
       const { tags = [] } = item
       if (tags.length > 0) {
         tags.forEach((tag) => {
           if (!cardMap[tag]) {
             cardMap[tag] = [item]
+            allTags.push(tag)
           } else {
             cardMap[tag].push(item)
           }
@@ -38,7 +51,12 @@ class Tag extends PureComponent {
         cardMap.default.push(item)
       }
     })
+    this.allTags = allTags
+    const { filterTag } = this.state
     Object.keys(cardMap).forEach((tag) => {
+      if (filterTag !== allTagName && filterTag !== tag) {
+        return
+      }
       if (cardMap[tag].length === 0) {
         return
       }
@@ -79,14 +97,29 @@ class Tag extends PureComponent {
     })
     return cardList
   }
+  filterTag = tag => this.setState({ filterTag: tag })
+  renderExtraHead = () => {
+    const allTags = [allTagName].concat(this.allTags)
+    return (
+      <div>
+        {
+          allTags.map(tag => <Tag onClick={() => this.filterTag(tag)} key={tag}>{tag}</Tag>)
+        }
+      </div>
+    )
+  }
   render() {
     const { kw } = this.props
-    let { articleList = [] } = this.props
+    let { articleList = [] } = this.state
     articleList = filterArticleList(articleList, kw)
+    const cardList = this.showCardList(articleList)
     return (
-      <Layout title="老司机带你熟练翻车的标签页">
+      <Layout
+        title="老司机带你熟练翻车的标签页"
+        extraHead={this.renderExtraHead()}
+      >
         <Fragment>
-          {this.showCardList(articleList)}
+          {cardList}
         </Fragment>
       </Layout>
     )
@@ -102,4 +135,4 @@ const mapStateToProps = (state) => {
   return { articleList }
 }
 
-export default connect(mapStateToProps)(Tag)
+export default connect(mapStateToProps)(ArticleByTagPage)

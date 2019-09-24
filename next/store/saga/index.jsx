@@ -27,6 +27,16 @@ const isFailed = (data, info) => {
 }
 
 function* fetchList() {
+  const articleList = yield select((state) => {
+    const result = state.getIn(['article', 'articleList'])
+    if (result && result.toJS) {
+      return result.toJS()
+    }
+    return []
+  })
+  if (articleList.length !== 0) {
+    return
+  }
   const dataResolve = yield xhr.get('/api/article')
   const { data } = dataResolve
   if (isFailed(dataResolve)) {

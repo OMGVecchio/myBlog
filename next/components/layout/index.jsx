@@ -31,7 +31,8 @@ class Layout extends PureComponent {
     pageTitle: 'Vecchio\'s Blog',
     title: '',
     className: '',
-    showTitle: true
+    showTitle: true,
+    extraHead: null
   }
   constructor(props) {
     super(props)
@@ -104,7 +105,8 @@ class Layout extends PureComponent {
       className,
       asideIsOpen,
       isLongScroll,
-      showTitle
+      showTitle,
+      extraHead
     } = this.props
     return (
       <div className="global-wrap">
@@ -123,6 +125,7 @@ class Layout extends PureComponent {
               <h4 className="title">
                 { showTitle && title }
               </h4>
+              { extraHead }
             </div>
             <div className="content-body-wrap">
               <div className="content-body-main">
