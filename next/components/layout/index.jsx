@@ -116,7 +116,9 @@ class Layout extends PureComponent {
         </Head>
         <LinearProgress visible={this.props.globalProgress} className="global-router-progress" />
         <Menu />
-        <Pet />
+        {
+          // <Pet />
+        }
         <div className={classNames('main-wrap', { 'menu-has-close': !asideIsOpen })}>
           <Header title={title} isLongScroll={isLongScroll} />
           <BackTop show={isLongScroll} />

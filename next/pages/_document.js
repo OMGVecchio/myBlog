@@ -12,6 +12,8 @@ export default class MyDocument extends Document {
     return (
       <html lang="en-US">
         <Head>
+          <script async src="https://www.googletagmanager.com/gtag/js?id=UA-148650768-1" />
+          <script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js" />
           <script src="/lib/adview_pic_cpc_cpm_cpa_guanggao_gg_ads_300x250.js" />
           <title>页面加载中~~~</title>
           <meta charSet="utf-8" />
@@ -26,7 +28,6 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js" />
         </body>
       </html>
     )
