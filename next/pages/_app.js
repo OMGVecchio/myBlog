@@ -44,8 +44,12 @@ class MyApp extends App {
     firebase.initializeApp(firebaseConfig)
   }
   initGoogleAnalytics = () => {
+    // analytics.js 迁移至 gtag.js
     const dataLayer = window.dataLayer || []
-    this.gtag = (...rest) => dataLayer.push(...rest)
+    // TODO：为啥改 rest 就不行了
+    this.gtag = function () {
+      dataLayer.push(arguments)
+    }
     this.gtag('js', new Date())
   }
   setGoogleAnalytics = (path) => {
