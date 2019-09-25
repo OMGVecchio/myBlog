@@ -12,6 +12,7 @@ export default class MyDocument extends Document {
     return (
       <html lang="en-US">
         <Head>
+          <meta name="google-site-verification" content="GeLgoMUYk_oeb97r0KXI3Z-7BiTI4rwmCjf8oFZxy28" />
           <script async src="https://www.googletagmanager.com/gtag/js?id=UA-148650768-1" />
           <script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js" />
           <script src="/lib/adview_pic_cpc_cpm_cpa_guanggao_gg_ads_300x250.js" />

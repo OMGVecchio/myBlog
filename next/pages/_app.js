@@ -58,7 +58,7 @@ class MyApp extends App {
       'UA-148650768-1'
     ]
     if (path) {
-      param.page_path = path
+      param[2] = { page_path: path }
     }
     this.gtag(...param)
   }
