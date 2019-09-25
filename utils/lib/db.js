@@ -6,7 +6,7 @@ const dbMap = {
   acDB: dbs('article-content.json'),
   tagDB: dbs('tags.json'),
   commentDB: dbs('comment.json'),
-  album: dbs('album.json')
+  albumCategoryListDB: dbs('album_category_list.json')
 }
 
 module.exports = dbMap

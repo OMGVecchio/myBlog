@@ -16,6 +16,7 @@ import articleTypes, {
   onlineArticleDone
 } from '#/action/article'
 import tagTypes, { fillList as fillTagList } from '#/action/tag'
+import albumTypes, { setAlbumCategoryList } from '#/action/album'
 
 const isFailed = (data, info) => {
   if (data.code !== 200 && !isServer) {
@@ -125,6 +126,25 @@ function* fetchTagList({ clearCache = false }) {
   yield put(fillTagList(data))
 }
 
+function* fetchAlbumCategoryList() {
+  const albumCategoryList = yield select((state) => {
+    const albumCategoryListVal = state.getIn(['album', 'albumCategoryList'])
+    if (albumCategoryListVal && albumCategoryListVal.toJS) {
+      return albumCategoryListVal.toJS()
+    }
+    return []
+  })
+  if (albumCategoryList.length !== 0) {
+    return
+  }
+  const dataResolve = yield xhr.get('/api/album/category/query')
+  const { data } = dataResolve
+  if (isFailed(data)) {
+    return
+  }
+  yield put(setAlbumCategoryList(data))
+}
+
 function* rootSaga() {
   yield takeEvery(articleTypes.FETCH_LIST, fetchList)
   yield takeEvery(articleTypes.FETCH_DETAIL, fetchDetail)
@@ -132,6 +152,7 @@ function* rootSaga() {
   yield takeEvery(articleTypes.REMOVE_ARTICLE, removeArticle)
   yield takeEvery(articleTypes.ONLINE_ARTICLE, onlineArticle)
   yield takeEvery(tagTypes.FETCH_LIST, fetchTagList)
+  yield takeEvery(albumTypes.FETCH_ALBUM_CATEGORY_LIST, fetchAlbumCategoryList)
 }
 
 export default rootSaga

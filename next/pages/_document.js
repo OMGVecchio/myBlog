@@ -17,7 +17,6 @@ export default class MyDocument extends Document {
           <script async src="https://hm.baidu.com/hm.js?d11f59bfb32e363b98275ff6244a836e" />
           <script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js" />
           <script src="/lib/adview_pic_cpc_cpm_cpa_guanggao_gg_ads_300x250.js" />
-          <title>页面加载中~~~</title>
           <meta charSet="utf-8" />
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
