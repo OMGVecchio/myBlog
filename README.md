@@ -107,7 +107,20 @@ server {
 }
 ```
 
-### TODO: 9月底前
+## 统计工具
+
+### Google Analytics
++ gtag 替代 ga，新版与旧版类似，添加代码加载 JS，然后配置 dataLayer.push 触发各种统计事件
++ 单页应用需要 dataLayer.push('config', id, { page_path: path}) 更新配置
++ 有实时数据统计，各种来源、平台等数据分析
++ 接入 Search Console，通过 DNS 验证或 meta 等权限验证完成后，可以快捷的接入搜索，配合统计使用起来很棒
+
+### 百度统计
++ 简单便捷，只需添加一段代码加载 JS，然后在管理后台配置相应转化规则即可，_hmt.push 可触发各统计事件
++ 支持统计代检查、SPA 统计等
++ 网站数据分析量全，时间跨度比较长
+
+## TODO: 9月底前
 
 + 添加项目 precommit 及 github-hook 等完成自动化部署
 + React 版本更新，及部分旧代码的更换
