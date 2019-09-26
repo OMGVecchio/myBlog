@@ -71,13 +71,13 @@ const Album = ({ albumCategoryList, store }) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state)
-  const album = state.get('album')
-  let albumCategoryList = album.get('albumCategoryList')
-  if (albumCategoryList.toJS) {
-    albumCategoryList = albumCategoryList.toJS()
-  }
-  return { albumCategoryList }
+  // console.log(state)
+  // const album = state.get('album')
+  // let albumCategoryList = album.get('albumCategoryList')
+  // if (albumCategoryList.toJS) {
+  //   albumCategoryList = albumCategoryList.toJS()
+  // }
+  // return { albumCategoryList }
 }
 
 export default connect(mapStateToProps)(Album)

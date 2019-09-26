@@ -4,11 +4,9 @@
 
 ## 选型
 
-+ Node 框架 koa2
-+ Restful api
-+ React 框架 next
-+ Redux 中加入 sega + immutable （没用过，坑比较多。redux 还是太重了，在考虑轻量化的 mobx，我也想早点下班）
-+ UI 框架 Antd（可考虑 Material-ui。想脱离现有的UI框架，用的组件其实很少，想都自己简单实现）
++ NodeJS 服务器框架 koa2 + Next
++ UI 框架 React Antd
++ redux-thnuk => redux-sage => mobx。redux 流程清晰，但即使有 thunk、saga、dva 等的调节，始终感觉用起来太繁琐，增加本小项目的复杂程度，写起来很不舒服，转手 mobx 试试水
 + 鉴权机制 JWT(可考虑传统 Session)
 + 文件数据库 Lowdb(看时间可做兼容适配器，好替换)
 
@@ -119,6 +117,12 @@ server {
 + 简单便捷，只需添加一段代码加载 JS，然后在管理后台配置相应转化规则即可，_hmt.push 可触发各统计事件
 + 支持统计代检查、SPA 统计等
 + 支持实时数据分析，网站数据分析量全，时间跨度比较长
+
+## [状态管理](https://zhuanlan.zhihu.com/p/53599723)
++ 常见思想 Flux、Redux 及 Mobx。Flux 与 Redux 类似，单项数据流，函数式编程，Redux 集中管理单个 Store，Mobx 偏向面向对象，与 Vuex 概念类似，观察监听自动更新
++ Redux-thunk 自由度高，代码量大；Redux-promise 与 Redux-thunk 类似，封装了一些逻辑简化操作，自由度稍差；他们在 action creator 中解决异步获取数据的逻辑，原理相对简单
++ Redux-saga 还原了 Redux 纯粹的 dispatch 和 reducer，它通过 generator 进行异步的副作用操作获取数据，流程简单，理解起来相对复杂，而且 saga、action 和 reducer 切换写起来很麻烦；dva 基于 Redux-saga，进行了封装，把 state、action、reducer、saga 等写在一个 JS 文件中统一出 model 概念，类似于 Vuex 的 module
++ MobX 哲学：任何源自应用状态的东西都应该自动地获得。偏向面向对象编程原理，封装而来的代码，感觉写起来会比较简单快捷
 
 ## TODO: 9月底前
 
