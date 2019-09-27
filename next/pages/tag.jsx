@@ -1,8 +1,6 @@
 import { PureComponent, Fragment } from 'react'
-import { connect } from 'react-redux'
+import { observer, inject } from 'mobx-react'
 import { Row, Col, Tag } from 'antd'
-
-import { fetchList } from '#/action/article'
 
 import { filterArticleList } from '_'
 
@@ -11,23 +9,22 @@ import TagCard from '~/card/tag'
 
 const allTagName = '全部'
 
+@inject('articleStore')
+@observer
 class ArticleByTagPage extends PureComponent {
   static defaultProps = {
-    articleList: []
+    articleStore: {}
   }
   static getInitialProps = async ({ ctx }) => {
     const { query, store } = ctx
     const { kw } = query
-    await store.dispatch(fetchList())
+    await store.articleStore.fetchArticleList()
+    await store.tagStore.fetchTagList()
     return { kw }
   }
   constructor(props) {
     super(props)
-    const { articleList } = this.props
-    this.state = {
-      articleList,
-      filterTag: allTagName
-    }
+    this.state = { filterTag: allTagName }
     this.allTags = []
   }
   showCardList = (cardData = []) => {
@@ -109,8 +106,8 @@ class ArticleByTagPage extends PureComponent {
     )
   }
   render() {
-    const { kw } = this.props
-    let { articleList = [] } = this.state
+    const { kw, articleStore } = this.props
+    let { articleList = [] } = articleStore
     articleList = filterArticleList(articleList, kw)
     const cardList = this.showCardList(articleList)
     return (
@@ -126,13 +123,4 @@ class ArticleByTagPage extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  const article = state.get('article')
-  let articleList = article.get('articleList')
-  if (articleList.toJS) {
-    articleList = articleList.toJS()
-  }
-  return { articleList }
-}
-
-export default connect(mapStateToProps)(ArticleByTagPage)
+export default ArticleByTagPage

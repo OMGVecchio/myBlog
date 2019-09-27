@@ -1,38 +1,41 @@
 import { Fragment } from 'react'
-import { Provider } from 'react-redux'
+import { Provider } from 'mobx-react'
 import { message } from 'antd'
 
 import App from 'next/app'
 import Head from 'next/head'
 import Router from 'next/router'
-import withRedux from 'next-redux-wrapper'
-import withReduxSaga from 'next-redux-saga'
 
-import createStore from '#'
-import { showProgress, hideProgress } from '#/action/common'
+import store from '#'
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {}
     if (Component.getInitialProps) {
+      ctx.store = store
       pageProps = await Component.getInitialProps({ ctx })
+      pageProps.initialStoreState = ctx.store
     }
     return { pageProps }
   }
+  static getDerivedStateFromProps(props, state) {
+    state.store.hydrate(props.pageProps.initialStoreState)
+    return state
+  }
   constructor(props) {
     super(props)
-    const { store } = props
-    const { dispatch } = store
     this.gtag = null
     // 后续可在转场时添加特效
+    const { commonStore } = this.state.store
     Router.onRouteChangeStart = () => {
-      dispatch(showProgress())
+      commonStore.showProgress()
     }
     Router.onRouteChangeComplete = (path) => {
-      dispatch(hideProgress())
+      commonStore.hideProgress()
       this.setGoogleAnalytics(path)
     }
   }
+  state = { store }
   initFirebase = () => {
     const firebaseConfig = {
       apiKey: 'AIzaSyCgG2nGu7svbWAa8mwSzRoHJbDiUWVI-3E',
@@ -74,13 +77,13 @@ class MyApp extends App {
     this.setGoogleAnalytics()
   }
   render() {
-    const { Component, pageProps, store } = this.props
+    const { Component, pageProps } = this.props
     return (
       <Fragment>
         <Head>
           <title>页面加载中~~~</title>
         </Head>
-        <Provider store={store}>
+        <Provider {...this.state.store}>
           <Component {...pageProps} />
         </Provider>
       </Fragment>
@@ -88,4 +91,4 @@ class MyApp extends App {
   }
 }
 
-export default withRedux(createStore)(withReduxSaga({ async: true })(MyApp))
+export default MyApp

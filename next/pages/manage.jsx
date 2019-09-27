@@ -1,13 +1,11 @@
 import { PureComponent } from 'react'
-import { connect } from 'react-redux'
+import { observer, inject } from 'mobx-react'
 import { Table, Button, Tag } from 'antd'
 
 import Head from 'next/head'
 import Link from 'next/link'
 
 import Layout from '~/layout'
-
-import { fetchList, removeArticle, onlineArticle } from '#/action/article'
 
 import { format } from '_/moment'
 
@@ -18,20 +16,21 @@ const colors = [
   'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple'
 ]
 
-class Manage extends PureComponent {
+@inject('articleStore')
+@observer
+class ManagePage extends PureComponent {
   static defaultProps = {
-    articleList: []
+    articleStore: {}
   }
-  static getInitialProps({ ctx }) {
+  static async getInitialProps({ ctx }) {
     const { store, query } = ctx
-    const { dispatch } = store
     const { kw = '' } = query
-    dispatch(fetchList())
+    await store.articleStore.fetchArticleList()
     return { kw }
   }
   randomColor = () => colors[Math.ceil(Math.random() * 10)]
-  removeArticle = id => this.props.dispatch(removeArticle(id))
-  switchOnline = (id, online) => this.props.dispatch(onlineArticle(id, online))
+  removeArticle = id => this.props.articleStore.removeArticle(id)
+  switchOnline = (id, online) => this.props.articleStore.swicthArticleStatus(id, online)
   columns = [{
     title: '文章名',
     dataIndex: 'title',
@@ -94,8 +93,8 @@ class Manage extends PureComponent {
     }
   }]
   render() {
-    const { kw } = this.props
-    let { articleList = [] } = this.props
+    const { kw, articleStore } = this.props
+    let { articleList = [] } = articleStore
     if (kw) {
       articleList = articleList.filter((article) => {
         const { title } = article
@@ -124,13 +123,4 @@ class Manage extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  const article = state.get('article')
-  let articleList = article.get('articleList')
-  if (articleList.toJS) {
-    articleList = articleList.toJS()
-  }
-  return { articleList }
-}
-
-export default connect(mapStateToProps)(Manage)
+export default ManagePage

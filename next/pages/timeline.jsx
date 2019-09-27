@@ -1,13 +1,11 @@
 import { PureComponent, Fragment } from 'react'
-import { connect } from 'react-redux'
+import { observer, inject } from 'mobx-react'
 import { Anchor, Row, Col } from 'antd'
 
 import Head from 'next/head'
 
 import Layout from '~/layout'
 import TimelineCard from '~/card/timeline'
-
-import { fetchList } from '#/action/article'
 
 import { filterArticleList } from '_'
 import Moment from '_/moment'
@@ -16,14 +14,16 @@ import style from '@/styles/pages/timeline.less'
 
 const { Link } = Anchor
 
-class Timeline extends PureComponent {
+@inject('articleStore')
+@observer
+class TimelinePage extends PureComponent {
   static defaultProps = {
-    articleList: []
+    articleStore: {}
   }
   static getInitialProps = async ({ ctx }) => {
     const { query, store } = ctx
     const { kw } = query
-    await store.dispatch(fetchList())
+    await store.articleStore.fetchArticleList()
     return { kw }
   }
   setCardList = (cardDataList = []) => {
@@ -152,8 +152,8 @@ class Timeline extends PureComponent {
   }
   anchorMap = {}
   render() {
-    const { kw } = this.props
-    let { articleList = [] } = this.props
+    const { kw, articleStore } = this.props
+    let { articleList = [] } = articleStore
     articleList = filterArticleList(articleList, kw)
     const getCardList = this.setCardList(articleList)
     return (
@@ -170,13 +170,4 @@ class Timeline extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  const article = state.get('article')
-  let articleList = article.get('articleList')
-  if (articleList.toJS) {
-    articleList = articleList.toJS()
-  }
-  return { articleList }
-}
-
-export default connect(mapStateToProps)(Timeline)
+export default TimelinePage

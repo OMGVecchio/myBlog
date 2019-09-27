@@ -1,22 +1,22 @@
 import { PureComponent, Fragment } from 'react'
-import { connect } from 'react-redux'
+import { observer, inject } from 'mobx-react'
 import { List } from 'antd'
-
-import { fetchList } from '#/action/article'
 
 import { filterArticleList } from '_'
 
 import Layout from '~/layout'
 import HomeCard from '~/card/home'
 
-class Index extends PureComponent {
+@inject('articleStore')
+@observer
+class IndexPage extends PureComponent {
   static defaultProps = {
-    articleList: []
+    articleStore: {}
   }
   static getInitialProps = async ({ ctx }) => {
     const { query, store } = ctx
     const { kw } = query
-    await store.dispatch(fetchList())
+    await store.articleStore.fetchArticleList()
     return { kw }
   }
   static renderItem = ({
@@ -27,26 +27,17 @@ class Index extends PureComponent {
     cover
   }) => (<HomeCard id={id} title={title} desc={desc} createTime={createTime} cover={cover} />)
   render() {
-    const { kw } = this.props
-    let { articleList = [] } = this.props
+    const { kw, articleStore } = this.props
+    let { articleList = [] } = articleStore
     articleList = filterArticleList(articleList, kw)
     return (
       <Fragment>
         <Layout title="老司机带你熟练翻车的主页">
-          <List dataSource={articleList} renderItem={Index.renderItem} />
+          <List dataSource={articleList} renderItem={IndexPage.renderItem} />
         </Layout>
       </Fragment>
     )
   }
 }
 
-const mapStateToProps = (state) => {
-  const article = state.get('article')
-  let articleList = article.get('articleList')
-  if (articleList.toJS) {
-    articleList = articleList.toJS()
-  }
-  return { articleList }
-}
-
-export default connect(mapStateToProps)(Index)
+export default IndexPage

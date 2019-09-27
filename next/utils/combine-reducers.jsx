@@ -1,5 +1,6 @@
 /**
  * Concise combineReducer supported for immutableJS
+ * depressed
  */
 
 import { is } from 'immutable'

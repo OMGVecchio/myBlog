@@ -239,5 +239,33 @@
       "createTime": 1536309070012,
       "sub": []
     }
+  ],
+  "7768b790-a6ab-11e8-9a0e-991b5007e88c": [
+    {
+      "id": "cfddc080-e13a-11e9-a999-33c084a57be9",
+      "comment": "状态管理由 redux-saga 迁移至 mobx 😍",
+      "username": "vecchi",
+      "userblog": "https://www.baidu.com",
+      "isFirst": true,
+      "createTime": 1569597832328,
+      "sub": [
+        {
+          "id": "e5a48cf0-e13a-11e9-a999-33c084a57be9",
+          "comment": "emmmm",
+          "username": "vecchi",
+          "userblog": "https://www.baidu.com",
+          "isFirst": false,
+          "createTime": 1569597868863
+        },
+        {
+          "id": "2a500c80-e13b-11e9-a999-33c084a57be9",
+          "comment": "hahaha",
+          "username": "vecchi",
+          "userblog": "https://www.baidu.com",
+          "isFirst": false,
+          "createTime": 1569597984072
+        }
+      ]
+    }
   ]
 }

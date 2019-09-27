@@ -1,27 +1,34 @@
-import { createStore, applyMiddleware } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import createSagaMiddleware from 'redux-saga'
-// import { createLogger } from 'redux-logger'
-import { fromJS } from 'immutable'
+import { useStaticRendering } from 'mobx-react'
+import { observable } from 'mobx'
+import { isServer } from '_'
+import ArticleStore from '#/modules/article'
+import CommonStore from '#/modules/common'
+import TagStore from '#/modules/tag'
+import AlbumStore from '#/modules/album'
 
-import reducer from './reducer'
-import saga from './saga'
+useStaticRendering(isServer)
 
-const sagaMiddleware = createSagaMiddleware()
+class Store {
+  @observable articleStore = new ArticleStore()
+  @observable commonStore = new CommonStore()
+  @observable tagStore = new TagStore()
+  @observable albumStore = new AlbumStore()
 
-const middlewares = [
-  sagaMiddleware
-  // createLogger({ collapsed: true })
-]
-const enhance = composeWithDevTools(applyMiddleware(...middlewares))
-
-const storeFactory = (initialState = {}) => {
-  const store = createStore(reducer, fromJS(initialState), enhance)
-  store.runSagaTask = () => {
-    store.sagaTask = sagaMiddleware.run(saga)
+  hasHydrate = false
+  hydrate = (initialStoreState = {}) => {
+    if (this.hasHydrate) {
+      return
+    }
+    Object.keys(initialStoreState).forEach((storeModuleKey) => {
+      const storeModule = initialStoreState[storeModuleKey]
+      Object.keys(storeModule).forEach((storeItemKey) => {
+        this[storeModuleKey][storeItemKey] = storeModule[storeItemKey]
+      })
+    })
+    this.hasHydrate = true
   }
-  store.runSagaTask()
-  return store
 }
 
-export default storeFactory
+const store = new Store()
+
+export default store

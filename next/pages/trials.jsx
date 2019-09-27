@@ -1,5 +1,3 @@
-import { connect } from 'react-redux'
-
 import Layout from '~/layout'
 
 const Album = () => (
@@ -8,4 +6,4 @@ const Album = () => (
   </Layout>
 )
 
-export default connect()(Album)
+export default Album

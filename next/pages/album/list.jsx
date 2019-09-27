@@ -1,11 +1,11 @@
-import { connect } from 'react-redux'
+import { observer, inject } from 'mobx-react'
 import { Card } from 'antd'
 
 import Layout from '~/layout'
 
 const { Meta } = Card
 
-const Album = () => (
+const AlbumPage = () => (
   <Layout title="详情">
     <div>
       <Card
@@ -19,4 +19,4 @@ const Album = () => (
   </Layout>
 )
 
-export default connect()(Album)
+export default inject('albumStore')(observer(AlbumPage))

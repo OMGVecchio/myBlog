@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { connect } from 'react-redux'
+import { observer, inject } from 'mobx-react'
 import { Modal, Button, message } from 'antd'
 
 import Head from 'next/head'
@@ -10,8 +10,6 @@ import Markdown from '~/article/markdown'
 import CommentBox from '~/article/comment'
 import CommentList from '~/article/comment-list'
 
-import { fetchDetail, fetchComment } from '#/action/article'
-
 import xhr from '_/fetch'
 import { format } from '_/moment'
 import { setCookie, getCookie } from '_/cookie'
@@ -21,16 +19,18 @@ import style from '@/styles/pages/article.less'
 // 因为涉及到 cookie 的操作，服务端渲染会有一定问题，暂时停止该组件的服务端渲染，并用更好的提示代替 loading 效果
 const BaseInput = dynamic(import('components/base/input'), { ssr: false })
 
+@inject('articleStore')
+@observer
 class Article extends PureComponent {
   static defaultProps = {
-    articleDetail: {},
-    articleComment: {}
+    articleStore: {}
   }
   static async getInitialProps({ ctx }) {
     const { query, store } = ctx
     const { articleId = '' } = query
-    await store.dispatch(fetchDetail(articleId))
-    await store.dispatch(fetchComment(articleId))
+    const { articleStore } = store
+    await articleStore.fetchArticleDetail(articleId)
+    await articleStore.fetchArticleComment(articleId)
     return { articleId }
   }
   state = {
@@ -67,8 +67,8 @@ class Article extends PureComponent {
       userblog: this.state.userblog
     })
     if (data.success === true) {
-      const { dispatch, articleId } = this.props
-      dispatch(fetchComment(articleId))
+      const { articleStore, articleId } = this.props
+      articleStore.fetchArticleComment(articleId)
     } else {
       message.error(data.data)
     }
@@ -82,14 +82,15 @@ class Article extends PureComponent {
     this.setState({ modalVisible: false })
   }
   render() {
-    const { articleId, articleDetail, articleComment } = this.props
+    const { articleId, articleStore } = this.props
+    const { articleDetail, commentMap } = articleStore
     const {
       article,
       title,
       createTime,
       lastModify
     } = articleDetail[articleId] || {}
-    const commentList = articleComment[articleId] || []
+    const commentList = commentMap[articleId] || []
     return (
       <Layout
         className="article-page"
@@ -165,17 +166,4 @@ class Article extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  const article = state.get('article')
-  let articleDetail = article.get('articleDetail')
-  let articleComment = article.get('commentMap')
-  if (articleDetail.toJS) {
-    articleDetail = articleDetail.toJS()
-  }
-  if (articleComment.toJS) {
-    articleComment = articleComment.toJS()
-  }
-  return { articleDetail, articleComment }
-}
-
-export default connect(mapStateToProps)(Article)
+export default Article

@@ -1,5 +1,4 @@
-import { Fragment } from 'react'
-import { connect } from 'react-redux'
+import { Fragment, useState } from 'react'
 import { Button, Icon, message } from 'antd'
 
 import Head from 'next/head'
@@ -10,25 +9,17 @@ import BValidator from '~/base/validator'
 
 import { isServer } from '_'
 import xhr from '_/fetch'
-import { setToken } from '_/token'
+import { setToken as setGlobalToken } from '_/token'
 
 import style from '@/styles/pages/login.less'
 
 const LoginModal = () => {
-  const getUsername = (username) => {
-    this.username = username
-  }
-  const getPassword = (password) => {
-    this.password = password
-  }
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [challenge, setChallenge] = useState('')
+  const [token, setToken] = useState('')
   const loginSubmit = async (e) => {
     e.preventDefault()
-    const {
-      username,
-      password,
-      challenge,
-      token
-    } = this
     message.destroy()
     if (!username) {
       message.warn('请填写用户名')
@@ -50,7 +41,7 @@ const LoginModal = () => {
     }
     const data = await xhr.post('/api/login', { ...param })
     if (data.success) {
-      setToken(data.data)
+      setGlobalToken(data.data)
       message.success('管理员登录成功')
       Router.push('/')
     } else {
@@ -58,15 +49,19 @@ const LoginModal = () => {
       message.error(data.data)
     }
   }
+  const validatorSuccess = ({ challenge: challengeVal, token: tokenVal }) => {
+    setChallenge(challengeVal)
+    setToken(tokenVal)
+  }
   // 浏览器端渲染时，如果 query 中带 token，先检测 token 是否合法
   // 合法时说明是第三方登录而来，直接进入首页；否则给予提示
   const checkToken = async () => {
     const { query } = Router
-    const { token = '' } = query
-    if (token) {
-      const data = await xhr.post('/api/token/check', { token })
+    const { token: tokenOther } = query
+    if (tokenOther) {
+      const data = await xhr.post('/api/token/check', { token: tokenOther })
       if (data.success) {
-        setToken(token)
+        setGlobalToken(tokenOther)
         message.success('登录成功')
         Router.push('/')
       } else {
@@ -110,22 +105,21 @@ const LoginModal = () => {
               type="text"
               className="input-body"
               placeholder="用户名"
-              onChange={getUsername}
+              value={username}
+              onChange={setUsername}
               block
             />
             <BInput
               type="password"
               className="input-body"
               placeholder="密码"
-              onChange={getPassword}
+              value={password}
+              onChange={setPassword}
               block
             />
             <BValidator
               className="input-body"
-              success={({ challenge, token }) => {
-                this.challenge = challenge
-                this.token = token
-              }}
+              success={validatorSuccess}
             />
             <Button
               onClick={loginSubmit}
@@ -147,4 +141,4 @@ const LoginModal = () => {
   )
 }
 
-export default connect(null)(LoginModal)
+export default LoginModal

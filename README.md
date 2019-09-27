@@ -119,10 +119,19 @@ server {
 + 支持实时数据分析，网站数据分析量全，时间跨度比较长
 
 ## [状态管理](https://zhuanlan.zhihu.com/p/53599723)
+
+### 常见思路
 + 常见思想 Flux、Redux 及 Mobx。Flux 与 Redux 类似，单项数据流，函数式编程，Redux 集中管理单个 Store，Mobx 偏向面向对象，与 Vuex 概念类似，观察监听自动更新
 + Redux-thunk 自由度高，代码量大；Redux-promise 与 Redux-thunk 类似，封装了一些逻辑简化操作，自由度稍差；他们在 action creator 中解决异步获取数据的逻辑，原理相对简单
 + Redux-saga 还原了 Redux 纯粹的 dispatch 和 reducer，它通过 generator 进行异步的副作用操作获取数据，流程简单，理解起来相对复杂，而且 saga、action 和 reducer 切换写起来很麻烦；dva 基于 Redux-saga，进行了封装，把 state、action、reducer、saga 等写在一个 JS 文件中统一出 model 概念，类似于 Vuex 的 module
 + MobX 哲学：任何源自应用状态的东西都应该自动地获得。偏向面向对象编程原理，封装而来的代码，感觉写起来会比较简单快捷
+
+### redux-saga 转 mobx
++ 优缺点
++ mobx 知识点：observe、inject ，hoc ，可用于 function component
++ next.js：props.pageProps + hydrate ，服务器渲染改动；
++ 错误：Function components cannot be given refs. Attempts to access this ref will fail. Did you mean to use React.forwardRef()
++ 总结：转换过程中意识到 typescript 的重要性，若是最开始就采用 TS，虽然起步代码周期会比较长，但是后期维护改版会更顺畅；并且项目缺少单元测试，后期考虑重要功能加上。TODO：新增 TS 和 UT
 
 ## TODO: 9月底前
 

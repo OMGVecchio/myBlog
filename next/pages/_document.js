@@ -7,7 +7,7 @@ import globalStyle from '@/styles/global.less'
 export default class MyDocument extends Document {
   render() {
     const { __NEXT_DATA__ } = this.props
-    const { buildId } = __NEXT_DATA__
+    const { buildId = 'beta' } = __NEXT_DATA__
     const resourceTag = `?buildId=${buildId}`
     return (
       <html lang="en-US">

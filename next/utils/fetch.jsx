@@ -95,6 +95,15 @@ const xhr = {
   get, post, del, put
 }
 
+const isFailed = (data, info) => {
+  if (data.code !== 200 && !isServer) {
+    const errorInfo = info || data.data
+    message.error(errorInfo)
+    return true
+  }
+  return false
+}
+
 export default xhr
 
-export { get, post, del, put }
+export { get, post, del, put, isFailed }

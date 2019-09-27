@@ -1,12 +1,10 @@
-import { connect } from 'react-redux'
+import { observer, inject } from 'mobx-react'
 import { Icon, Input } from 'antd'
 import classNames from 'classnames'
 
 import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
-
-import types from '#/action/common'
 
 import isServer from '_'
 
@@ -20,15 +18,11 @@ const search = (kw) => {
 }
 
 const Header = ({
-  dispatch,
   title = '',
-  isLongScroll
+  isLongScroll,
+  commonStore
 }) => {
-  const openMenu = () => {
-    dispatch({
-      type: types.OPEN_ASIDE
-    })
-  }
+  const openMenu = () => commonStore.openAside()
   return (
     <header className={classNames('main-header', { 'show-shadow': isLongScroll })}>
       <Head>
@@ -48,11 +42,13 @@ const Header = ({
           style={{ width: '210px' }}
         />
         <Link href="/login">
-          <Icon className="header-icon header-login-icon" type="login" />
+          <span>
+            <Icon className="header-icon header-login-icon" type="login" />
+          </span>
         </Link>
       </div>
     </header>
   )
 }
 
-export default connect()(Header)
+export default inject('commonStore')(observer(Header))

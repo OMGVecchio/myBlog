@@ -1,5 +1,5 @@
 import { PureComponent } from 'react'
-import { connect } from 'react-redux'
+import { observer, inject } from 'mobx-react'
 import { Radio, Switch, Input, Button, message, Tooltip } from 'antd'
 import classNames from 'classnames'
 
@@ -14,9 +14,6 @@ import Upload from '~/compose/uploader'
 import xhr from '_/fetch'
 import fullScreen from '_/full-screen'
 
-import { fetchDetail } from '#/action/article'
-import { fetchList } from '#/action/tag'
-
 import style from '@/styles/pages/compose.less'
 
 const AceEditor = dynamic(import('~/editor/ace'), { ssr: false })
@@ -24,20 +21,21 @@ const CodeMirrorEditor = dynamic(import('~/editor/codemirror'), { ssr: false })
 const MODE_CREATE = 1
 const MODE_MODIFY = 2
 
+@inject('articleStore', 'tagStore')
+@observer
 class Compose extends PureComponent {
+  static defaultProps = {
+    articleStore: {},
+    tagStore: {}
+  }
   static async getInitialProps({ ctx }) {
     const { store, query } = ctx
-    const { dispatch } = store
     const { articleId = '' } = query
     if (articleId) {
-      await dispatch(fetchDetail(articleId))
+      await store.articleStore.fetchArticleDetail(articleId)
     }
-    await dispatch(fetchList())
+    await store.tagStore.fetchTagList()
     return { articleId }
-  }
-  static defaultProps = {
-    tagList: [],
-    articleDetail: []
   }
   state = {
     editorType: 1,
@@ -62,8 +60,8 @@ class Compose extends PureComponent {
     }, 1000 * 60)
   }
   componentWillReceiveProps(props) {
-    const { articleId, articleDetail } = props
-    const detail = articleDetail[articleId]
+    const { articleId, articleStore } = props
+    const detail = articleStore.articleDetail[articleId]
     if (articleId && detail) {
       const {
         title,
@@ -127,7 +125,11 @@ class Compose extends PureComponent {
       desc,
       tags
     } = this.state
-    const { dispatch, articleId } = this.props
+    const {
+      articleId,
+      articleStore,
+      tagStore
+    } = this.props
     const url = this.state.mode === MODE_CREATE
       ? '/api/auth/article'
       : `/api/auth/article/${articleId}`
@@ -144,8 +146,8 @@ class Compose extends PureComponent {
       } else {
         message.success('文章修改成功')
       }
-      await dispatch(fetchList(true))
-      await dispatch(fetchDetail(articleId))
+      await articleStore.fetchArticleDetail(articleId)
+      await tagStore.fetchTagList(true)
     }
   }
   // 在编辑器中插入图片
@@ -186,7 +188,11 @@ class Compose extends PureComponent {
       isFullScreen,
       showPreview
     } = this.state
-    const { articleId, articleDetail } = this.props
+    const {
+      articleId,
+      articleStore,
+      tagStore
+    } = this.props
     return (
       <Layout className="compose-page">
         <Head>
@@ -239,7 +245,7 @@ class Compose extends PureComponent {
             />
             <TagGroup
               defaultValue={this.state.tags}
-              tagSource={this.props.tagList}
+              tagSource={tagStore.tagList}
               onChange={this.setTag}
             />
             <Input.TextArea
@@ -255,7 +261,7 @@ class Compose extends PureComponent {
               {
                 editorType === 1 ? (
                   <CodeMirrorEditor
-                    key={articleId && articleDetail[articleId]}
+                    key={articleId && articleStore.articleDetail[articleId]}
                     refHOC={this.refHOC}
                     value={article}
                     defaultValue={article}
@@ -269,7 +275,7 @@ class Compose extends PureComponent {
                   />
                 ) : (
                   <AceEditor
-                    key={articleId && articleDetail[articleId]}
+                    key={articleId && articleStore.articleDetail[articleId]}
                     refHOC={this.refHOC}
                     value={article}
                     defaultValue={article}
@@ -293,18 +299,4 @@ class Compose extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  const tag = state.get('tag')
-  const article = state.get('article')
-  let articleDetail = article.get('articleDetail')
-  if (articleDetail.toJS) {
-    articleDetail = articleDetail.toJS()
-  }
-  let tagList = tag.get('tagList')
-  if (tagList.toJS) {
-    tagList = tagList.toJS() || []
-  }
-  return { tagList, articleDetail }
-}
-
-export default connect(mapStateToProps)(Compose)
+export default Compose

@@ -1,16 +1,14 @@
 import { PureComponent } from 'react'
-import { connect } from 'react-redux'
+import { observer, inject } from 'mobx-react'
 import classNames from 'classnames'
 
 import Head from 'next/head'
 import Router from 'next/router'
 
-import types from '#/action/common'
-
 import Header from '~/common/header'
 import Footer from '~/common/footer'
 import Menu from '~/common/aside'
-import Pet from '~/common/pet'
+// import Pet from '~/common/pet'
 import BackTop from '~/base/backtop'
 import LinearProgress from '~/base/linearprogress'
 
@@ -26,6 +24,8 @@ const SCROLL_TAG = 165;
  * 但是我想在 body 上绑 scroll 事件，需要在销毁时解除绑定的事件
  * 所以用到了组件的生命周期，就改成 PureComponent
  */
+@inject('commonStore')
+@observer
 class Layout extends PureComponent {
   static defaultProps = {
     pageTitle: 'Vecchio\'s Blog',
@@ -49,15 +49,20 @@ class Layout extends PureComponent {
   }
   componentDidMount() {
     // 记录滚动的初始状态
-    const { dispatch } = this.props
+    const { commonStore } = this.props
+    const {
+      showHeaderShadow,
+      hideHeaderShadow,
+      switchMenuItem
+    } = commonStore
     if (this.isLongScroll()) {
-      dispatch({ type: types.SHOW_HEADER_SHADOW })
+      showHeaderShadow()
     } else {
-      dispatch({ type: types.HIDE_HEADER_SHADOW })
+      hideHeaderShadow()
     }
     // 修改 menu 选中的 pathname
     // 要改成同步时就渲染好的话，感觉提出一个 hoc 在 node 端获取 pathname 比较好
-    dispatch({ type: types.SWITCH_MENU_ITEM, pathname: this.fetchPathname() })
+    switchMenuItem(this.fetchPathname())
     // 绑定滚动事件
     window.addEventListener('scroll', this.scrollHandler)
   }
@@ -66,14 +71,19 @@ class Layout extends PureComponent {
   }
   scrollHandler = (e) => {
     // TODO 滑动需要做优化
-    const { isLongScroll, dispatch } = this.props
+    const { commonStore } = this.props
+    const {
+      isLongScroll,
+      showHeaderShadow,
+      hideHeaderShadow
+    } = commonStore
     const { scrollTop } = e.target.scrollingElement
     if (scrollTop > SCROLL_TAG) {
       if (!isLongScroll) {
-        dispatch({ type: types.SHOW_HEADER_SHADOW })
+        showHeaderShadow()
       }
     } else if (isLongScroll) {
-      dispatch({ type: types.HIDE_HEADER_SHADOW })
+      hideHeaderShadow()
     }
   }
   fetchPathname = () => {
@@ -103,18 +113,22 @@ class Layout extends PureComponent {
       pageTitle,
       title,
       className,
+      showTitle,
+      extraHead,
+      commonStore
+    } = this.props
+    const {
       asideIsOpen,
       isLongScroll,
-      showTitle,
-      extraHead
-    } = this.props
+      globalProgress
+    } = commonStore
     return (
       <div className="global-wrap">
         <Head>
           <title>{pageTitle}</title>
           <style dangerouslySetInnerHTML={{ __html: layoutStyle }} />
         </Head>
-        <LinearProgress visible={this.props.globalProgress} className="global-router-progress" />
+        <LinearProgress visible={globalProgress} className="global-router-progress" />
         <Menu />
         {
           // <Pet />
@@ -144,12 +158,4 @@ class Layout extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  const common = state.get('common')
-  const asideIsOpen = common.get('asideIsOpen')
-  const isLongScroll = common.get('isLongScroll')
-  const globalProgress = common.get('globalProgress')
-  return { asideIsOpen, isLongScroll, globalProgress }
-}
-
-export default connect(mapStateToProps)(Layout)
+export default Layout

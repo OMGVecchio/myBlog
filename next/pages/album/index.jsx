@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { connect } from 'react-redux'
+import { observer, inject } from 'mobx-react'
 import {
   Button,
   Card,
@@ -12,9 +12,8 @@ import xhr from '_/fetch'
 
 const { Meta } = Card
 
-const Album = ({ albumCategoryList, store }) => {
-  console.log(store)
-  console.log(albumCategoryList)
+const Album = ({ albumStore }) => {
+  console.log(albumStore)
   const [modalVisibility, setModalVisibility] = useState(false)
   const [albumTitle, setAlbumTitle] = useState('')
   const [albumDesc, setAlbumDesc] = useState('')
@@ -70,14 +69,4 @@ const Album = ({ albumCategoryList, store }) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  // console.log(state)
-  // const album = state.get('album')
-  // let albumCategoryList = album.get('albumCategoryList')
-  // if (albumCategoryList.toJS) {
-  //   albumCategoryList = albumCategoryList.toJS()
-  // }
-  // return { albumCategoryList }
-}
-
-export default connect(mapStateToProps)(Album)
+export default inject('albumStore')(observer(Album))

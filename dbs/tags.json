@@ -12,6 +12,7 @@
     "JavaScript": true,
     "Vue": true,
     "性能": true,
-    "Http": true
+    "Http": true,
+    "mobx": true
   }
 }
