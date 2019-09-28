@@ -1,9 +1,7 @@
 import { Fragment, PureComponent } from 'react'
 import classnames from 'classnames'
 
-import Head from 'next/head'
-
-import style from '@/styles/components/base/input.less'
+import '@/styles/components/base/input.less'
 
 class Input extends PureComponent {
   static defaultProps = {
@@ -40,9 +38,6 @@ class Input extends PureComponent {
     } = this.props
     return (
       <Fragment>
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} key="style-input" />
-        </Head>
         <div
           className={classnames('_b-input', className, { block, 'is-filled': !this.checkEmpty(this.state.value) })}
           style={width ? { width: `${width}px` } : {}}

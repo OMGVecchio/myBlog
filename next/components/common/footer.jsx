@@ -1,15 +1,10 @@
 import { Fragment } from 'react'
 import { Icon } from 'antd'
 
-import Head from 'next/head'
-
-import styles from '@/styles/components/common/footer.less'
+import '@/styles/components/common/footer.less'
 
 const Footer = () => (
   <Fragment>
-    <Head>
-      <style dangerouslySetInnerHTML={{ __html: styles }} />
-    </Head>
     <div className="main-footer text-center">
       <Icon type="copyright" />
       &nbsp;

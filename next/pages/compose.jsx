@@ -3,7 +3,6 @@ import { observer, inject } from 'mobx-react'
 import { Radio, Switch, Input, Button, message, Tooltip } from 'antd'
 import classNames from 'classnames'
 
-import Head from 'next/head'
 import dynamic from 'next/dynamic'
 
 import Layout from '~/layout'
@@ -14,7 +13,7 @@ import Upload from '~/compose/uploader'
 import xhr from '_/fetch'
 import fullScreen from '_/full-screen'
 
-import style from '@/styles/pages/compose.less'
+import '@/styles/pages/compose.less'
 
 const AceEditor = dynamic(import('~/editor/ace'), { ssr: false })
 const CodeMirrorEditor = dynamic(import('~/editor/codemirror'), { ssr: false })
@@ -195,9 +194,6 @@ class Compose extends PureComponent {
     } = this.props
     return (
       <Layout className="compose-page">
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} />
-        </Head>
         <div className={classNames('compose-panel-wrap', { 'full-screen': isFullScreen })}>
           <div className="compose-opt-group">
             <Radio.Group value={editorType} onChange={this.setEditorType}>

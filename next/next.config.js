@@ -1,38 +1,60 @@
 'use strict'
 
 const path = require('path')
-const glob = require('glob')
+const fs = require('fs')
+
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
 
-const { resolve } = path
+const withLess = require('@zeit/next-less')
+const lessToJS = require('less-vars-to-js')
 
-module.exports = {
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.(css|less)/,
-      loader: 'emit-file-loader',
-      options: {
-        name: 'dist/[path][name].[ext]'
-      }
-    }, {
-      test: /\.css$/,
-      use: ['babel-loader', 'raw-loader', 'postcss-loader']
-    }, {
-      test: /\.less$/,
-      use: [
-        'babel-loader', 'raw-loader', 'postcss-loader',
-        {
-          loader: 'less-loader',
-          options: {
-            includePaths: [resolve(__dirname, 'static/styles'), resolve(__dirname, '../node_modules')]
-              .map(d => path.join(__dirname, d))
-              .map(g => glob.sync(g))
-              .reduce((a, c) => a.concat(c), [])
+const themeVariables = lessToJS(fs.readFileSync(path.resolve(__dirname, './static/styles/antd-custome.less'), 'utf8'))
+
+module.exports = withLess({
+  // 开起会报错
+  cssModules: false,
+  cssLoaderOptions: {},
+  postcssLoaderOptions: {},
+  lessLoaderOptions: {
+    // 不开起会引起 antd：Inline JavaScript is not enabled. Is it set in your options?
+    javascriptEnabled: true,
+    modifyVars: themeVariables
+  },
+  webpack(config, { isServer, dev }) {
+    if (isServer) {
+      const antStyles = /antd\/.*?\/style.*?/
+      const origExternals = [...config.externals]
+      /* eslint-disable no-param-reassign, consistent-return */
+      config.externals = [
+        (context, request, callback) => {
+          if (request.match(antStyles)) return callback()
+          if (typeof origExternals[0] === 'function') {
+            origExternals[0](context, request, callback)
+          } else {
+            callback()
           }
-        }
+        },
+        ...(typeof origExternals[0] === 'function' ? [] : origExternals)
       ]
-    })
+      /* eslint-enable no-param-reassign, consistent-return */
+
+      config.module.rules.unshift({
+        test: antStyles,
+        use: 'null-loader'
+      })
+    } else if (dev) {
+      // 在 dev 环境下，将 MiniCssExtractPlugin 换成 style-loader，使样式修改在开发时可以热更新
+      // 只是这样一开始白屏严重，需要解决
+      config.module.rules.forEach((rule) => {
+        if (rule.test.test('.less')) {
+          /* eslint-disable no-param-reassign */
+          rule.use[1] = 'style-loader'
+          /* eslint-enable no-param-reassign */
+        }
+      })
+    }
+
     if (process.env.NODE_ENV_ANALYZER === 'smplugin') {
       const smp = new SpeedMeasurePlugin()
       return smp.wrap(config)
@@ -52,4 +74,4 @@ module.exports = {
     }
     return config
   }
-}
+})

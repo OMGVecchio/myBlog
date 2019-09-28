@@ -1,12 +1,10 @@
 import { Fragment } from 'react'
 import CodeMirrorEditor from 'react-codemirror'
 
-import Head from 'next/head'
-
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/mode/markdown/markdown'
 
-import style from '@/styles/components/editor/codemirror.less'
+import '@/styles/components/editor/codemirror.less'
 
 const CodeMirror = ({
   value,
@@ -17,9 +15,6 @@ const CodeMirror = ({
   refHOC
 }) => (
   <Fragment>
-    <Head>
-      <style dangerouslySetInnerHTML={{ __html: style }} key="style-codemirror" />
-    </Head>
     <CodeMirrorEditor
       ref={(c) => {
         // 比较尴尬的一点是，其实如果只是用 ref 修改下 markdown 的文案

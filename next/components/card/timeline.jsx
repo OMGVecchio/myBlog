@@ -1,11 +1,9 @@
 import { Fragment } from 'react'
 import { Card } from 'antd'
 
-import Head from 'next/head'
-
 import { format } from '_/moment'
 
-import style from '@/styles/components/card/timeline.less'
+import '@/styles/components/card/timeline.less'
 
 import CardLayout from './layout'
 
@@ -19,9 +17,6 @@ const timelineCard = ({
   desc
 }) => (
   <Fragment key={`timelinecard-${id}`}>
-    <Head>
-      <style dangerouslySetInnerHTML={{ __html: style }} key="style-timeline" />
-    </Head>
     <Card
       className="timeline-card card-wrap"
       hoverable

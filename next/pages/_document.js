@@ -2,8 +2,6 @@ import React from 'react'
 
 import Document, { Head, Main, NextScript } from 'next/document'
 
-import globalStyle from '@/styles/global.less'
-
 export default class MyDocument extends Document {
   render() {
     const { __NEXT_DATA__ } = this.props
@@ -20,8 +18,6 @@ export default class MyDocument extends Document {
           <meta charSet="utf-8" />
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-          <style dangerouslySetInnerHTML={{ __html: globalStyle }} />
-          <link rel="stylesheet" href={`/static/styles/css/antd.min.css${resourceTag}`} />
           <link rel="stylesheet" href={`/static/styles/css/normalize.css${resourceTag}`} />
           <link rel="stylesheet" href={`/static/styles/css/codemirror.css${resourceTag}`} />
           <link rel="stylesheet" href={`/static/styles/css/highlight.js.css${resourceTag}`} />

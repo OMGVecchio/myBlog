@@ -2,13 +2,12 @@ import { observer, inject } from 'mobx-react'
 import { Icon, Input } from 'antd'
 import classNames from 'classnames'
 
-import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
 
 import isServer from '_'
 
-import style from '@/styles/components/common/header.less'
+import '@/styles/components/common/header.less'
 
 const search = (kw) => {
   const { pathname, query } = Router
@@ -25,9 +24,6 @@ const Header = ({
   const openMenu = () => commonStore.openAside()
   return (
     <header className={classNames('main-header', { 'show-shadow': isLongScroll })}>
-      <Head>
-        <style dangerouslySetInnerHTML={{ __html: style }} />
-      </Head>
       <div className="header-close">
         <Icon className="header-icon header-close-icon" type="menu-unfold" onClick={openMenu} />
       </div>

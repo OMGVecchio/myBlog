@@ -1,9 +1,7 @@
 import { Fragment, PureComponent } from 'react'
 import { Tag, AutoComplete, Tooltip } from 'antd'
 
-import Head from 'next/head'
-
-import style from '@/styles/components/compose/tag-group.less'
+import '@/styles/components/compose/tag-group.less'
 
 // Tag 颜色集
 const colors = [
@@ -37,9 +35,6 @@ class TagGroup extends PureComponent {
     }))
     return (
       <Fragment>
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} key="tag-group" />
-        </Head>
         <div className="tag-group">
           {tags.map((tag) => {
             const isLongTag = tag.length > 10

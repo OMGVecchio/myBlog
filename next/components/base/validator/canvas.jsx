@@ -1,12 +1,10 @@
 import { Fragment, PureComponent } from 'react'
 import { Icon, message } from 'antd'
 
-import Head from 'next/head'
-
 import { noop } from '_'
 import xhr from '_/fetch'
 
-import style from '@/styles/components/base/validator/canvas.less'
+import '@/styles/components/base/validator/canvas.less'
 
 import {
   canvasWidth,
@@ -155,9 +153,6 @@ class ValidatorCanvas extends PureComponent {
   render() {
     return (
       <Fragment>
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} />
-        </Head>
         <div className="_b-validator-box-mask" role="button" tabIndex={0} onClick={this.props.close} />
         <div className="_b-validator-box">
           <div className="_b-validator-control">

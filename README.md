@@ -72,11 +72,6 @@ const mapStateToProps = (state) => {
 + 做文章时间戳排序时，直接 Array.sort() 或者依靠 Object 的 key 值，最新修改的文章总是会排在最前面
 
 ### ANTD
-
-+ `styled-jsx` 设置 `scoped` 后会在编译的元素的 `className` 里多带上一个 `styled-id`，但是当 `className` 加在一个引进的第三方的组件上时，编译出来的第三方组件的 `className` 上并不会带上 `styled-id`，但是 `css` 里的样式却对应着 styled-id
-
-+ `styled-jsx` 设置为 `<style jsx global>` 后不会带上 `scoped id`，但是该 `style` 下全部样式均为全局，或者 [`styled-jsx` 设置为 `<style jsx>`，具体不需要加上 `scoped id` 的元素加上 `:global` 标识](https://github.com/zeit/styled-jsx#one-off-global-selectors)
-
 + `antd` 的样式文件太大，暂时不知道如何自动化做按需加载。如果把所有的样式文件放在 document 中，按照当前的做法，我会把样式代码全内联到文档中，这样就无法在浏览器端做 `antd.min.css` 文件的缓存。考虑了几种方式：直接在 `link` 中外链 `antd.min.css` 的地址，但这样无法加时间戳，对后续的维护有一定问题，解决的方法其实也有，继承 `_document` 的主类，并获取 `buildId` 等关键指针加在资源地址中，但这样就代码同步性而言确实太不灵活了；第二种方案是可否提取一个公共组件，里面存放需要缓存的资源代码，但为了避免服务端渲染时每次都优先加在完这个组件，需要对这个组件做 `dynamic` 异步加载，此时就需要考虑延迟渲染的一些问题，需要额外操作弥补
 
 ### 服务端路由
@@ -132,6 +127,19 @@ server {
 + next.js：props.pageProps + hydrate ，服务器渲染改动；
 + 错误：Function components cannot be given refs. Attempts to access this ref will fail. Did you mean to use React.forwardRef()
 + 总结：转换过程中意识到 typescript 的重要性，若是最开始就采用 TS，虽然起步代码周期会比较长，但是后期维护改版会更顺畅；并且项目缺少单元测试，后期考虑重要功能加上。TODO：新增 TS 和 UT
+
+## 样式加载
++ 最开始服务端在加载样式文件时有问题，所以都是手动 import style，然后内联添加进页面，antd 的样式也不是按需加载，同其他的一些样式直接加载的巨大的 css 文件， 现在直接用 withLess，配置按需加载，生成一个 style.chunk.css 文件，但是在开发环境样式没有热更新，这需要配置 extract-text-webpack-plugin，开环环境时 inline，线上时提取成一个独立 css 文件
++ ant 需要开启 “javascriptEnabled: true” 解决 ”Inline JavaScript is not enabled. Is it set in your options“
++ extract-text-webpack-plugin(支持拆分多个 css 文件) 和  mini-css-extract-plugin(支持拆分多个文件吗？，貌似支持依 JS 拆分，按需加载，需要运行在 webpack4 以上。官网写着，TODO：HMR support，暂时不支持热更新，只能 dev 时设置成 style-loader？)
++ cacheGroups 的作用
++ mini-css-extract-plugin 错误 “Conflicting order between”：[在不同 JS 中引入相同样式文件的先后顺序不同的警告](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/382)。是因为我不同文件引入的 antd 的插件顺序不同，导致自动引入的样式文件先后顺序不同？
++ 暂时在 next.config.js 中手动修改 dev 环境下的样式 loader，“style-loader” 代替 “mini-css-extract-plugin“，但是首次渲染样式白屏严重
++ next.js 在加载样式时考虑了服务端的打包[不是很懂]和客户端的打包，改项目中的修改大都会针对服务端而言，否则仅仅是浏览器端的样式打包是很简单的。我最开始是通过 dangerouslySetInnerHTML 很蠢的往 html 中加入内联 style 或者直接 link 引入，保持服务器和浏览器一致。现在直接使用 withLess 加载 less 样式，css 的加载或者需要通过 withCss 打通？[还没尝试]。其中通过 'style-loader' 暂时开启 dev 环境的样式热更新
+
+## styled-jsx(已删除)
++ `styled-jsx` 设置 `scoped` 后会在编译的元素的 `className` 里多带上一个 `styled-id`，但是当 `className` 加在一个引进的第三方的组件上时，编译出来的第三方组件的 `className` 上并不会带上 `styled-id`，但是 `css` 里的样式却对应着 styled-id
++ `styled-jsx` 设置为 `<style jsx global>` 后不会带上 `scoped id`，但是该 `style` 下全部样式均为全局，或者 [`styled-jsx` 设置为 `<style jsx>`，具体不需要加上 `scoped id` 的元素加上 `:global` 标识](https://github.com/zeit/styled-jsx#one-off-global-selectors)
 
 ## TODO: 9月底前
 

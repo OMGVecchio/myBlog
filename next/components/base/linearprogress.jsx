@@ -1,9 +1,7 @@
 import { Fragment, PureComponent } from 'react'
 import classnames from 'classnames'
 
-import Head from 'next/head'
-
-import style from '@/styles/components/base/linearprogress.less'
+import '@/styles/components/base/linearprogress.less'
 
 class LinearProgress extends PureComponent {
   static defaultProps = {
@@ -29,9 +27,6 @@ class LinearProgress extends PureComponent {
     const { visible, className, progress } = this.props
     return (
       <Fragment>
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} key="style-linearprogress" />
-        </Head>
         {
           visible && (
             <div className={classnames('_b-linearprogress', { [className]: !!className })}>

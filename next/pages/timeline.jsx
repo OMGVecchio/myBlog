@@ -2,15 +2,13 @@ import { PureComponent, Fragment } from 'react'
 import { observer, inject } from 'mobx-react'
 import { Anchor, Row, Col } from 'antd'
 
-import Head from 'next/head'
-
 import Layout from '~/layout'
 import TimelineCard from '~/card/timeline'
 
 import { filterArticleList } from '_'
 import Moment from '_/moment'
 
-import style from '@/styles/pages/timeline.less'
+import '@/styles/pages/timeline.less'
 
 const { Link } = Anchor
 
@@ -159,9 +157,6 @@ class TimelinePage extends PureComponent {
     return (
       <Layout title="文章时间轴">
         <Fragment>
-          <Head>
-            <style dangerouslySetInnerHTML={{ __html: style }} />
-          </Head>
           {this.setAnchor(this.anchorMap)}
           {getCardList}
         </Fragment>

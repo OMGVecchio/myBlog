@@ -8,6 +8,8 @@ import Router from 'next/router'
 
 import store from '#'
 
+import '@/styles/global.less'
+
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {}

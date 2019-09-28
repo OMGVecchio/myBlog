@@ -2,14 +2,13 @@ import { PureComponent } from 'react'
 import { observer, inject } from 'mobx-react'
 import { Table, Button, Tag } from 'antd'
 
-import Head from 'next/head'
 import Link from 'next/link'
 
 import Layout from '~/layout'
 
 import { format } from '_/moment'
 
-import style from '@/styles/pages/manage.less'
+import '@/styles/pages/manage.less'
 
 const colors = [
   'magenta', 'red', 'volcano', 'orange', 'gold',
@@ -106,9 +105,6 @@ class ManagePage extends PureComponent {
     }
     return (
       <Layout className="manage-page" pageTitle="文章管理" title="文章管理">
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} />
-        </Head>
         <div>
           <Table
             className="article-table"

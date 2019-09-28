@@ -1,12 +1,11 @@
 import { Fragment, PureComponent } from 'react'
 import classNames from 'classnames'
 
-import Head from 'next/head'
 import ValidatorCanvas from '~/base/validator/canvas'
 
 import { noop } from '_'
 
-import style from '@/styles/components/base/validator/index.less'
+import '@/styles/components/base/validator/index.less'
 
 class Validator extends PureComponent {
   static defaultProps = {
@@ -88,9 +87,6 @@ class Validator extends PureComponent {
     } = this.state
     return (
       <Fragment>
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} key="style-validator" />
-        </Head>
         <div className={classNames('_b-validator', this.props.className || false)}>
           <div className={classNames('_b-validator-btn', { success: hasCheckSuccess || canShowCanvas })}>
             <div className="_b-validator-detector" ref={this.getDetector}>

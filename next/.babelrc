@@ -4,13 +4,6 @@
   ],
   "plugins": [
     [
-      "styled-jsx/babel",
-      {
-        "plugins": [
-          "styled-jsx-plugin-less"
-        ]
-      }
-  ], [
       "module-resolver",
       {
         "cwd": "babelrc",
@@ -28,15 +21,10 @@
         }
       }
     ], [
-      "inline-import",
-      {
-        "extensions": [".css"]
-      }
-    ], [
       "import",
       {
         "libraryName": "antd",
-        "style": false
+        "style": true
       }
     ], [
       "@babel/plugin-proposal-decorators", { "legacy": true }

@@ -1,10 +1,8 @@
 import { Fragment } from 'react'
 
-import Head from 'next/head'
-
 import { format } from '_/moment'
 
-import style from '@/styles/components/card/home.less'
+import '@/styles/components/card/home.less'
 
 import CardLayout from './layout'
 
@@ -16,9 +14,6 @@ const HomeCard = ({
   desc
 }) => (
   <Fragment key={`homecard-${id}`}>
-    <Head>
-      <style dangerouslySetInnerHTML={{ __html: style }} key="style-home" />
-    </Head>
     <div className="home-card card-wrap">
       <h3 className="card-title">
         {title}

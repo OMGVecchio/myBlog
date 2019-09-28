@@ -5,7 +5,7 @@ import classNames from 'classnames'
 
 import Link from 'next/link'
 
-import style from '@/styles/components/common/aside.less'
+import '@/styles/components/common/aside.less'
 
 const name = 'Vecchio阿加西'
 const briefTip = '前端鶸'
@@ -127,7 +127,6 @@ const Aside = ({ commonStore }) => {
   }
   return (
     <Fragment>
-      <style dangerouslySetInnerHTML={{ __html: style }} />
       <div className={classNames('aside-menu', { close: !asideIsOpen })}>
         <div className="menu-header">
           <Avatar

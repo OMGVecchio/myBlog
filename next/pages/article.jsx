@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import { observer, inject } from 'mobx-react'
 import { Modal, Button, message } from 'antd'
 
-import Head from 'next/head'
 import dynamic from 'next/dynamic'
 
 import Layout from '~/layout'
@@ -14,7 +13,7 @@ import xhr from '_/fetch'
 import { format } from '_/moment'
 import { setCookie, getCookie } from '_/cookie'
 
-import style from '@/styles/pages/article.less'
+import '@/styles/pages/article.less'
 
 // 因为涉及到 cookie 的操作，服务端渲染会有一定问题，暂时停止该组件的服务端渲染，并用更好的提示代替 loading 效果
 const BaseInput = dynamic(import('components/base/input'), { ssr: false })
@@ -98,9 +97,6 @@ class Article extends PureComponent {
         title={title}
         pageTitle={title}
       >
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} />
-        </Head>
         <div className="article-content">
           <h1 className="article-title">{title}</h1>
           <p className="article-desc">

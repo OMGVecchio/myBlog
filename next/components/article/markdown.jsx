@@ -3,9 +3,7 @@ import React, { Fragment, PureComponent } from 'react'
 import marked from 'marked'
 import hljs from 'highlight.js'
 
-import Head from 'next/head'
-
-import style from '@/styles/components/article/markdown.less'
+import '@/styles/components/article/markdown.less'
 
 hljs.configure({
   tabReplace: '  ',
@@ -29,9 +27,6 @@ class MarkdownWrap extends PureComponent {
     const codeDom = marked(source)
     return (
       <Fragment>
-        <Head>
-          <style dangerouslySetInnerHTML={{ __html: style }} key="style-markdown" />
-        </Head>
         <div dangerouslySetInnerHTML={{ __html: codeDom }} className="markdown-wrap" />
       </Fragment>
     )

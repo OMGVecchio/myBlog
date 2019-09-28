@@ -15,7 +15,7 @@ import LinearProgress from '~/base/linearprogress'
 import { isServer } from '_'
 import { getToken } from '_/token'
 
-import layoutStyle from '@/styles/components/layout/index.less'
+import '@/styles/components/layout/index.less'
 
 const SCROLL_TAG = 165;
 
@@ -126,7 +126,6 @@ class Layout extends PureComponent {
       <div className="global-wrap">
         <Head>
           <title>{pageTitle}</title>
-          <style dangerouslySetInnerHTML={{ __html: layoutStyle }} />
         </Head>
         <LinearProgress visible={globalProgress} className="global-router-progress" />
         <Menu />

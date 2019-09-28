@@ -1,9 +1,7 @@
 import { Fragment } from 'react'
 import classnames from 'classnames'
 
-import Head from 'next/head'
-
-import style from '@/styles/components/article/comment-list.less'
+import '@/styles/components/article/comment-list.less'
 
 import CommentListItem from './list-item'
 
@@ -38,9 +36,6 @@ const CommentList = ({
   })
   return (
     <Fragment>
-      <Head>
-        <style dangerouslySetInnerHTML={{ __html: style }} key="style-comment-list" />
-      </Head>
       <div className={classnames('component-comment', className)}>
         <p className="comment-count">
           <span className="comment-count-digital">

@@ -11,7 +11,7 @@ import { isServer } from '_'
 import xhr from '_/fetch'
 import { setToken as setGlobalToken } from '_/token'
 
-import style from '@/styles/pages/login.less'
+import '@/styles/pages/login.less'
 
 const LoginModal = () => {
   const [username, setUsername] = useState('')
@@ -78,7 +78,6 @@ const LoginModal = () => {
         <title>
           登录
         </title>
-        <style dangerouslySetInnerHTML={{ __html: style }} />
       </Head>
       <div className="login-page">
         <div className="layout-wrap">

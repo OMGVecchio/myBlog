@@ -1,11 +1,9 @@
 import { Fragment } from 'react'
 import { Card } from 'antd'
 
-import Head from 'next/head'
-
 import { format } from '_/moment'
 
-import style from '@/styles/components/card/tag.less'
+import '@/styles/components/card/tag.less'
 
 import CardLayout from './layout'
 
@@ -19,9 +17,6 @@ const TagCard = ({
   desc
 }) => (
   <Fragment key={`tagcard-${id}`}>
-    <Head>
-      <style dangerouslySetInnerHTML={{ __html: style }} key="style-tag" />
-    </Head>
     <Card
       className="tag-card card-wrap"
       hoverable
