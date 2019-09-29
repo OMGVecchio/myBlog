@@ -6,6 +6,8 @@ import App from 'next/app'
 import Head from 'next/head'
 import Router from 'next/router'
 
+import Loading from '~/base/loading'
+
 import store from '#'
 
 import '@/styles/global.less'
@@ -37,7 +39,10 @@ class MyApp extends App {
       this.setGoogleAnalytics(path)
     }
   }
-  state = { store }
+  state = {
+    store,
+    showServerRenderLoading: true
+  }
   initFirebase = () => {
     const firebaseConfig = {
       apiKey: 'AIzaSyCgG2nGu7svbWAa8mwSzRoHJbDiUWVI-3E',
@@ -74,9 +79,14 @@ class MyApp extends App {
     if (typeof adblockWorkWell === 'undefined') {
       message.warn('大哥大姐，麻烦关个 adBlock ?')
     }
-    this.initFirebase()
+    // TODO： async 加载 JS 脚本，如何保证执行时已加载完毕？
+    // this.initFirebase()
     this.initGoogleAnalytics()
     this.setGoogleAnalytics()
+    // TODO：要改这些的 loading 控制逻辑
+    setTimeout(() => {
+      this.setState({ showServerRenderLoading: false })
+    }, 1000)
   }
   render() {
     const { Component, pageProps } = this.props
@@ -85,6 +95,7 @@ class MyApp extends App {
         <Head>
           <title>页面加载中~~~</title>
         </Head>
+        { this.state.showServerRenderLoading && <Loading /> }
         <Provider {...this.state.store}>
           <Component {...pageProps} />
         </Provider>

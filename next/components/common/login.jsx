@@ -1,4 +1,4 @@
-// 本来不想单独提出一个登录页的，暂时没用了
+// Depressed 原先最开始设计的弹窗登录组件
 
 import { PureComponent } from 'react'
 import { Modal, Form, Icon, Input, message } from 'antd'

@@ -133,18 +133,19 @@ server {
 + ant 需要开启 “javascriptEnabled: true” 解决 ”Inline JavaScript is not enabled. Is it set in your options“
 + extract-text-webpack-plugin(支持拆分多个 css 文件) 和  mini-css-extract-plugin(支持拆分多个文件吗？，貌似支持依 JS 拆分，按需加载，需要运行在 webpack4 以上。官网写着，TODO：HMR support，暂时不支持热更新，只能 dev 时设置成 style-loader？)
 + cacheGroups 的作用
-+ mini-css-extract-plugin 错误 “Conflicting order between”：[在不同 JS 中引入相同样式文件的先后顺序不同的警告](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/382)。是因为我不同文件引入的 antd 的插件顺序不同，导致自动引入的样式文件先后顺序不同？
-+ 暂时在 next.config.js 中手动修改 dev 环境下的样式 loader，“style-loader” 代替 “mini-css-extract-plugin“，但是首次渲染样式白屏严重
++ mini-css-extract-plugin 错误 “Conflicting order between”：[在不同 JS 中引入相同样式文件的先后顺序不同的警告](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/382)。是因为我不同文件引入的 antd 的插件顺序不同，导致自动引入的样式文件先后顺序不同？。[而且服务端渲染时需要换成其他 loader(null-loader or css-loader/locals)](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90)
++ 暂时在 next.config.js 中手动修改 dev 环境下的样式 loader，“style-loader” 代替 “mini-css-extract-plugin“。但是首次渲染在 dev 时样式白屏严重[因为样式是 JS 异步加载，且生成的内联样式展示出来的]，及时是生产环境，直接加载外链样式，仍旧会有样式改动的短暂闪动[因为样式文件也是通过 JS 异步加载，然后请求的 CSS 外链渲染出来的，样式并非同步渲染。而且样式中带 transition 属性，异步加载完成后属性变化导致动效明显。这样我去加一个首屏全局 loading？]附录：[CSS 机制:待考究](https://juejin.im/post/5b88ddca6fb9a019c7717096)
 + next.js 在加载样式时考虑了服务端的打包[不是很懂]和客户端的打包，改项目中的修改大都会针对服务端而言，否则仅仅是浏览器端的样式打包是很简单的。我最开始是通过 dangerouslySetInnerHTML 很蠢的往 html 中加入内联 style 或者直接 link 引入，保持服务器和浏览器一致。现在直接使用 withLess 加载 less 样式，css 的加载或者需要通过 withCss 打通？[还没尝试]。其中通过 'style-loader' 暂时开启 dev 环境的样式热更新
 
 ## styled-jsx(已删除)
 + `styled-jsx` 设置 `scoped` 后会在编译的元素的 `className` 里多带上一个 `styled-id`，但是当 `className` 加在一个引进的第三方的组件上时，编译出来的第三方组件的 `className` 上并不会带上 `styled-id`，但是 `css` 里的样式却对应着 styled-id
 + `styled-jsx` 设置为 `<style jsx global>` 后不会带上 `scoped id`，但是该 `style` 下全部样式均为全局，或者 [`styled-jsx` 设置为 `<style jsx>`，具体不需要加上 `scoped id` 的元素加上 `:global` 标识](https://github.com/zeit/styled-jsx#one-off-global-selectors)
 
-## TODO: 9月底前
+## TODO
 
 + 添加项目 precommit 及 github-hook 等完成自动化部署
 + React 版本更新，及部分旧代码的更换
 + 数据由文件存储过渡到数据库
 + 完成用户模块
 + 适当考虑登录注册功能
++ 首屏加载时，异步加载的样式文件因为 transition 的动画会造成视觉上不良好的体验，所以暂时在客户端第一次渲染时加入一个全屏 loading【生产环境下应该没多大问题，但 dev 环境下第一次会有很大视觉延迟，需要把 loading 的样式文件单独内联渲染么？】
