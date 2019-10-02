@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { observer, inject } from 'mobx-react'
-import { Modal, Button, message } from 'antd'
+import { Modal, Button } from 'antd'
 
 import dynamic from 'next/dynamic'
 
@@ -9,7 +9,6 @@ import Markdown from '~/article/markdown'
 import CommentBox from '~/article/comment'
 import CommentList from '~/article/comment-list'
 
-import xhr from '_/fetch'
 import { format } from '_/moment'
 import { setCookie, getCookie } from '_/cookie'
 
@@ -37,7 +36,10 @@ class Article extends PureComponent {
     username: '',
     userblog: ''
   }
-  componentWillMount() {
+  componentDidMount() {
+    this.setCookieInfo()
+  }
+  setCookieInfo = () => {
     // 挂载后，从 cookie 中获取用户保存的资料
     const cookie = getCookie() || {}
     const { username = '', userblog = '' } = cookie
@@ -59,18 +61,13 @@ class Article extends PureComponent {
     this.comment = comment
   }
   review = async () => {
-    const data = await xhr.post(`/api/comment/${this.props.articleId}`, {
+    const param = {
       reviewId: this.reviewId,
       comment: this.comment,
       username: this.state.username,
       userblog: this.state.userblog
-    })
-    if (data.success === true) {
-      const { articleStore, articleId } = this.props
-      articleStore.fetchArticleComment(articleId)
-    } else {
-      message.error(data.data)
     }
+    await this.props.articleStore.addArticleComment(this.props.articleId, param)
   }
   openModal = (reviewId) => {
     this.reviewId = reviewId

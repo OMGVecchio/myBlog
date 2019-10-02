@@ -36,6 +36,29 @@ class Compose extends PureComponent {
     await store.tagStore.fetchTagList()
     return { articleId }
   }
+  static getDerivedStateFromProps(nextProps, preState) {
+    const { articleId, articleStore } = nextProps
+    const articleContent = preState.article
+    if (articleId && !articleContent) {
+      const detail = articleStore.articleDetail[articleId]
+      const {
+        title,
+        cover,
+        article,
+        desc,
+        tags
+      } = detail
+      return {
+        title,
+        cover,
+        article,
+        desc,
+        tags,
+        mode: MODE_MODIFY
+      }
+    }
+    return null
+  }
   state = {
     editorType: 1,
     isFullScreen: false,
@@ -57,27 +80,6 @@ class Compose extends PureComponent {
         message.success('自动保存成功')
       }
     }, 1000 * 60)
-  }
-  componentWillReceiveProps(props) {
-    const { articleId, articleStore } = props
-    const detail = articleStore.articleDetail[articleId]
-    if (articleId && detail) {
-      const {
-        title,
-        cover,
-        article,
-        desc,
-        tags
-      } = detail
-      this.setState({
-        title,
-        cover,
-        article,
-        desc,
-        tags,
-        mode: MODE_MODIFY
-      })
-    }
   }
   componentWillUnmount() {
     clearInterval(this.autoSaveTimer)

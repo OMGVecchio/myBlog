@@ -7,8 +7,8 @@ class ArticleStore {
   @observable commentMap = {}
 
   @action.bound
-  async fetchArticleList() {
-    if (this.articleList.length !== 0) {
+  async fetchArticleList(force) {
+    if (this.articleList.length !== 0 && !force) {
       return
     }
     const result = await xhr.get('/api/article')
@@ -20,8 +20,8 @@ class ArticleStore {
     })
   }
   @action.bound
-  async fetchArticleDetail(articleId) {
-    if (this.articleDetail[articleId]) {
+  async fetchArticleDetail(articleId, force) {
+    if (this.articleDetail[articleId] && !force) {
       return
     }
     const result = await xhr.get(`/api/article/${articleId}`)
@@ -33,8 +33,8 @@ class ArticleStore {
     })
   }
   @action.bound
-  async fetchArticleComment(articleId) {
-    if (this.commentMap[articleId]) {
+  async fetchArticleComment(articleId, force) {
+    if (this.commentMap[articleId] && !force) {
       return
     }
     const result = await xhr.get(`/api/comment/${articleId}`)
@@ -46,13 +46,23 @@ class ArticleStore {
     })
   }
   @action.bound
-  async removeArticle(articleId) {
-    const result = await xhr.get(`/api/auth/article/${articleId}`)
+  async addArticleComment(articleId, param) {
+    const result = await xhr.post(`/api/comment/${articleId}`, param)
     if (isFailed(result)) {
       return
     }
     runInAction(() => {
-      this.articleList = this.articleList.filter(article => article.id !== action.articleId)
+      this.fetchArticleComment(articleId, true)
+    })
+  }
+  @action.bound
+  async removeArticle(articleId) {
+    const result = await xhr.del(`/api/auth/article/${articleId}`)
+    if (isFailed(result)) {
+      return
+    }
+    runInAction(() => {
+      this.articleList = this.articleList.filter(article => article.id !== articleId)
     })
   }
   @action.bound
@@ -64,8 +74,8 @@ class ArticleStore {
     runInAction(() => {
       this.articleList = this.articleList.map((article) => {
         const temp = article
-        if (temp.id === action.articleId) {
-          temp.online = action.online
+        if (temp.id === articleId) {
+          temp.online = isOnline
         }
         return temp
       })

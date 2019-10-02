@@ -16,9 +16,10 @@ class Input extends PureComponent {
   state = {
     value: ''
   }
-  componentWillMount() {
+  componentDidMount() {
     const { defaultValue } = this.props
     if (this.checkEmpty(this.state.value) && !this.checkEmpty(defaultValue)) {
+      /* eslint-disable react/no-did-mount-set-state  */
       this.setState({ value: defaultValue })
     }
   }

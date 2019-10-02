@@ -117,8 +117,8 @@ $router.put('/api/auth/article/:articleId', async (ctx) => {
   if (!articleId) {
     return apiError('缺少文章ID')
   }
-  let { online = 'off' } = ctx.query
-  online = online === 'on';
+  let { online = 'false' } = ctx.query
+  online = online !== 'false'
   try {
     await alDB.get(ALDBKEY).find({id: articleId}).set('online', online).write()
     ctx.apiSuccess('上下线成功')

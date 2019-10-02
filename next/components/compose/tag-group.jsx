@@ -43,7 +43,7 @@ class TagGroup extends PureComponent {
                 color={this.randomColor()}
                 key={tag}
                 closable="true"
-                afterClose={() => this.handleClose(tag)}
+                onClose={() => this.handleClose(tag)}
               >
                 {isLongTag ? `${tag.slice(0, 10)}...` : tag}
               </Tag>

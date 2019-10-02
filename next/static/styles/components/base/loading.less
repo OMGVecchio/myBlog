@@ -8,7 +8,7 @@
   background-color: #f7f7f5;
   top: 0;
   left: 0;
-  z-index: 99999999999999999;
+  z-index: 1001;
 
   @size: 150px;
   ._b-loading-wrap {
@@ -16,7 +16,6 @@
     width: @size;
     height: @size;
   }
-
   &-border {
     width: @size;
     height: @size;
@@ -29,7 +28,7 @@
     border-width: 0.2em 0.2em 0 0;
     border-color: currentColor transparent transparent currentColor;
     border-radius: 50%;
-    animation: animate 3s linear infinite;
+    animation: rotate 3s linear infinite;
     animation-direction: normal;
     &-reverse {
       animation-direction: reverse;
@@ -71,10 +70,9 @@
       transform: rotate(-135deg);
     }
   }
-}
-
-@keyframes animate {
-  100% {
-    transform: rotate(1turn)
+  @keyframes rotate {
+    100% {
+      transform: rotate(1turn)
+    }
   }
 }

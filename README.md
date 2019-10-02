@@ -35,6 +35,7 @@
 + server 端配合 next 做路由整合, eg. ?articleId=123 => /articleId
 + 由于 KOA 中用了许多 param 和 restful 的路由模式，在权限检测中，提出那些需要权限认证的接口是一件相当麻烦的事情，为了简化此步操作，暂时对需要权限认证的接口的路由增加一个额外可辨识的路径参数。其实这也是把 api 单独提成一个接口文件的好处，类似修改时相当方便
 + 之前渲染 markdown 用的 react-markdown，但还没找到 code 中高亮的方法；所以先使用 marked 渲染 markdown 文档，其中使用 highlight.js 高亮插件。其中高亮样式都在 node_modules/highlight.js/styles 下，现在用的 github 风格
++ getInitialProps 中采用 async/await 获取数据，避免了异步获取数据时，数据还未请求完便已经进行了页面跳转，导致空数据页面展示在用户面前，而后才填充 store 中的数据重新渲染页面
 
 ## 项目中的问题
 
