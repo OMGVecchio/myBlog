@@ -10,6 +10,10 @@ export default class MyDocument extends Document {
     return (
       <html lang="en-US">
         <Head>
+          {
+            // Https 页面允许加载 Http 资源
+            // <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+          }
           <meta name="google-site-verification" content="GeLgoMUYk_oeb97r0KXI3Z-7BiTI4rwmCjf8oFZxy28" />
           <script async src="https://www.googletagmanager.com/gtag/js?id=UA-148650768-1" />
           <script async src="https://hm.baidu.com/hm.js?d11f59bfb32e363b98275ff6244a836e" />

@@ -8,9 +8,15 @@ const Footer = () => (
     <div className="main-footer text-center">
       <Icon type="copyright" />
       &nbsp;
-      2018 Vecchio All rights reserved.
+      2018-2020 Vecchio All rights reserved.
       &nbsp;
-      渝ICP备18012936号
+      <a
+        href="http://www.beian.miit.gov.cn/publish/query/indexFirst.action"
+        target="_blank"
+        rel="nofollow noopener noreferrer"
+      >
+        渝ICP备18012936号
+      </a>
     </div>
   </Fragment>
 )
