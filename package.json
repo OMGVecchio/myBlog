@@ -24,7 +24,7 @@
   "dependencies": {
     "antd": "3.23.4",
     "classnames": "^2.2.6",
-    "highlight.js": "^9.13.1",
+    "highlight.js": "^10.1.2",
     "ioredis": "^3.2.1",
     "jsonwebtoken": "^8.3.0",
     "koa": "^2.3.0",
