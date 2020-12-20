@@ -65,6 +65,11 @@ const linkData = [{
   label: 'twitter',
   url: 'https://twitter.com/vecchio1993',
   icon: 'twitter'
+}, {
+  id: 4,
+  label: 'instagram',
+  url: 'https://www.instagram.com/suma_vecchio/',
+  icon: 'instagram'
 }]
 // 给当前路由对应的导航加上选中样式
 const fetchMenuStatus = (pathname, url) => {
@@ -114,7 +119,7 @@ const Aside = ({ commonStore }) => {
         icon
       } = item
       return (
-        <Col span={4} push={4} key={id}>
+        <Col span={3} push={4} key={id}>
           <a className={classNames('menu-link', label)} href={url} target="blank">
             <Icon className="menu-link-icon" title={label} type={icon} />
           </a>
