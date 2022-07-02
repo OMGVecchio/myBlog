@@ -46,8 +46,10 @@
     "react-markdown": "^4.0.3",
     "react-player": "^1.15.3",
     "react-router": "^4.2.0",
-    "sharp": "^0.21.1",
     "socket.io": "^2.2.0"
+  },
+  "ingoreModules": {
+    "sharp": "^0.21.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",

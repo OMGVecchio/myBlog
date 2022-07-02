@@ -9,15 +9,38 @@ const Redis = require('ioredis')
 const config = require('../../config/redis')
 const { info, error } = require('../../utils').out
 
+class MemoryCache {
+  static instance
+
+  data = new Map()
+
+  constructor() {
+    if (!(this instanceof MemoryCache)) {
+      throw new Error('maybe you are not create MemoryCache by new')
+    }
+    if (global.instance) {
+      return MemoryCache.instance
+    }
+  }
+
+  async set(key, val) {
+    this.data.set(key, val)
+  }
+
+  async get(key) {
+    return this.data.get(key)
+  }
+
+  async del(key) {
+    this.data.delete(key)
+  }
+}
 class RedisFactory {
   constructor(conf) {
     this.hasInited = false
     this.redisInstance = null
     this.conf = {
-      redisHost: conf.redisHost || '127.0.0.1',
-      redisPort: conf.redisPort || '6397',
-      redisPrefix: conf.redisPrefix || 'blog-',
-      redisTTL: conf.redisTTL || 60 * 60 * 24
+      ...conf
     }
     return this.createInstance()
   }
@@ -29,12 +52,14 @@ class RedisFactory {
       host: this.conf.redisHost,
       port: this.conf.redisPort,
       prefix: this.conf.redisPrefix,
-      ttl: this.conf.redisTTL
+      ttl: this.conf.redisTTL,
+      retryStrategy: this.conf.retryStrategy
     })
     this.redisInstance = redisInstance
     this.hasInited = true
     redisInstance.on('error', (err) => {
       error('redis 连接失败', err)
+      this.redisInstance = new MemoryCache()
     })
     redisInstance.on('connect', (err) => {
       if (err) {
