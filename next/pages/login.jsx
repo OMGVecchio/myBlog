@@ -29,10 +29,10 @@ const LoginModal = () => {
       message.warn('请填写密码')
       return
     }
-    if (!challenge || !token) {
-      message.warn('请进行图片验证')
-      return
-    }
+    // if (!challenge || !token) {
+    //   message.warn('请进行图片验证')
+    //   return
+    // }
     const param = {
       username,
       password,

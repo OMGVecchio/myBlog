@@ -4,7 +4,7 @@ const util = require('util')
 const fs = require('fs')
 const { resolve, join } = require('path')
 const multer = require('koa-multer')
-const sharp = require('sharp')
+// const sharp = require('sharp')
 
 const { qiniu, out } = require('../utils')
 
@@ -42,14 +42,14 @@ $router.post('/api/auth/upload/cover', uploader.single('cover'), async ctx => {
   await saveImage(ctx, 'cover')
 })
 
-$router.get('/api/pict-tool', async ctx => {
-  const { pictPath, quality } = ctx.query
-  const filePath = join(staticPath, decodeURIComponent(pictPath))
-  try {
-    const buffer = await readFile(filePath)
-    const newBuffer = await sharp(buffer).jpeg({ quality: parseInt(quality, 10) }).toBuffer()
-    ctx.staticImg(newBuffer)
-  } catch (err) {
-    error('图片读取失败', err)
-  }
-})
+// $router.get('/api/pict-tool', async ctx => {
+//   const { pictPath, quality } = ctx.query
+//   const filePath = join(staticPath, decodeURIComponent(pictPath))
+//   try {
+//     const buffer = await readFile(filePath)
+//     const newBuffer = await sharp(buffer).jpeg({ quality: parseInt(quality, 10) }).toBuffer()
+//     ctx.staticImg(newBuffer)
+//   } catch (err) {
+//     error('图片读取失败', err)
+//   }
+// })

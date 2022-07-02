@@ -8,7 +8,7 @@ const mapKey = [
   'crypto',
   'out',
   'qiniu',
-  'validator',
+  // 'validator',
   'fetch',
   'wx'
 ]
