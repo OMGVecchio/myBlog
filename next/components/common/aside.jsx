@@ -44,6 +44,11 @@ const menuData = [{
   url: '/album',
   icon: 'picture',
   color: 'purple'
+}, {
+  label: '视频',
+  url: '/media',
+  icon: 'picture',
+  color: 'purple'
 }]
 const linkData = [{
   id: 0,
