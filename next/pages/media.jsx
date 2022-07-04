@@ -12,6 +12,7 @@ class MediaPage extends PureComponent {
 
   componentDidMount() {
     this.initSocket()
+    // this.initUser()
   }
 
   componentWillUnmount() {
@@ -55,8 +56,9 @@ class MediaPage extends PureComponent {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: true,
         video: {
-          width: 200,
-          height: 200
+          aspectRatio: 1
+          // width: 500,
+          // height: 500
         }
       })
       this.localVideoRef.current.srcObject = stream
@@ -69,6 +71,8 @@ class MediaPage extends PureComponent {
         to: data.from,
         sdp: this.localPeer.localDescription
       })
+
+      this.initDataChannel()
     })
     this.socket.on('getAnswer', async (data) => {
       const desc = new RTCSessionDescription(data.sdp)
@@ -80,23 +84,23 @@ class MediaPage extends PureComponent {
     })
   }
 
-  play = () => {
-    this.localVideoRef.current.play()
+  login = (loginName) => {
+    this.socket.emit('userLogin', loginName)
   }
 
-  stop = () => {
-    this.localVideoRef.current.pause()
-  }
-
-  login = () => {
-    window.socket = this.socket
-    this.socket.emit('userLogin', this.state.loginName)
+  initUser = () => {
+    const loginName = localStorage.getItem('loginName')
+    if (!loginName) {
+      return
+    }
+    this.login(loginName)
   }
 
   changeLoginName = (e) => {
     this.setState({
       loginName: e.target.value
     })
+    // localStorage.setItem('loginName', e.target.value)
   }
 
   close = () => {
@@ -217,26 +221,73 @@ class MediaPage extends PureComponent {
       }
     })
     this.localVideoRef.current.srcObject = stream
-    stream.getTracks().forEach((track) => this.localPeer.addTransceiver(track, { streams: [stream] }))
+    stream.getTracks().forEach((track) => {
+      this.localPeer.addTransceiver(track, { streams: [stream] })
+    })
+
+    this.initDataChannel()
+  }
+
+  sendChat = () => {
+    if (!this.remoteChannel) {
+      message.warning('通信还未连接')
+      return
+    }
+    const chatData = {
+      from: this.state.loginName,
+      text: this.state.chatText,
+      time: Date.now()
+    }
+    this.localChannel.send(JSON.stringify(chatData))
+    this.setState({
+      chatList: this.state.chatList.concat(chatData),
+      chatText: ''
+    })
+  }
+
+  initDataChannel = () => {
+    this.localChannel = this.localPeer.createDataChannel('localChannel')
+    this.localChannel.onopen = () => {
+      console.debug('dataChannel open')
+    }
+    this.localChannel.onclose = () => {
+      console.debug('dataChannel open')
+    }
+    this.localChannel.onmessage = (event) => {
+      console.debug('onmessage')
+      console.log(event.data)
+    }
+    this.localPeer.ondatachannel = (event) => {
+      this.remoteChannel = event.channel
+      this.remoteChannel.onmessage = (e) => {
+        console.debug('remote onmessage')
+        console.log(e.data)
+        this.setState({
+          chatList: this.state.chatList.concat(JSON.parse(e.data))
+        })
+      }
+    }
   }
 
   state = {
     loginName: '',
     loginId: '',
-    userList: []
+    userList: [],
+    chatText: '',
+    chatList: []
   }
 
   render() {
     return (
       <Layout pageTitle='视频' title='视频'>
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', marginBottom: 10 }}>
           <Input
             placeholder='用户名'
             value={this.state.loginName}
             disabled={!!this.state.loginId}
             onChange={this.changeLoginName}
           />
-          <Button onClick={this.login} disabled={!!this.state.loginId}>
+          <Button onClick={() => this.login(this.state.loginName)} disabled={!!this.state.loginId}>
             登录
           </Button>
         </div>
@@ -265,50 +316,41 @@ class MediaPage extends PureComponent {
               ) : null
             )}
           </div>
-          <div style={{ display: 'flex' }}>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <video
-                ref={(ref) => {
-                  this.localVideoRef.current = ref
-                }}
-                width='200'
-                height='200'
-                style={{ border: '1px solid skyblue' }}
-                autoPlay
-                muted
-              />
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <Button onClick={this.play}>播放</Button>
-                <Button onClick={this.stop}>暂停</Button>
-              </div>
+          <div style={{ display: 'flex', flexDirection: 'column', height: 500, width: 400 }}>
+            <div style={{ overflowY: 'auto', height: '100%', border: '1px solid skyblue' }}>
+              {this.state.chatList.map((chat) => (
+                <p key={chat.time}>
+                  {chat.from}({new Date(chat.time).toLocaleString()})：{chat.text}
+                </p>
+              ))}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <video
-                ref={(ref) => {
-                  this.remoteVideoRef.current = ref
-                }}
-                width='200'
-                height='200'
-                style={{ border: '1px solid skyblue' }}
-                autoPlay
-              />
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <Button>发起</Button>
-                <Button>中断</Button>
-              </div>
-            </div>
+            <Input.TextArea
+              placeholder='请输入发送的文字'
+              value={this.state.chatText}
+              onChange={(e) => this.setState({ chatText: e.target.value })}
+            />
+            <Button onClick={this.sendChat}>发送</Button>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
+            <video
+              ref={(ref) => {
+                this.remoteVideoRef.current = ref
+              }}
+              width='500'
+              height='500'
+              style={{ border: '1px solid skyblue' }}
+              autoPlay
+            />
+            <video
+              ref={(ref) => {
+                this.localVideoRef.current = ref
+              }}
+              width='100'
+              height='100'
+              style={{ position: 'absolute', inset: '10px 0 0 10px', border: '1px solid skyblue' }}
+              autoPlay
+              muted
+            />
           </div>
         </div>
       </Layout>
