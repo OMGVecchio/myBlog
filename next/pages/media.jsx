@@ -132,7 +132,15 @@ class MediaPage extends PureComponent {
     if (this.localPeer) {
       return
     }
-    this.localPeer = new RTCPeerConnection()
+    this.localPeer = new RTCPeerConnection({
+      iceServers: [
+        {
+          urls: 'turn:47.108.149.103:3478',
+          username: 'admin',
+          credential: 'cdsf@119'
+        }
+      ]
+    })
     this.localPeer.onicecandidate = (event) => {
       console.debug('onicecandidate')
       this.handleICECandidateEvent(calleeId, event)
