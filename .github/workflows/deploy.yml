@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 16.x]
+        node-version: [16.13.x]
     steps:
       - uses: actions/checkout@v3
 
@@ -24,12 +24,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: 'yarn'
 
-      - name: npm install & build
+      - name: yarn install & build
         run: |
-          npm install
-          npm run build --if-present
+          yarn install --production
+          yarn build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
