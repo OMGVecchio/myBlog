@@ -6,17 +6,12 @@ on:
       - 'master'
     workflow_dispatch:
 
-env:
-  SERVER_NAME: ${{secrets.SERVERNAME}}
-  SERVER_PASS: ${{secrets.SERVERPASS}}
-  NODE_VERSION: '16.x'
-
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 16.x]
+        node-version: [16.13.x]
     steps:
       - uses: actions/checkout@v3
 
@@ -24,18 +19,24 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          # 使用 yarn 管理器
+          cache: 'yarn'
 
-      - name: npm install & build
+      - name: yarn install & build
         run: |
-          npm install
-          npm run build --if-present
+          yarn install
+          yarn build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
+          # 上传的文件标识
           name: dist
-          path: .
+          # 需要上传的文件或目录
+          path: |
+            ./
+            !node_modules/
+            !dbs/
 
   deploy:
     runs-on: ubuntu-latest
@@ -45,26 +46,44 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
+          # 下载的文件标识
           name: dist
+          # 下载后的文件名
+          path: myBlog
 
-      - name: ssh deploy
-        # You may pin to the exact commit or the version.
-        # uses: easingthemes/ssh-deploy@c711f2c3391cac2876bf4c833590077f02e4bcb8
+      - name: Show Info
+        run: |
+          pwd
+          ls -al
+          ls myBlog -al
+
+      - name: SSH Deploy
         uses: easingthemes/ssh-deploy@v2.2.11
-        with:
+        env:
           # Private Key
-          SSH_PRIVATE_KEY: ${{ env.SERVER_PASS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           # Remote host
           REMOTE_HOST: vecchio.top
           # Remote user
-          REMOTE_USER: ${{ env.SERVER_NAME }}
+          REMOTE_USER: ${{ secrets.SERVER_USER }}
           # Remote port
           REMOTE_PORT: 22 # optional, default is 22
           # Source directory
-          SOURCE: node-app # optional, default is
+          SOURCE: myBlog # optional, default is
           # Target directory
-          TARGET: ~ # optional, default is /home/REMOTE_USER/
+          TARGET: /root/workspace/vecchio/myBlog # optional, default is /home/REMOTE_USER/
           # Arguments to pass to rsync
           # ARGS: # optional, default is -rltgoDzvO
           # An array of folder to exclude
           # EXCLUDE: # optional, default is
+
+      - name: SSH Restart
+        uses: appleboy/ssh-action@master
+        with:
+          host: vecchio.top
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /root/workspace/vecchio/myBlog && yarn --production
+            pm2 restart myBlog
